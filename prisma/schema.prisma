@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  actions   AdminAction[]
+  articles  Article[]
+}
+
+model Report {
+  id              String   @id @default(cuid())
+  trackingCode    String   @unique
+  phoneNumber     String
+  suspectName     String?
+  suspectPlatform String?
+  suspectAccount  String?
+  description     String
+  scamType        String
+  amountLost      String?
+  status          String   @default("EN_ATTENTE")
+  duplicateOf     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  evidences       Evidence[]
+  actions         AdminAction[]
+}
+
+model Evidence {
+  id        String   @id @default(cuid())
+  fileName  String
+  filePath  String
+  fileType  String
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model AdminAction {
+  id        String   @id @default(cuid())
+  action    String
+  comment   String?
+  reportId  String
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model RateLimit {
+  id        String   @id
+  count     Int      @default(1)
+  resetAt   DateTime
+}
+
+model PageVisit {
+  id        String   @id @default(cuid())
+  page      String
+  referrer  String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([page])
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  titleEn     String   @default("")
+  titleFon    String   @default("")
+  titleYo     String   @default("")
+  excerpt     String
+  excerptEn   String   @default("")
+  excerptFon  String   @default("")
+  excerptYo   String   @default("")
+  content     String
+  contentEn   String   @default("")
+  contentFon  String   @default("")
+  contentYo   String   @default("")
+  coverImage  String   @default("")
+  category    String   @default("Alerte")
+  published   Boolean  @default(false)
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, createdAt])
+}
