@@ -21,8 +21,9 @@ const translations: Record<string, T4> = {
   // ── Nav ──
   "nav.home": { fr: "Accueil", en: "Home", fon: "Xwégbé", yo: "Ilé" },
   "nav.report": { fr: "Signaler", en: "Report", fon: "Ðó gbè", yo: "Ròyìn" },
-  "nav.search": { fr: "Vérifier", en: "Search", fon: "Ba mɔ", yo: "Wádìí" },
-  "nav.tracking": { fr: "Suivi", en: "Track", fon: "Xwedó", yo: "Tọpasẹ́" },
+  "nav.search": { fr: "Rechercher", en: "Search", fon: "Ba mɔ", yo: "Wádìí" },
+  "nav.tracking": { fr: "Mon dossier", en: "My case", fon: "Xwedó", yo: "Tọpasẹ́" },
+  "nav.scams": { fr: "Les arnaques", en: "Scam types", fon: "Nǔ wiwá", yo: "Àwọn ìtànjẹ" },
   "nav.advice": { fr: "Conseils", en: "Advice", fon: "Wěmá", yo: "Ìmọ̀ràn" },
   "nav.stats": { fr: "Statistiques", en: "Statistics", fon: "Xóxó", yo: "Ìṣirò" },
   "nav.news": { fr: "Actualités", en: "News", fon: "Xó yɔyɔ", yo: "Ìròyìn" },
@@ -219,6 +220,29 @@ const translations: Record<string, T4> = {
   "stats.visits.daily.subtitle": { fr: "30 derniers jours", en: "Last 30 days", fon: "Azǎn 30 gudo tɔn lɛ̌", yo: "Ọjọ́ 30 sẹ́yìn" },
   "stats.visits.bar": { fr: "visites", en: "visits", fon: "wíwá", yo: "àbẹ̀wò" },
   "stats.visits.section": { fr: "Trafic du site", en: "Site traffic", fon: "Mɛ e nɔ wá tɛn ɔ jí lɛ̌", yo: "Ìṣàbẹ̀wò ojú-ìwé" },
+
+  // ── Arnaques page UI ──
+  "arnaques.label": { fr: "Guide des arnaques", en: "Scam guide", fon: "Gblègblé sín wěmá", yo: "Ìtọ́sọ́nà jìbìtì" },
+  "arnaques.title": { fr: "Reconnaître une arnaque", en: "Recognize a scam", fon: "Tuùn gblègblé ɖé", yo: "Mọ jìbìtì kan" },
+  "arnaques.subtitle": {
+    fr: "Vous avez été victime mais vous ne savez pas de quel type il s'agit ? Choisissez la situation qui vous ressemble le plus.",
+    en: "Were you a victim but unsure of the type? Choose the situation that best matches yours.",
+    fon: "Gblègblé ko xò we bó ma tuùn alɔkpa e nyí é ǎ? Sɔ́ nùɖiɖɛ e jɛhun we é hugǎn ɔ ɖé.",
+    yo: "Ṣé jìbìtì ti lu ọ tí o kò mọ irú rẹ? Yan ipò tó bá tirẹ mú jù.",
+  },
+  "arnaques.section.example": { fr: "Exemple réel", en: "Real example", fon: "Kɛ́nsísɔ̀ e nyí nǔgbo", yo: "Àpẹẹrẹ gidi" },
+  "arnaques.section.signs": { fr: "Signes à reconnaître", en: "Signs to recognize", fon: "Lìnlìn e na d'akɔ́", yo: "Àwọn àmì láti mọ" },
+  "arnaques.section.protect": { fr: "Comment se protéger", en: "How to protect yourself", fon: "Nɛ̌ a ka na hɛn hwiɖée gbɔn", yo: "Bí a ṣe lè dáàbòbò ara rẹ" },
+  "arnaques.cta.report": { fr: "Signaler cette arnaque", en: "Report this scam", fon: "Ðó gbè dó gblègblé élɔ́ wu", yo: "Ròyìn jìbìtì yìí" },
+  "arnaques.cta.check": { fr: "Vérifier un numéro", en: "Check a number", fon: "Kpɔ́n wěmánúmɛ ɖé", yo: "Ṣàyẹ̀wò nọ́mbà kan" },
+  "arnaques.victim.title": { fr: "Vous avez été victime ?", en: "Were you a victim?", fon: "Gblègblé ko xò we wɛ̌ à?", yo: "Ṣé wọ́n ti jí ẹ lólè?" },
+  "arnaques.victim.text": {
+    fr: "Signalez l'arnaque maintenant. Chaque signalement aide à protéger d'autres personnes au Bénin.",
+    en: "Report the scam now. Each report helps protect other people in Benin.",
+    fon: "Ðó gbè dó gblègblé ɔ dìn. Gbè ɖokpó ɖokpó nɔ hɛn Benɛ̀ví ɖěvo lɛ̌.",
+    yo: "Ṣe ìròyìn jìbìtì náà báyìí. Ìròyìn kọ̀ọ̀kan ń dáàbòbò àwọn ará Benin mìíràn.",
+  },
+  "arnaques.victim.button": { fr: "Faire un signalement", en: "File a report", fon: "Ðó gbè ɖé", yo: "Fi ìròyìn sílẹ̀" },
 };
 
 export type TranslationKey = keyof typeof translations;

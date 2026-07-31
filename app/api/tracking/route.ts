@@ -1,9 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/validation";
+import { checkBan } from "@/lib/security";
+
+const MAX_CODE = 20;
+
+function maskPhone(phone: string): string {
+  if (phone.length <= 4) return "****";
+  return phone.slice(0, 3) + "****" + phone.slice(-2);
+}
 
 export async function GET(request: NextRequest) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const ip = clientIp(request);
+
+  if (await checkBan(ip)) {
+    return NextResponse.json({ error: "Accès refusé." }, { status: 403 });
+  }
+
   const { allowed, remaining, resetAt } = await checkRateLimit(ip, "search");
   if (!allowed) {
     return NextResponse.json(
@@ -12,13 +26,15 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const code = request.nextUrl.searchParams.get("code");
-  if (!code || !code.trim()) {
+  const raw = request.nextUrl.searchParams.get("code");
+  if (!raw || !raw.trim()) {
     return NextResponse.json({ error: "Code requis" }, { status: 400 });
   }
 
+  const code = raw.trim().toUpperCase().slice(0, MAX_CODE);
+
   const report = await prisma.report.findUnique({
-    where: { trackingCode: code.trim().toUpperCase() },
+    where: { trackingCode: code },
     select: {
       trackingCode: true,
       status: true,
@@ -35,27 +51,21 @@ export async function GET(request: NextRequest) {
   });
 
   if (!report) {
-    return NextResponse.json({ result: null });
+    return NextResponse.json({ result: null }, { headers: rateLimitHeaders(remaining, resetAt) });
   }
 
-  // Masquer partiellement le numéro pour la confidentialité
-  const masked =
-    report.phoneNumber.slice(0, 4) +
-    "****" +
-    report.phoneNumber.slice(-2);
-
-  return NextResponse.json({
-    result: {
-      trackingCode: report.trackingCode,
-      status: report.status,
-      scamType: report.scamType,
-      phoneNumber: masked,
-      createdAt: report.createdAt,
-      updatedAt: report.updatedAt,
-      timeline: report.actions.map((a) => ({
-        action: a.action,
-        date: a.createdAt,
-      })),
+  return NextResponse.json(
+    {
+      result: {
+        trackingCode: report.trackingCode,
+        status: report.status,
+        scamType: report.scamType,
+        phoneNumber: report.phoneNumber ? maskPhone(report.phoneNumber) : null,
+        createdAt: report.createdAt,
+        updatedAt: report.updatedAt,
+        timeline: report.actions.map((a) => ({ action: a.action, date: a.createdAt })),
+      },
     },
-  });
+    { headers: rateLimitHeaders(remaining, resetAt) }
+  );
 }

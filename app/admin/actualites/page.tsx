@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
+import { stripHtml } from "@/lib/content";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Alerte: "bg-primary/10 text-primary",
@@ -150,7 +151,7 @@ export default function AdminActualitesPage() {
                   <h3 className="font-semibold text-foreground leading-snug line-clamp-1">
                     {article.title}
                   </h3>
-                  <p className="text-sm text-muted mt-0.5 line-clamp-1">{article.excerpt}</p>
+                  <p className="text-sm text-muted mt-0.5 line-clamp-1">{stripHtml(article.excerpt)}</p>
                 </div>
 
                 {/* Actions */}

@@ -999,7 +999,7 @@ export default function AdminDashboard() {
                           {selectedReport.evidences.map((ev) => (
                             <a
                               key={ev.id}
-                              href={ev.filePath}
+                              href={`/api/admin/files?path=${encodeURIComponent(ev.filePath)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center gap-2 text-sm text-primary hover:underline"

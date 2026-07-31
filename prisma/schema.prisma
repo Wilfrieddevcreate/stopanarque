@@ -16,18 +16,23 @@ model User {
   updatedAt DateTime @updatedAt
   actions   AdminAction[]
   articles  Article[]
+  sessions  Session[]
 }
 
 model Report {
   id              String   @id @default(cuid())
   trackingCode    String   @unique
-  phoneNumber     String
+  phoneNumber     String?
   suspectName     String?
   suspectPlatform String?
   suspectAccount  String?
+  suspectUrl      String?
   description     String
   scamType        String
   amountLost      String?
+  incidentDate    String?
+  contactEmail    String?
+  isAttemptOnly   Boolean  @default(false)
   status          String   @default("EN_ATTENTE")
   duplicateOf     String?
   createdAt       DateTime @default(now())
@@ -61,6 +66,43 @@ model RateLimit {
   id        String   @id
   count     Int      @default(1)
   resetAt   DateTime
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model SecurityEvent {
+  id        String   @id @default(cuid())
+  ip        String
+  threatType String
+  severity  String   @default("medium")
+  path      String
+  detail    String   @default("")
+  userAgent String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([ip])
+  @@index([createdAt])
+  @@index([threatType])
+}
+
+model SecurityBan {
+  id        String   @id @default(cuid())
+  ip        String   @unique
+  reason    String
+  bannedAt  DateTime @default(now())
+  expiresAt DateTime
+  autoban   Boolean  @default(true)
+
+  @@index([expiresAt])
 }
 
 model PageVisit {

@@ -24,6 +24,7 @@ export function Header() {
             <NavLink href="/signaler">{t("nav.report")}</NavLink>
             <NavLink href="/rechercher">{t("nav.search")}</NavLink>
             <NavLink href="/suivi">{t("nav.tracking")}</NavLink>
+            <NavLink href="/arnaques">{t("nav.scams")}</NavLink>
             <NavLink href="/conseils">{t("nav.advice")}</NavLink>
             <NavLink href="/actualites">{t("nav.news")}</NavLink>
             <LangSwitcher />
@@ -61,6 +62,7 @@ export function Header() {
                 <MobileNavLink href="/signaler" onClick={() => setMenuOpen(false)}>{t("nav.report")}</MobileNavLink>
                 <MobileNavLink href="/rechercher" onClick={() => setMenuOpen(false)}>{t("nav.search")}</MobileNavLink>
                 <MobileNavLink href="/suivi" onClick={() => setMenuOpen(false)}>{t("nav.tracking")}</MobileNavLink>
+                <MobileNavLink href="/arnaques" onClick={() => setMenuOpen(false)}>{t("nav.scams")}</MobileNavLink>
                 <MobileNavLink href="/conseils" onClick={() => setMenuOpen(false)}>{t("nav.advice")}</MobileNavLink>
                 <MobileNavLink href="/actualites" onClick={() => setMenuOpen(false)}>{t("nav.news")}</MobileNavLink>
               </div>

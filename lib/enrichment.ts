@@ -196,10 +196,22 @@ export function analyzeModusOperandi(
     patterns.push("Romance scam — relation fictive pour soutirer de l'argent");
     recommendations.push("Vérifier les photos du suspect avec Google Images (recherche inversée)");
   }
-  if (scamTypes.includes("Arnaque bancaire") || scamTypes.includes("Arnaque Mobile Money")) {
+  if (scamTypes.includes("Arnaque bancaire") || scamTypes.includes("Arnaque Mobile Money") || scamTypes.includes("Faux prêt") || scamTypes.includes("Arnaque à l'investissement")) {
     patterns.push("Arnaque financière — cible les comptes bancaires ou Mobile Money");
     recommendations.push("Contacter l'opérateur pour tenter de bloquer/tracer les transactions");
     recommendations.push("Vérifier le numéro Mobile Money auprès de l'opérateur");
+  }
+  if (scamTypes.includes("Faux emploi")) {
+    patterns.push("Faux emploi — demande de frais d'inscription ou de formation avant embauche");
+    recommendations.push("Signaler à l'ANPE (Agence Nationale Pour l'Emploi) du Bénin");
+  }
+  if (scamTypes.includes("Faux agent immobilier")) {
+    patterns.push("Escroquerie immobilière — bien proposé par quelqu'un qui n'en est pas propriétaire");
+    recommendations.push("Vérifier la propriété du bien au registre foncier avant tout paiement");
+  }
+  if (scamTypes.includes("Arnaque aux bourses / visa")) {
+    patterns.push("Arnaque aux bourses ou visa — demande de frais pour une bourse ou un visa inexistant");
+    recommendations.push("Vérifier directement auprès de l'ambassade ou de l'institution concernée");
   }
   if (scamTypes.includes("Phishing / Hameçonnage")) {
     patterns.push("Phishing — utilise de faux sites web ou messages pour voler des identifiants");
@@ -259,7 +271,7 @@ export interface SuspectProfile {
 
 interface ReportData {
   id: string;
-  phoneNumber: string;
+  phoneNumber: string | null;
   suspectName: string | null;
   suspectPlatform: string | null;
   suspectAccount: string | null;
@@ -306,7 +318,7 @@ export function buildSuspectProfile(
 
   // Numéros liés
   const relatedPhones = [...new Set(
-    relatedReports.filter((r) => r.phoneNumber !== phoneNumber).map((r) => r.phoneNumber)
+    relatedReports.filter((r) => r.phoneNumber && r.phoneNumber !== phoneNumber).map((r) => r.phoneNumber as string)
   )];
 
   // Score de risque

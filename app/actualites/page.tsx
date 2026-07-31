@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/MotionDiv";
 import { useI18n } from "@/lib/i18n/context";
+import { stripHtml } from "@/lib/content";
 
 const CAT_KEYS: Record<string, string> = {
   Alerte: "news.cat.alerte",
@@ -59,17 +60,21 @@ export default function ActualitesPage() {
       : articles.filter((a) => a.category === activeCategory);
 
   const getTitle = (a: Article) => {
-    if (locale === "en" && a.titleEn) return a.titleEn;
-    if (locale === "fon" && a.titleFon) return a.titleFon;
-    if (locale === "yo" && a.titleYo) return a.titleYo;
-    return a.title;
+    const raw =
+      locale === "en" && a.titleEn ? a.titleEn :
+      locale === "fon" && a.titleFon ? a.titleFon :
+      locale === "yo" && a.titleYo ? a.titleYo :
+      a.title;
+    return stripHtml(raw);
   };
 
   const getExcerpt = (a: Article) => {
-    if (locale === "en" && a.excerptEn) return a.excerptEn;
-    if (locale === "fon" && a.excerptFon) return a.excerptFon;
-    if (locale === "yo" && a.excerptYo) return a.excerptYo;
-    return a.excerpt;
+    const raw =
+      locale === "en" && a.excerptEn ? a.excerptEn :
+      locale === "fon" && a.excerptFon ? a.excerptFon :
+      locale === "yo" && a.excerptYo ? a.excerptYo :
+      a.excerpt;
+    return stripHtml(raw);
   };
 
   return (
@@ -184,7 +189,7 @@ function ArticleCard({
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent" />
           </div>
         )}
 

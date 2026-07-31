@@ -70,6 +70,51 @@ export function FAQJsonLd({ items }: { items: { question: string; answer: string
   );
 }
 
+export function NewsArticleJsonLd({
+  title,
+  description,
+  image,
+  datePublished,
+  dateModified,
+  authorName,
+  slug,
+}: {
+  title: string;
+  description: string;
+  image: string;
+  datePublished: string;
+  dateModified: string;
+  authorName: string;
+  slug: string;
+}) {
+  const url = `${SITE_URL}/actualites/${slug}`;
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: title,
+    description,
+    image,
+    datePublished,
+    dateModified,
+    author: { "@type": "Person", name: authorName },
+    publisher: {
+      "@type": "Organization",
+      name: "StopArnaque Bénin",
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/icons/icon-512x512.png` },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    url,
+    inLanguage: "fr-BJ",
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
+
 export function BreadcrumbJsonLd({ items }: { items: { name: string; url: string }[] }) {
   const data = {
     "@context": "https://schema.org",

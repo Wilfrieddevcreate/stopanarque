@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Swal from "sweetalert2";
+import { RichEditor } from "@/components/RichEditor";
 
 const CATEGORIES = ["Alerte", "Conseil", "Actualité", "Communiqué"];
 
@@ -39,8 +40,16 @@ function fieldKey(base: string, lang: LangKey): keyof FormData {
   return `${base}Yo` as keyof FormData;
 }
 
+function htmlIsEmpty(html: string) {
+  return !html || html.replace(/<[^>]*>/g, "").trim() === "";
+}
+
 function langComplete(form: FormData, lang: LangKey): boolean {
-  return !!(form[fieldKey("title", lang)] && form[fieldKey("excerpt", lang)] && form[fieldKey("content", lang)]);
+  return !!(
+    form[fieldKey("title", lang)] &&
+    form[fieldKey("excerpt", lang)] &&
+    !htmlIsEmpty(form[fieldKey("content", lang)] as string)
+  );
 }
 
 export function ArticleForm({ initial, articleId }: { initial?: Partial<FormData> & { id?: string }; articleId?: string }) {
@@ -82,7 +91,7 @@ export function ArticleForm({ initial, articleId }: { initial?: Partial<FormData
   }
 
   async function handleSave(publish?: boolean) {
-    if (!form.title.trim() || !form.excerpt.trim() || !form.content.trim()) {
+    if (!form.title.trim() || !form.excerpt.trim() || htmlIsEmpty(form.content)) {
       await Swal.fire({ icon: "warning", title: "Champs requis", text: "Le titre, le résumé et le contenu en Français sont obligatoires.", confirmButtonColor: "#E8112D" });
       setLang("fr");
       return;
@@ -198,16 +207,16 @@ export function ArticleForm({ initial, articleId }: { initial?: Partial<FormData
               <label className="block text-sm font-medium text-foreground mb-1.5">
                 Contenu{lang === "fr" && <span className="text-primary ml-1">*</span>}
               </label>
-              <textarea
-                rows={14}
+              <RichEditor
                 value={form[fieldKey("content", lang)] as string}
-                onChange={(e) => set(fieldKey("content", lang), e.target.value)}
-                placeholder="Contenu complet de l'article. Vous pouvez sauter des lignes pour créer des paragraphes."
-                className="w-full px-4 py-3 rounded-xl border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors resize-y font-mono leading-relaxed"
+                onChange={(html) => set(fieldKey("content", lang), html)}
+                placeholder={
+                  lang === "fr"
+                    ? "Rédigez le contenu complet de l'article…"
+                    : `Write the full article content in ${LANGS.find((l) => l.key === lang)?.label}…`
+                }
+                minHeight={320}
               />
-              <p className="text-xs text-muted mt-1.5">
-                {(form[fieldKey("content", lang)] as string).length} caractères
-              </p>
             </div>
           </div>
 

@@ -2,33 +2,32 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { buildSuspectProfile } from "@/lib/enrichment";
+import { normalizePhone } from "@/lib/validation";
+
+const RELATED_LIMIT = 50;
+const NAME_LIMIT = 10;
 
 export async function GET(request: NextRequest) {
   const user = await getSession();
-  if (!user) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  if (!user) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+
+  const rawPhone = request.nextUrl.searchParams.get("phone");
+  const normalized = normalizePhone(rawPhone);
+  if (!normalized) {
+    return NextResponse.json({ error: "Numéro invalide" }, { status: 400 });
   }
 
-  const phone = request.nextUrl.searchParams.get("phone");
-  if (!phone) {
-    return NextResponse.json({ error: "Numéro requis" }, { status: 400 });
-  }
-
-  const normalized = phone.replace(/[\s+\-()]/g, "");
-
-  // Tous les signalements pour ce numéro
   const reports = await prisma.report.findMany({
     where: { phoneNumber: normalized },
     orderBy: { createdAt: "desc" },
+    take: 100,
   });
 
-  if (reports.length === 0) {
-    return NextResponse.json({ profile: null });
-  }
+  if (reports.length === 0) return NextResponse.json({ profile: null });
 
-  // Signalements liés : même nom suspect ou même compte
-  const names = reports.map((r) => r.suspectName).filter(Boolean) as string[];
-  const accounts = reports.map((r) => r.suspectAccount).filter(Boolean) as string[];
+  // Cap names/accounts to avoid generating oversized OR clauses
+  const names = [...new Set(reports.map((r) => r.suspectName).filter(Boolean) as string[])].slice(0, NAME_LIMIT);
+  const accounts = [...new Set(reports.map((r) => r.suspectAccount).filter(Boolean) as string[])].slice(0, NAME_LIMIT);
 
   let relatedReports: typeof reports = [];
   if (names.length > 0 || accounts.length > 0) {
@@ -38,16 +37,16 @@ export async function GET(request: NextRequest) {
           { phoneNumber: { not: normalized } },
           {
             OR: [
-              ...(names.length > 0 ? names.map((n) => ({ suspectName: { contains: n } })) : []),
-              ...(accounts.length > 0 ? accounts.map((a) => ({ suspectAccount: { contains: a } })) : []),
+              ...names.map((n) => ({ suspectName: { contains: n } })),
+              ...accounts.map((a) => ({ suspectAccount: { contains: a } })),
             ],
           },
         ],
       },
+      take: RELATED_LIMIT,
     });
   }
 
   const profile = buildSuspectProfile(normalized, reports, relatedReports);
-
   return NextResponse.json({ profile });
 }

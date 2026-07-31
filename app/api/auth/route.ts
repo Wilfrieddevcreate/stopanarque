@@ -1,13 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authenticateAdmin, createSession, destroySession } from "@/lib/auth";
 import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
+import { checkBan, logThreat } from "@/lib/security";
+import { clientIp } from "@/lib/validation";
 
 export async function POST(request: NextRequest) {
+  const ip = clientIp(request);
+
+  // Reject if IP is banned
+  if (await checkBan(ip)) {
+    return NextResponse.json(
+      { error: "Accès refusé." },
+      { status: 403 }
+    );
+  }
+
   // Rate limit by IP: 5 attempts per 15 minutes
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const { allowed, remaining, resetAt } = await checkRateLimit(ip, "login");
 
   if (!allowed) {
+    await logThreat({ ip, threat: "rate_limit", path: "/api/auth", userAgent: request.headers.get("user-agent") ?? "" });
     const retryAfter = Math.ceil((resetAt.getTime() - Date.now()) / 1000);
     return NextResponse.json(
       { error: `Trop de tentatives. Réessayez dans ${Math.ceil(retryAfter / 60)} minute(s).` },
@@ -23,7 +35,6 @@ export async function POST(request: NextRequest) {
 
     const { email, password } = body;
 
-    // Basic input validation
     if (typeof email !== "string" || typeof password !== "string") {
       return NextResponse.json({ error: "Données invalides" }, { status: 400 });
     }
@@ -33,7 +44,14 @@ export async function POST(request: NextRequest) {
 
     const user = await authenticateAdmin(email.trim().toLowerCase(), password);
     if (!user) {
-      // Same message for wrong email or wrong password (no user enumeration)
+      // Log failed attempt — accumulates toward auto-ban
+      await logThreat({
+        ip,
+        threat: "brute_force",
+        path: "/api/auth",
+        detail: `email: ${email.slice(0, 60)}`,
+        userAgent: request.headers.get("user-agent") ?? "",
+      });
       return NextResponse.json(
         { error: "Identifiants invalides" },
         { status: 401, headers: rateLimitHeaders(remaining, resetAt) }

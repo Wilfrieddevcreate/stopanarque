@@ -24,6 +24,7 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
         contentEn: article.contentEn,
         contentFon: article.contentFon,
         contentYo: article.contentYo,
+        coverImage: article.coverImage,
         category: article.category,
         published: article.published,
       }}

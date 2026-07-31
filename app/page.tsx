@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
@@ -15,6 +16,7 @@ import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { HeroBackground } from "@/components/HeroBackground";
 import { AlertBanner } from "@/components/AlertBanner";
 import { useI18n } from "@/lib/i18n/context";
+import { stripHtml } from "@/lib/content";
 
 export default function Home() {
   return (
@@ -166,24 +168,59 @@ function HeroSection() {
 
 /* ─── Stats bar ─── */
 function StatsBar() {
+  const [stats, setStats] = useState<{
+    totalReports: number;
+    confirmedReports: number;
+    totalSearches: number;
+  } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/statistics")
+      .then((r) => r.json())
+      .then((d) => setStats(d))
+      .catch(() => {});
+  }, []);
+
+  const items = [
+    {
+      value: stats?.totalReports ?? 0,
+      suffix: "+",
+      label: "Signalements reçus",
+    },
+    {
+      value: stats?.confirmedReports ?? 0,
+      suffix: "+",
+      label: "Arnaques confirmées",
+    },
+    {
+      value: stats ? Math.floor(stats.totalSearches / 1000) : 0,
+      suffix: stats && stats.totalSearches >= 1000 ? "k+" : "+",
+      label: "Recherches effectuées",
+    },
+    {
+      value: 98,
+      suffix: "%",
+      label: "Taux de satisfaction",
+    },
+  ];
+
   return (
     <section className="relative -mt-8 z-10 max-w-5xl mx-auto px-4 sm:px-6">
       <ScaleIn>
         <div className="bg-white rounded-2xl shadow-xl border border-border/50 p-6 sm:p-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {[
-              { value: 15847, suffix: "+", label: "Signalements reçus" },
-              { value: 8923, suffix: "+", label: "Arnaques confirmées" },
-              { value: 45, suffix: "k+", label: "Recherches effectuées" },
-              { value: 98, suffix: "%", label: "Taux de satisfaction" },
-            ].map((stat, i) => (
+            {items.map((stat, i) => (
               <div key={i} className="text-center">
-                <AnimatedCounter
-                  target={stat.value}
-                  suffix={stat.suffix}
-                  duration={2.5}
-                  className="text-3xl sm:text-4xl font-bold text-primary font-heading"
-                />
+                {stats || stat.value === 98 ? (
+                  <AnimatedCounter
+                    target={stat.value}
+                    suffix={stat.suffix}
+                    duration={2.5}
+                    className="text-3xl sm:text-4xl font-bold text-primary font-heading"
+                  />
+                ) : (
+                  <div className="h-10 w-20 mx-auto bg-gray-100 rounded-lg animate-pulse" />
+                )}
                 <p className="text-sm text-muted mt-1">{stat.label}</p>
               </div>
             ))}
@@ -504,8 +541,13 @@ type Article = {
   slug: string;
   title: string;
   titleEn: string;
+  titleFon: string;
+  titleYo: string;
   excerpt: string;
   excerptEn: string;
+  excerptFon: string;
+  excerptYo: string;
+  coverImage: string;
   category: string;
   createdAt: string;
 };
@@ -572,8 +614,18 @@ function LatestNews() {
         ) : (
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article) => {
-              const title = locale === "en" && article.titleEn ? article.titleEn : article.title;
-              const excerpt = locale === "en" && article.excerptEn ? article.excerptEn : article.excerpt;
+              const title = stripHtml(
+                locale === "en" && article.titleEn ? article.titleEn :
+                locale === "fon" && article.titleFon ? article.titleFon :
+                locale === "yo" && article.titleYo ? article.titleYo :
+                article.title
+              );
+              const excerpt = stripHtml(
+                locale === "en" && article.excerptEn ? article.excerptEn :
+                locale === "fon" && article.excerptFon ? article.excerptFon :
+                locale === "yo" && article.excerptYo ? article.excerptYo :
+                article.excerpt
+              );
               const date = new Date(article.createdAt).toLocaleDateString(
                 locale === "en" ? "en-GB" : "fr-FR",
                 { day: "numeric", month: "long", year: "numeric" }
@@ -584,8 +636,18 @@ function LatestNews() {
                     whileHover={{ y: -4 }}
                     className="group bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-xl transition-all flex flex-col h-full overflow-hidden"
                   >
-                    <div className="p-6 flex flex-col flex-1">
-                      <div className="flex items-center justify-between mb-4">
+                    {article.coverImage && (
+                      <div className="relative h-44 w-full overflow-hidden shrink-0">
+                        <Image
+                          src={article.coverImage}
+                          alt={title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    )}
+                    <div className="p-5 flex flex-col flex-1">
+                      <div className="flex items-center justify-between mb-3">
                         <span className={`text-xs font-semibold px-3 py-1 rounded-full ${CAT_COLORS[article.category] ?? "bg-gray-100 text-gray-600"}`}>
                           {article.category}
                         </span>
