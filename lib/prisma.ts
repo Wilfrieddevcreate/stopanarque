@@ -5,12 +5,17 @@ import path from "path";
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 function createPrismaClient() {
+  // DATABASE_URL set in env → use it (prod: file:/var/data/stopanarque.db, dev: file:./dev.db)
+  // TURSO_DATABASE_URL set → use Turso cloud DB
   const tursoUrl = process.env.TURSO_DATABASE_URL;
-  const tursoToken = process.env.TURSO_AUTH_TOKEN;
+  const dbUrl = tursoUrl
+    ?? process.env.DATABASE_URL
+    ?? `file:${path.join(process.cwd(), "dev.db")}`;
 
-  const adapter = tursoUrl
-    ? new PrismaLibSql({ url: tursoUrl, authToken: tursoToken })
-    : new PrismaLibSql({ url: `file:${path.join(process.cwd(), "dev.db")}` });
+  const adapter = new PrismaLibSql({
+    url: dbUrl,
+    ...(process.env.TURSO_AUTH_TOKEN ? { authToken: process.env.TURSO_AUTH_TOKEN } : {}),
+  });
 
   return new PrismaClient({ adapter });
 }

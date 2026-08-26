@@ -2,6 +2,12 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import path from "path";
 
+// Never auto-seed in production — only run explicitly with: npm run seed
+if (process.env.NODE_ENV === "production") {
+  console.log("⏭  Seed skipped in production.");
+  process.exit(0);
+}
+
 const adapter = new PrismaLibSql({ url: `file:${path.join(process.cwd(), "dev.db")}` });
 const prisma = new PrismaClient({ adapter });
 
