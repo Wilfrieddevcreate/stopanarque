@@ -88,40 +88,11 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // ── CSP nonce ─────────────────────────────────────────────────────────────
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
-
-  const csp = [
-    "default-src 'self'",
-    // strict-dynamic makes nonce propagate to dynamically loaded scripts
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
-    // Style: self + nonce for inline (framer-motion, Tiptap inject inline styles)
-    `style-src 'self' 'nonce-${nonce}' 'unsafe-inline'`,
-    // Images: self + blob (Image component) + data URIs
-    "img-src 'self' blob: data:",
-    // Fonts loaded from next/font (self) and Google Fonts
-    "font-src 'self' https://fonts.gstatic.com",
-    "connect-src 'self'",
-    "media-src 'none'",
-    "object-src 'none'",
-    "base-uri 'self'",
-    "form-action 'self'",
-    // Replaces X-Frame-Options
-    "frame-ancestors 'none'",
-    "upgrade-insecure-requests",
-  ].join("; ");
-
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
-  requestHeaders.set("Content-Security-Policy", csp);
-
-  const response = NextResponse.next({ request: { headers: requestHeaders } });
-
-  response.headers.set("Content-Security-Policy", csp);
+  // Security headers — CSP is handled statically in next.config.ts
+  const response = NextResponse.next();
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  response.headers.set("X-XSS-Protection", "1; mode=block");
   response.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
   response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()");
 
