@@ -43,9 +43,14 @@ export function Footer() {
 
           <div>
             <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-500 mb-4">
-              {t("footer.privacy.title")}
+              {t("footer.legal")}
             </h3>
-            <p className="text-sm text-muted leading-relaxed">{t("footer.privacy.text")}</p>
+            <ul className="space-y-2">
+              <li><Link href="/mentions-legales" className="text-sm text-muted hover:text-foreground transition-colors">{t("footer.mentions")}</Link></li>
+              <li><Link href="/politique-confidentialite" className="text-sm text-muted hover:text-foreground transition-colors">{t("footer.privacy.policy")}</Link></li>
+              <li><Link href="/contact" className="text-sm text-muted hover:text-foreground transition-colors">{t("footer.contact")}</Link></li>
+            </ul>
+            <p className="text-xs text-muted leading-relaxed mt-4">{t("footer.privacy.text")}</p>
           </div>
         </div>
 

@@ -4,11 +4,29 @@ import { checkRateLimit, rateLimitHeaders } from "@/lib/rate-limit";
 import { clientIp } from "@/lib/validation";
 import { checkBan } from "@/lib/security";
 
-const MAX_QUERY = 100;
+const MAX_QUERY = 200;
+const URL_RE = /^(https?:\/\/)?([\w-]+\.)+[\w]{2,}(\/\S*)?$/i;
+const PHONE_RE = /^[+\d\s\-().]{7,}$/;
 
 function maskPhone(phone: string): string {
   if (phone.length <= 6) return "****";
   return phone.slice(0, 3) + "****" + phone.slice(-2);
+}
+
+function extractDomain(input: string): string {
+  try {
+    const withProto = /^https?:\/\//i.test(input) ? input : `https://${input}`;
+    const hostname = new URL(withProto).hostname;
+    return hostname.replace(/^www\./i, "").toLowerCase();
+  } catch {
+    return input.toLowerCase().replace(/^www\./i, "").split("/")[0];
+  }
+}
+
+function detectType(q: string): "url" | "phone" | "general" {
+  if (URL_RE.test(q.trim())) return "url";
+  if (PHONE_RE.test(q.trim())) return "phone";
+  return "general";
 }
 
 export async function GET(request: NextRequest) {
@@ -32,40 +50,72 @@ export async function GET(request: NextRequest) {
   }
 
   const query = raw.trim().slice(0, MAX_QUERY);
-  const normalized = query.replace(/\s/g, "");
+  const queryType = detectType(query);
 
-  const reports = await prisma.report.findMany({
-    where: {
+  let whereClause;
+  let searchTerm: string;
+
+  if (queryType === "url") {
+    const domain = extractDomain(query);
+    searchTerm = domain;
+    whereClause = {
+      OR: [
+        { suspectUrl: { contains: domain } },
+        { suspectAccount: { contains: domain } },
+      ],
+    };
+  } else if (queryType === "phone") {
+    const normalized = query.replace(/\s/g, "");
+    searchTerm = normalized;
+    whereClause = {
       OR: [
         { phoneNumber: { contains: normalized } },
+        { suspectAccount: { contains: normalized } },
+      ],
+    };
+  } else {
+    searchTerm = query;
+    whereClause = {
+      OR: [
         { suspectName: { contains: query } },
         { suspectAccount: { contains: query } },
+        { suspectUrl: { contains: query } },
       ],
-    },
+    };
+  }
+
+  const reports = await prisma.report.findMany({
+    where: whereClause,
     select: {
       phoneNumber: true,
       scamType: true,
       suspectName: true,
       suspectPlatform: true,
+      suspectUrl: true,
     },
-    take: 200, // cap to avoid accidental full-table dumps
+    take: 200,
   });
 
   if (reports.length === 0) {
-    return NextResponse.json({
-      result: { query, count: 0, scamTypes: [], suspects: [] },
-      headers: rateLimitHeaders(remaining, resetAt),
-    });
+    return NextResponse.json(
+      { result: { query: searchTerm, queryType, count: 0, scamTypes: [], phones: [], names: [], platforms: [], urls: [] } },
+      { headers: rateLimitHeaders(remaining, resetAt) }
+    );
   }
 
   const scamTypes = [...new Set(reports.map((r) => r.scamType))];
-  // Never return full phone numbers — always mask
-  const phones = [...new Set(reports.map((r) => r.phoneNumber ? maskPhone(r.phoneNumber) : null).filter(Boolean))];
-  const names = [...new Set(reports.map((r) => r.suspectName).filter(Boolean))];
-  const platforms = [...new Set(reports.map((r) => r.suspectPlatform).filter(Boolean))];
+  const phones = [...new Set(
+    reports.map((r) => r.phoneNumber ? maskPhone(r.phoneNumber) : null).filter(Boolean) as string[]
+  )];
+  const names = [...new Set(reports.map((r) => r.suspectName).filter(Boolean) as string[])];
+  const platforms = [...new Set(reports.map((r) => r.suspectPlatform).filter(Boolean) as string[])];
+  // URLs: show only the domain part, deduplicated
+  const urls = [...new Set(
+    reports.map((r) => r.suspectUrl ? extractDomain(r.suspectUrl) : null).filter(Boolean) as string[]
+  )];
 
   return NextResponse.json(
-    { result: { query, count: reports.length, scamTypes, phones, names, platforms } },
+    { result: { query: searchTerm, queryType, count: reports.length, scamTypes, phones, names, platforms, urls } },
     { headers: rateLimitHeaders(remaining, resetAt) }
   );
 }

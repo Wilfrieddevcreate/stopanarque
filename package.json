@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "npx tsx prisma/seed.ts",
+    "create-admin": "npx tsx scripts/create-admin.ts"
   },
   "dependencies": {
     "@prisma/adapter-libsql": "^7.5.0",

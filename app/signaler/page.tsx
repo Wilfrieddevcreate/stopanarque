@@ -62,9 +62,8 @@ export default function SignalerPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [dragOver, setDragOver] = useState(false);
 
-  const phoneRequired = needsPhone(scamType);
-  const urlShown = needsUrl(scamType) || WEB_SCAMS.has(scamType);
-  const showUrl = WEB_SCAMS.has(scamType) || !PHONE_SCAMS.has(scamType);
+  const phoneRequired = scamType === "" || PHONE_SCAMS.has(scamType);
+  const showUrl = scamType !== "" && (WEB_SCAMS.has(scamType) || !PHONE_SCAMS.has(scamType));
 
   function validateStep1() {
     const errs: Record<string, string> = {};

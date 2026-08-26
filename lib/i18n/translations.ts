@@ -185,6 +185,10 @@ const translations: Record<string, T4> = {
   "footer.privacy.title": { fr: "Confidentialité", en: "Privacy", fon: "Nǔhɛnmɛ", yo: "Ìkọ̀kọ̀" },
   "footer.privacy.text": { fr: "Vos signalements sont traités de manière confidentielle. Aucune information personnelle n'est rendue publique.", en: "Your reports are handled confidentially. No personal information is made public.", fon: "Gbè e a ɖó lɛ̌ nɔ nɔ nǔhɛnmɛ. È nɔ ɖè nyǐkɔ́ towe tɔ́n ǎ.", yo: "Àwọn ìròyìn rẹ ni wọ́n ń tọ́jú ní ìkọ̀kọ̀. Kò sí ìwífún àdáni tí wọ́n fi hàn." },
   "footer.copyright": { fr: "Tous droits réservés.", en: "All rights reserved.", fon: "Acɛ bǐ wɛ̀ è hɛn.", yo: "Gbogbo ẹ̀tọ́ ni a pa mọ́." },
+  "footer.legal": { fr: "Légal", en: "Legal", fon: "Susu tɔn", yo: "Òfin" },
+  "footer.mentions": { fr: "Mentions légales", en: "Legal notice", fon: "Xó lɛ́ɖɔwɛ̀", yo: "Ìkìlọ̀ òfin" },
+  "footer.privacy.policy": { fr: "Politique de confidentialité", en: "Privacy policy", fon: "Nǔhɛnmɛ sín susu", yo: "Ìlànà ìkọ̀kọ̀" },
+  "footer.contact": { fr: "Nous contacter", en: "Contact us", fon: "Bló mǐ", yo: "Kàn sí wa" },
 
   // ── Common ──
   "common.anonymous": { fr: "Anonyme et confidentiel — aucune donnée personnelle collectée", en: "Anonymous and confidential — no personal data collected", fon: "Nǔhɛnmɛ — è nɔ yí nyǐkɔ́ towe ǎ", yo: "Aṣírí — a kò gba dátà àdáni kankan" },
