@@ -121,30 +121,26 @@ export default function SignalerPage() {
       const data = await res.json();
       await Swal.fire({
         icon: "success",
-        title: "Signalement bien reçu !",
+        title: t("report.success.title"),
         html: `
-          <div style="text-align:left;max-width:380px;margin:0 auto">
-            <p style="margin-bottom:16px;color:#1a1a2e;line-height:1.6">
-              Votre signalement a été <b>enregistré avec succès</b> et transmis à notre équipe d'investigation.
-            </p>
-            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:16px">
-              <p style="font-size:12px;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">Votre code de suivi</p>
+          <div style="text-align:left;max-width:360px;margin:0 auto">
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:14px">
+              <p style="font-size:12px;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">${t("report.success.track.label")}</p>
               <p style="font-size:24px;font-weight:bold;font-family:monospace;letter-spacing:3px;color:#E8112D;margin-bottom:4px">${data.trackingCode}</p>
-              <p style="font-size:11px;color:#94a3b8">Notez-le précieusement pour suivre l'avancement</p>
+              <p style="font-size:11px;color:#94a3b8">${t("report.success.body")}</p>
             </div>
             <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px">
-              <p style="font-size:13px;color:#166534;font-weight:600;margin-bottom:6px">Que se passe-t-il maintenant ?</p>
+              <p style="font-size:13px;color:#166534;font-weight:600;margin-bottom:6px">${t("report.success.steps.title")}</p>
               <ul style="font-size:12px;color:#166534;line-height:1.8;padding-left:16px;margin:0">
-                <li>Notre équipe va analyser votre signalement</li>
-                <li>Le suspect sera vérifié et recoupé</li>
-                <li>Vous aurez un retour <b>sous 48h maximum</b></li>
+                <li>${t("report.success.step1")}</li>
+                <li>${t("report.success.step2")}</li>
               </ul>
             </div>
           </div>
         `,
         confirmButtonColor: "#E8112D",
-        confirmButtonText: "J'ai noté mon code ✓",
-        width: 500,
+        confirmButtonText: t("report.success.confirm"),
+        width: 480,
       });
 
       setPhoneNumber(""); setSuspectUrl(""); setSuspectName(""); setSuspectPlatform("");
@@ -191,9 +187,9 @@ export default function SignalerPage() {
               </svg>
             </div>
             <div>
-              <p className="font-semibold text-foreground text-sm">Votre signalement est protégé</p>
+              <p className="font-semibold text-foreground text-sm">{t("report.trust.title")}</p>
               <p className="text-xs text-muted leading-relaxed mt-0.5">
-                Votre identité n&apos;est <strong>jamais révélée</strong>. Seules les autorités compétentes ont accès aux détails.
+                {t("report.trust.text")}
               </p>
             </div>
           </div>
@@ -429,7 +425,7 @@ export default function SignalerPage() {
                       <svg className="w-3.5 h-3.5 text-accent-dark shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      Utilisé uniquement pour vous informer des suites de votre dossier. Jamais partagé.
+                      {t("report.email.hint")}
                     </p>
                   </div>
 
@@ -466,7 +462,7 @@ export default function SignalerPage() {
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                           </svg>
-                          Envoi...
+                          {t("report.sending")}
                         </span>
                       ) : t("report.submit")}
                     </motion.button>

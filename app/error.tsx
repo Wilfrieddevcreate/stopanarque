@@ -26,7 +26,7 @@ export default function GlobalError({
         </div>
         <h2 className="text-xl font-bold text-foreground mb-2">Une erreur est survenue</h2>
         <p className="text-muted text-sm mb-6">
-          Une erreur inattendue s'est produite. Vous pouvez réessayer ou revenir à l'accueil.
+          Quelque chose s'est mal passé. Réessayez ou revenez à l'accueil.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button

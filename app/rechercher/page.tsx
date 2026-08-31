@@ -58,8 +58,14 @@ export default function RechercherPage() {
   const placeholders: Record<string, string> = {
     url: "Ex : site-arnaque.com ou https://faux-vendeur.bj",
     phone: "Ex : +22961234567",
-    general: "Numéro, site web, nom du suspect…",
+    general: t("search.placeholder"),
   };
+
+  const chips = [
+    { label: `📞 ${t("search.chip.phone")}`, value: "+22961234567" },
+    { label: `🌐 ${t("search.chip.url")}`, value: "mtn-benin-recharge-gratuite.net" },
+    { label: `👤 ${t("search.chip.name")}`, value: "Sophie Martin" },
+  ];
 
   const inputIcon = inputType === "url" ? (
     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,16 +87,12 @@ export default function RechercherPage() {
         <FadeIn>
           <div className="text-center mb-10">
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground">{t("search.title")}</h1>
-            <p className="mt-3 text-muted text-lg">Numéro de téléphone, site web, nom du suspect</p>
+            <p className="mt-3 text-muted text-lg">{t("search.input_hint")}</p>
           </div>
 
           {/* Exemples cliquables */}
           <div className="flex flex-wrap gap-2 justify-center mb-5">
-            {[
-              { label: "📞 Numéro", value: "+22961234567" },
-              { label: "🌐 Site web", value: "mtn-benin-recharge-gratuite.net" },
-              { label: "👤 Nom", value: "Sophie Martin" },
-            ].map((ex) => (
+            {chips.map((ex) => (
               <button
                 key={ex.value}
                 type="button"
@@ -182,7 +184,7 @@ export default function RechercherPage() {
                           <div className="bg-white/60 rounded-xl p-4">
                             <div className="flex items-center justify-between mb-1">
                               <p className="text-sm text-gray-500">{t("search.names")}</p>
-                              <span className="text-xs text-gray-400 italic">Signalés par des utilisateurs — non vérifiés</span>
+                              <span className="text-xs text-gray-400 italic">{t("search.unverified")}</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
                               {result.names.map((n) => (
@@ -194,8 +196,8 @@ export default function RechercherPage() {
                         {result.urls.length > 0 && (
                           <div className="bg-white/60 rounded-xl p-4">
                             <div className="flex items-center justify-between mb-2">
-                              <p className="text-sm text-gray-500">Sites signalés</p>
-                              <span className="text-xs text-danger font-medium bg-danger/10 px-2 py-0.5 rounded-full">⚠ Ne pas visiter</span>
+                              <p className="text-sm text-gray-500">{t("search.urls_label")}</p>
+                              <span className="text-xs text-danger font-medium bg-danger/10 px-2 py-0.5 rounded-full">⚠ {t("search.no_visit")}</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
                               {result.urls.map((u) => (
@@ -224,7 +226,7 @@ export default function RechercherPage() {
                         <svg className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <p className="text-xs text-gray-500">{t("search.warning")} Ces données proviennent de signalements d'utilisateurs et n'ont pas valeur de preuve judiciaire.</p>
+                        <p className="text-xs text-gray-500">{t("search.warning")} {t("search.legal")}</p>
                       </div>
                     </div>
 
@@ -253,30 +255,31 @@ export default function RechercherPage() {
 }
 
 function FoundResultAdvice({ count }: { count: number }) {
+  const { t } = useI18n();
   const urgent = count >= 3;
   const steps = [
     {
       num: "1",
-      title: "Ne répondez pas et ne payez pas",
-      text: "Toute demande d'argent, de code OTP, de recharge ou d'accès à vos comptes doit être refusée immédiatement.",
+      title: t("search.found.step1.title"),
+      text: t("search.found.step1.text"),
       color: "border-danger/30 bg-danger/5 text-danger",
     },
     {
       num: "2",
-      title: "Bloquez et sauvegardez les preuves",
-      text: "Bloquez le contact sur votre téléphone ou réseau social, puis faites des captures d'écran de tous les échanges avant de supprimer.",
+      title: t("search.found.step2.title"),
+      text: t("search.found.step2.text"),
       color: "border-amber-300 bg-amber-50 text-amber-700",
     },
     {
       num: "3",
-      title: "Signalez sur notre plateforme",
-      text: "Votre signalement protège d'autres personnes. Plus il y a de signalements, plus l'alerte est visible lors des recherches.",
+      title: t("search.found.step3.title"),
+      text: t("search.found.step3.text"),
       color: "border-primary/30 bg-primary/5 text-primary",
     },
     {
       num: "4",
-      title: "Portez plainte si vous avez perdu de l'argent",
-      text: "Rendez-vous à la Brigade de la Cybercriminalité (CRIET) ou à la BEFIC à Cotonou avec vos preuves.",
+      title: t("search.found.step4.title"),
+      text: t("search.found.step4.text"),
       color: "border-success/30 bg-success/5 text-success",
     },
   ];
@@ -289,11 +292,11 @@ function FoundResultAdvice({ count }: { count: number }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
           </svg>
           <p className="text-sm font-semibold text-danger">
-            {count} signalement{count > 1 ? "s" : ""} — Ce contact est fortement suspect. Extrême prudence.
+            {count} signalement{count > 1 ? "s" : ""} — {t("search.urgent")}
           </p>
         </div>
       )}
-      <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-4">Que faire maintenant ?</p>
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-4">{t("search.found.title")}</p>
       <div className="space-y-3">
         {steps.map((s) => (
           <motion.div
@@ -319,13 +322,13 @@ function FoundResultAdvice({ count }: { count: number }) {
           href="/signaler"
           className="flex-1 text-center bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors"
         >
-          Signaler ce contact
+          {t("search.found.cta.report")}
         </a>
         <a
           href="/conseils"
           className="flex-1 text-center border border-border hover:bg-gray-50 text-foreground font-medium py-3 rounded-xl text-sm transition-colors"
         >
-          Voir tous nos conseils
+          {t("search.found.cta.advice")}
         </a>
       </div>
     </div>
@@ -333,132 +336,139 @@ function FoundResultAdvice({ count }: { count: number }) {
 }
 
 const PHONE_RE = /^[+\d\s\-().]{7,}$/;
-
-const PHONE_TIPS = [
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-    title: "Absent ≠ sûr",
-    text: "Ce numéro n'est pas encore dans notre base, mais cela ne garantit pas qu'il est fiable. Les escrocs changent souvent de numéro.",
-    color: "text-amber-600 bg-amber-50 border-amber-100",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z" />
-      </svg>
-    ),
-    title: "Appel non sollicité",
-    text: "Si vous n'attendiez pas cet appel ou ce SMS, soyez très prudent. Ne rappelez jamais un numéro inconnu qui vous demande de l'argent ou des données.",
-    color: "text-primary bg-primary/5 border-primary/10",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-      </svg>
-    ),
-    title: "Ne jamais envoyer de l'argent",
-    text: "Mobile Money, virement, recharge — aucune organisation légitime ne vous demandera de payer pour recevoir un gain ou débloquer un colis.",
-    color: "text-danger bg-danger/5 border-danger/10",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
-    title: "Vérifiez l'identité",
-    text: "Un agent de banque, de douane ou de loterie ne contacte pas par téléphone de façon impromptue. Raccrochez et appelez directement l'institution officielle.",
-    color: "text-success bg-success/5 border-success/10",
-  },
-];
-
-const GENERAL_TIPS = [
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-    title: "Introuvable ne signifie pas sûr",
-    text: "Notre base grandit chaque jour avec les signalements des utilisateurs. L'absence de résultat n'est pas une garantie de confiance.",
-    color: "text-amber-600 bg-amber-50 border-amber-100",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-    title: "Vérifiez les informations",
-    text: "Avant de faire confiance à un inconnu ou de payer, cherchez des avis en ligne, demandez des références et vérifiez les coordonnées officielles.",
-    color: "text-primary bg-primary/5 border-primary/10",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-      </svg>
-    ),
-    title: "Gardez vos données personnelles",
-    text: "Ne communiquez jamais vos codes PIN, mots de passe ou numéros de carte à qui que ce soit, même un agent qui prétend être de votre banque.",
-    color: "text-danger bg-danger/5 border-danger/10",
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-      </svg>
-    ),
-    title: "Partagez l'information",
-    text: "Prévenez vos proches si vous suspectez une arnaque. Alerter votre entourage protège toute la communauté.",
-    color: "text-success bg-success/5 border-success/10",
-  },
-];
-
 const URL_RE_PANEL = /^(https?:\/\/)?([\w-]+\.)+[\w]{2,}(\/\S*)?$/i;
 
-const URL_TIPS = [
-  {
-    icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
-    title: "Absent ≠ sûr",
-    text: "Ce site n'est pas encore signalé chez nous, mais de nouveaux sites frauduleux apparaissent chaque jour. La prudence reste de mise.",
-    color: "text-amber-600 bg-amber-50 border-amber-100",
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>,
-    title: "Vérifiez le nom de domaine",
-    text: "Les escrocs copient des noms de marques connues : \"mtn-benin.ga\", \"moov-promo.net\". Comparez avec le site officiel et méfiez-vous des extensions inhabituelles (.ga, .cf, .ml, .tk).",
-    color: "text-danger bg-danger/5 border-danger/10",
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>,
-    title: "Vérifiez l'ancienneté du site",
-    text: "Un site créé il y a moins de 3 mois est suspect. Cherchez la date de création sur whois.domaintools.com avant de faire confiance.",
-    color: "text-primary bg-primary/5 border-primary/10",
-  },
-  {
-    icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>,
-    title: "Ne payez jamais avant de recevoir",
-    text: "Aucun site légitime ne demande de paiement complet par Mobile Money avant livraison. Privilégiez les plateformes avec protection acheteur.",
-    color: "text-success bg-success/5 border-success/10",
-  },
-];
-
 function NoResultPanel({ query }: { query: string }) {
+  const { t } = useI18n();
   const isUrl = URL_RE_PANEL.test(query.trim());
   const isPhone = !isUrl && PHONE_RE.test(query.trim());
+
+  const PHONE_TIPS = [
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      title: t("tip.phone.1.title"),
+      text: t("tip.phone.1.text"),
+      color: "text-amber-600 bg-amber-50 border-amber-100",
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z" />
+        </svg>
+      ),
+      title: t("tip.phone.2.title"),
+      text: t("tip.phone.2.text"),
+      color: "text-primary bg-primary/5 border-primary/10",
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      ),
+      title: t("tip.phone.3.title"),
+      text: t("tip.phone.3.text"),
+      color: "text-danger bg-danger/5 border-danger/10",
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      ),
+      title: t("tip.phone.4.title"),
+      text: t("tip.phone.4.text"),
+      color: "text-success bg-success/5 border-success/10",
+    },
+  ];
+
+  const URL_TIPS = [
+    {
+      icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+      title: t("tip.url.1.title"),
+      text: t("tip.url.1.text"),
+      color: "text-amber-600 bg-amber-50 border-amber-100",
+    },
+    {
+      icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>,
+      title: t("tip.url.2.title"),
+      text: t("tip.url.2.text"),
+      color: "text-danger bg-danger/5 border-danger/10",
+    },
+    {
+      icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>,
+      title: t("tip.url.3.title"),
+      text: t("tip.url.3.text"),
+      color: "text-primary bg-primary/5 border-primary/10",
+    },
+    {
+      icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>,
+      title: t("tip.url.4.title"),
+      text: t("tip.url.4.text"),
+      color: "text-success bg-success/5 border-success/10",
+    },
+  ];
+
+  const GENERAL_TIPS = [
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      title: t("tip.general.1.title"),
+      text: t("tip.general.1.text"),
+      color: "text-amber-600 bg-amber-50 border-amber-100",
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      title: t("tip.general.2.title"),
+      text: t("tip.general.2.text"),
+      color: "text-primary bg-primary/5 border-primary/10",
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      ),
+      title: t("tip.general.3.title"),
+      text: t("tip.general.3.text"),
+      color: "text-danger bg-danger/5 border-danger/10",
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+      ),
+      title: t("tip.general.4.title"),
+      text: t("tip.general.4.text"),
+      color: "text-success bg-success/5 border-success/10",
+    },
+  ];
+
   const tips = isUrl ? URL_TIPS : isPhone ? PHONE_TIPS : GENERAL_TIPS;
 
   const subtitle = isUrl
-    ? `Le site "${query}" n'a pas encore été signalé. Restez tout de même vigilant.`
+    ? t("search.noresult.url")
     : isPhone
-    ? `Le numéro "${query}" n'apparaît pas dans notre base. Restez tout de même vigilant.`
-    : `"${query}" n'apparaît pas dans notre base. Restez tout de même vigilant.`;
+    ? t("search.noresult.phone")
+    : t("search.noresult.general");
+
+  const adviceLabel = isUrl
+    ? t("search.noresult.url_advice")
+    : isPhone
+    ? t("search.noresult.phone_advice")
+    : t("search.noresult.general_advice");
 
   return (
     <div className="space-y-5">
@@ -469,14 +479,14 @@ function NoResultPanel({ query }: { query: string }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 className="text-lg font-semibold text-success mb-1">Aucun signalement trouvé</h3>
+        <h3 className="text-lg font-semibold text-success mb-1">{t("search.no_result")}</h3>
         <p className="text-sm text-success/70">{subtitle}</p>
       </div>
 
       {/* Advice section */}
       <div>
         <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-3 px-1">
-          {isUrl ? "Comment vérifier ce site ?" : isPhone ? "Que faire avec ce numéro ?" : "Conseils de vigilance"}
+          {adviceLabel}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {tips.map((tip, i) => (
@@ -503,13 +513,13 @@ function NoResultPanel({ query }: { query: string }) {
           href="/signaler"
           className="flex-1 text-center bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors"
         >
-          Signaler cette arnaque
+          {t("arnaques.cta.report")}
         </a>
         <a
           href="/conseils"
           className="flex-1 text-center border border-border hover:bg-gray-50 text-foreground font-medium py-3 rounded-xl text-sm transition-colors"
         >
-          Voir tous nos conseils
+          {t("search.found.cta.advice")}
         </a>
       </div>
     </div>

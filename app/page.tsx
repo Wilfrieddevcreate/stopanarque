@@ -168,6 +168,7 @@ function HeroSection() {
 
 /* ─── Stats bar ─── */
 function StatsBar() {
+  const { t } = useI18n();
   const [stats, setStats] = useState<{
     totalReports: number;
     confirmedReports: number;
@@ -185,22 +186,22 @@ function StatsBar() {
     {
       value: stats?.totalReports ?? 0,
       suffix: "+",
-      label: "Signalements reçus",
+      label: t("home.stat.reports"),
     },
     {
       value: stats?.confirmedReports ?? 0,
       suffix: "+",
-      label: "Arnaques confirmées",
+      label: t("home.stat.confirmed"),
     },
     {
       value: stats ? Math.floor(stats.totalSearches / 1000) : 0,
       suffix: stats && stats.totalSearches >= 1000 ? "k+" : "+",
-      label: "Recherches effectuées",
+      label: t("home.stat.searches"),
     },
     {
       value: 98,
       suffix: "%",
-      label: "Taux de satisfaction",
+      label: t("home.stat.satisfaction"),
     },
   ];
 
@@ -343,9 +344,9 @@ function WhyReport() {
 
             <div className="mt-8 space-y-4">
               {[
-                { value: "68%", text: "des Béninois ont déjà été contactés par un arnaqueur" },
-                { value: "500M", text: "FCFA de préjudice estimé par an" },
-                { value: "3 min", text: "suffisent pour déposer un signalement" },
+                { value: "68%", text: t("why.stat1") },
+                { value: "500M", text: t("why.stat2") },
+                { value: "3 min", text: t("why.stat3") },
               ].map((item, i) => (
                 <FadeInUp key={i} delay={i * 0.1}>
                   <div className="flex items-center gap-4 bg-white rounded-xl p-4 border border-border">
@@ -435,12 +436,12 @@ function WhyReport() {
 function ScamTypes() {
   const { t } = useI18n();
   const types = [
-    { icon: "📞", name: "Appel frauduleux", desc: "Faux conseillers, faux services publics" },
-    { icon: "📱", name: "SMS frauduleux", desc: "Faux Mobile Money, faux remboursements" },
-    { icon: "🎣", name: "Phishing", desc: "Faux sites web, vol d'identifiants" },
-    { icon: "🏦", name: "Arnaque bancaire", desc: "Faux conseillers bancaires" },
-    { icon: "💻", name: "Faux support tech", desc: "Faux techniciens, prise en main à distance" },
-    { icon: "👤", name: "Usurpation d'identité", desc: "Vol d'identité, faux agents" },
+    { icon: "📞", name: t("home.scam.1.name"), desc: t("home.scam.1.desc") },
+    { icon: "📱", name: t("home.scam.2.name"), desc: t("home.scam.2.desc") },
+    { icon: "🎣", name: t("home.scam.3.name"), desc: t("home.scam.3.desc") },
+    { icon: "🏦", name: t("home.scam.4.name"), desc: t("home.scam.4.desc") },
+    { icon: "💻", name: t("home.scam.5.name"), desc: t("home.scam.5.desc") },
+    { icon: "👤", name: t("home.scam.6.name"), desc: t("home.scam.6.desc") },
   ];
 
   return (
@@ -697,20 +698,20 @@ function FAQ() {
   const { t } = useI18n();
   const faqs = [
     {
-      q: "Est-ce que mon signalement est anonyme ?",
-      a: "Oui, absolument. Votre identité n'est jamais révélée publiquement. L'email est optionnel et sert uniquement à vous informer du suivi.",
+      q: t("faq.1.q"),
+      a: t("faq.1.a"),
     },
     {
-      q: "Que se passe-t-il après mon signalement ?",
-      a: "Votre signalement est analysé par nos équipes. Si l'arnaque est confirmée après recoupement, le numéro est ajouté à notre base de données et peut être consulté par tous.",
+      q: t("faq.2.q"),
+      a: t("faq.2.a"),
     },
     {
-      q: "Combien de temps prend le traitement ?",
-      a: "La plupart des signalements sont traités sous 48h. Les cas complexes nécessitant des vérifications supplémentaires peuvent prendre jusqu'à 7 jours.",
+      q: t("faq.3.q"),
+      a: t("faq.3.a"),
     },
     {
-      q: "Les résultats de recherche révèlent-ils des informations personnelles ?",
-      a: "Non, jamais. La recherche affiche uniquement le nombre de signalements et le niveau de risque. Aucun détail personnel n'est visible.",
+      q: t("faq.4.q"),
+      a: t("faq.4.a"),
     },
   ];
 

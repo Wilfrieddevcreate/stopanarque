@@ -31,7 +31,7 @@ const translations: Record<string, T4> = {
   // ── News / Actualités ──
   "news.label": { fr: "Restez informé", en: "Stay informed", fon: "Ðó ayi towe wu", yo: "Máa jẹ́ ìmọ̀" },
   "news.title": { fr: "Actualités", en: "News", fon: "Xó yɔyɔ", yo: "Ìròyìn" },
-  "news.subtitle": { fr: "Les dernières alertes, conseils et informations pour vous protéger des arnaques au Bénin.", en: "The latest alerts, tips and information to protect you from scams in Benin.", fon: "Wuntun, nǔkplɔ́nkplɔ̌n kpó xó yɔyɔ lɛ̌ bǐ bo na hɛn we ɖó gblègblé wu ɖò Benɛ̀.", yo: "Àwọn ìkìlọ̀, ìmọ̀ràn àti ìwífún tuntun láti dáàbòbò rẹ lọ́wọ́ jìbìtì ní Benin." },
+  "news.subtitle": { fr: "Alertes, conseils et infos pour vous protéger des arnaques au Bénin.", en: "Alerts, tips and info to protect you from scams in Benin.", fon: "Wuntun, nǔkplɔ́nkplɔ̌n kpó xó yɔyɔ lɛ̌ bǐ bo na hɛn we ɖó gblègblé wu ɖò Benɛ̀.", yo: "Àwọn ìkìlọ̀, ìmọ̀ràn àti ìwífún tuntun láti dáàbòbò rẹ lọ́wọ́ jìbìtì ní Benin." },
   "news.all": { fr: "Toutes", en: "All", fon: "Bǐ", yo: "Gbogbo" },
   "news.empty.title": { fr: "Aucun article disponible", en: "No articles available", fon: "Xó yɔyɔ ɖěbǔ ɖ'ayǐ ǎ", yo: "Kò sí nkan lati ka" },
   "news.empty.sub": { fr: "Revenez bientôt pour les dernières actualités.", en: "Check back soon for the latest news.", fon: "Wá tɛ̌n kpɛ̌vi bo na mɔ xó yɔyɔ lɛ̌.", yo: "Padà wá laipẹ́ fún ìròyìn tuntun." },
@@ -40,7 +40,7 @@ const translations: Record<string, T4> = {
   "news.back": { fr: "Retour aux actualités", en: "Back to news", fon: "Lɛ̌kɔ xó yɔyɔ lɛ̌ gɔ̌n", yo: "Padà sí ìròyìn" },
   "news.by": { fr: "Par", en: "By", fon: "Mɛ e wlán é", yo: "Láti ọ̀dọ̀" },
   "news.cta.text": { fr: "Vous avez été victime d'une arnaque ?", en: "Have you been scammed?", fon: "Gblègblé ko xò we wɛ̌ à?", yo: "Njẹ́ wọ́n jí ẹ lólè?" },
-  "news.cta.sub": { fr: "Signalez-la sur notre plateforme pour protéger les autres Béninois.", en: "Report it on our platform to protect other Beninese.", fon: "Ðó gbè dó tɛn mǐtɔn jí bo na hɛn Benɛ̀ví ɖěvo lɛ̌.", yo: "Ṣe ìròyìn rẹ̀ lórí pẹpẹ wa láti dáàbòbò àwọn ará Benin mìíràn." },
+  "news.cta.sub": { fr: "Signalez-la pour protéger les autres Béninois.", en: "Report it to protect other Beninese.", fon: "Ðó gbè dó tɛn mǐtɔn jí bo na hɛn Benɛ̀ví ɖěvo lɛ̌.", yo: "Ṣe ìròyìn rẹ̀ lórí pẹpẹ wa láti dáàbòbò àwọn ará Benin mìíràn." },
   "news.cat.alerte": { fr: "Alerte", en: "Alert", fon: "Wuntun", yo: "Ìkìlọ̀" },
   "news.cat.conseil": { fr: "Conseil", en: "Advice", fon: "Nǔkplɔ́n", yo: "Ìmọ̀ràn" },
   "news.cat.actualite": { fr: "Actualité", en: "News", fon: "Xó yɔyɔ", yo: "Ìròyìn" },
@@ -52,8 +52,8 @@ const translations: Record<string, T4> = {
   "hero.title2": { fr: "contre les", en: "against", fon: "ɖó", yo: "lòdì sí" },
   "hero.title3": { fr: "arnaques", en: "scams", fon: "gblègblé lɛ̌", yo: "jìbìtì" },
   "hero.subtitle": {
-    fr: "Signalez les numéros frauduleux et vérifiez si un numéro a déjà été signalé. Ensemble, luttons contre les escroqueries au Bénin.",
-    en: "Report fraudulent numbers and check if a number has already been reported. Together, let's fight scams in Benin.",
+    fr: "Signalez un numéro suspect et vérifiez si d'autres l'ont déjà signalé.",
+    en: "Report a suspicious number and check if others have already flagged it.",
     fon: "Ðó gbè dó wěmánúmɛ lɛ̌ wu bó kpɔ́n ɖɔ è ko ɖó gbè d'é wu wɛ̌ à. Mi ni ɖó kpɔ́ bo fun ahwan gblègblé lɛ̌ ɖò Benɛ̀.",
     yo: "Ṣe ìròyìn àwọn nọ́mbà arékerèké kí o sì yẹ̀ wò bóyá nọ́mbà kan ti jẹ́ ìròyìn tẹ́lẹ̀. Ẹ jẹ́ ká jagun jìbìtì ní Benin.",
   },
@@ -63,13 +63,13 @@ const translations: Record<string, T4> = {
   // ── How it works ──
   "how.label": { fr: "Simple et rapide", en: "Simple and fast", fon: "Bɔkun bó yá", yo: "Ó rọrùn ó sì yára" },
   "how.title": { fr: "Comment ça fonctionne ?", en: "How does it work?", fon: "Nɛ̌ é ka nɔ w'azɔ̌ gbɔn?", yo: "Báwo ni ó ṣe ń ṣiṣẹ́?" },
-  "how.subtitle": { fr: "Un processus transparent en 3 étapes pour vous protéger", en: "A transparent 3-step process to protect you", fon: "Alixo 3 bo na hɛn we", yo: "Ìgbésẹ̀ 3 láti dáàbòbò rẹ" },
+  "how.subtitle": { fr: "3 étapes simples pour vous protéger", en: "3 simple steps to protect you", fon: "Alixo 3 bo na hɛn we", yo: "Ìgbésẹ̀ 3 láti dáàbòbò rẹ" },
   "how.step1.title": { fr: "Signalez", en: "Report", fon: "Ðó gbè", yo: "Ròyìn" },
-  "how.step1.desc": { fr: "Remplissez notre formulaire sécurisé avec les détails de l'arnaque. Le processus est rapide et 100% confidentiel.", en: "Fill in our secure form with the scam details. The process is fast and 100% confidential.", fon: "Kɛ́n fɔ́mù mǐtɔn mɛ kpó gblègblé ɔ sín tínmɛ kpó. É yá bó nɔ nǔhɛnmɛ.", yo: "Kún fọ́ọ̀mù wa kún pẹ̀lú àlàyé jìbìtì náà. Ó yára, ó sì jẹ́ ìkọ̀kọ̀." },
+  "how.step1.desc": { fr: "Remplissez le formulaire en 2 minutes. C'est rapide et 100% confidentiel.", en: "Fill out the form in 2 minutes. Fast and 100% confidential.", fon: "Kɛ́n fɔ́mù mǐtɔn mɛ kpó gblègblé ɔ sín tínmɛ kpó. É yá bó nɔ nǔhɛnmɛ.", yo: "Kún fọ́ọ̀mù wa kún pẹ̀lú àlàyé jìbìtì náà. Ó yára, ó sì jẹ́ ìkọ̀kọ̀." },
   "how.step2.title": { fr: "Vérification", en: "Verification", fon: "Kpɔ́ndómɛ", yo: "Ìṣàyẹ̀wò" },
-  "how.step2.desc": { fr: "Nos équipes d'experts analysent chaque signalement, recoupent les données et vérifient l'authenticité.", en: "Our expert teams analyze each report, cross-reference data and verify authenticity.", fon: "Mɛ̌si mǐtɔn lɛ̌ nɔ kpɔ́n gbè ɖokpó ɖokpó.", yo: "Àwọn ògbógi wa ń ṣàyẹ̀wò ìròyìn kọ̀ọ̀kan." },
+  "how.step2.desc": { fr: "Notre équipe vérifie chaque signalement.", en: "Our team reviews every report.", fon: "Mɛ̌si mǐtɔn lɛ̌ nɔ kpɔ́n gbè ɖokpó ɖokpó.", yo: "Àwọn ògbógi wa ń ṣàyẹ̀wò ìròyìn kọ̀ọ̀kan." },
   "how.step3.title": { fr: "Protection", en: "Protection", fon: "Hɛnhɛn", yo: "Ààbò" },
-  "how.step3.desc": { fr: "Les numéros confirmés intègrent notre base. Vous et les autres utilisateurs êtes protégés.", en: "Confirmed numbers join our database. You and other users are protected.", fon: "Wěmánúmɛ e è ɖè wě lɛ̌ nɔ byɔ́ dátabási mǐtɔn mɛ.", yo: "Àwọn nọ́mbà tí a fọwọ́sí ń wọ inú àkójọ wa." },
+  "how.step3.desc": { fr: "Les numéros validés rejoignent notre base. Tout le monde est protégé.", en: "Confirmed numbers join our database. Everyone is protected.", fon: "Wěmánúmɛ e è ɖè wě lɛ̌ nɔ byɔ́ dátabási mǐtɔn mɛ.", yo: "Àwọn nọ́mbà tí a fọwọ́sí ń wọ inú àkójọ wa." },
 
   // ── Why report ──
   "why.label": { fr: "Pourquoi signaler ?", en: "Why report?", fon: "Aniwu è ka na ɖó gbè?", yo: "Kí ló dé tí a fi ṣe ìròyìn?" },
@@ -77,8 +77,8 @@ const translations: Record<string, T4> = {
   "why.title2": { fr: "protège des milliers", en: "protects thousands", fon: "nɔ hɛn afatɔ́n mɔ̌kpan", yo: "ń dáàbòbò ẹgbẹẹgbẹ̀rún" },
   "why.title3": { fr: "de Béninois", en: "of Beninese", fon: "Benɛ̀ví lɛ̌", yo: "àwọn ará Benin" },
   "why.text": {
-    fr: "Les arnaques téléphoniques touchent des millions de personnes chaque année. En signalant un numéro suspect, vous contribuez à une base de données collective qui protège toute la communauté.",
-    en: "Phone scams affect millions every year. By reporting a suspicious number, you contribute to a collective database that protects the entire community.",
+    fr: "Chaque signalement alimente notre base et protège d'autres Béninois.",
+    en: "Each report feeds our database and protects other Beninese.",
     fon: "Gblègblé lɛ̌ nɔ xò mɛ livi mɔ̌kpan xwè ɖokpó ɖokpó mɛ. Nú a ɖó gbè dó wěmánúmɛ ɖé wu ɔ, a ɖò alɔ dó wɛ̌ bó na hɛn gbɛtɔ́ lɛ̌ bǐ.",
     yo: "Jìbìtì fóònù ń kan àwọn mílíọ̀nù ẹ̀dá lọ́dọọdún. Bí o bá ṣe ìròyìn nọ́mbà afurasi, o ń ṣe àfikún sí àkójọ tó ń dáàbòbò gbogbo àwùjọ.",
   },
@@ -97,7 +97,7 @@ const translations: Record<string, T4> = {
   "trust.1.title": { fr: "Données chiffrées", en: "Encrypted data", fon: "Dátá e è hɛn é", yo: "Dátà tí a pa mọ́" },
   "trust.1.desc": { fr: "Toutes vos données sont protégées par un chiffrement de bout en bout.", en: "All your data is protected with end-to-end encryption.", fon: "Dátá towe lɛ̌ bǐ ɔ, è hɛn yě.", yo: "Gbogbo dátà rẹ ni a dáàbòbò." },
   "trust.2.title": { fr: "Anonymat total", en: "Total anonymity", fon: "Nǔhɛnmɛ bǐ mlɛ́mlɛ́", yo: "Aṣírí pátápátá" },
-  "trust.2.desc": { fr: "Aucune information personnelle n'est jamais rendue publique ni partagée.", en: "No personal information is ever made public or shared.", fon: "È nɔ ɖè nyǐkɔ́ towe tɔ́n gbeɖé ǎ.", yo: "A kò fi ìwífún àdáni kankan hàn rí." },
+  "trust.2.desc": { fr: "Vos informations personnelles restent privées.", en: "Your personal details stay private.", fon: "È nɔ ɖè nyǐkɔ́ towe tɔ́n gbeɖé ǎ.", yo: "A kò fi ìwífún àdáni kankan hàn rí." },
   "trust.3.title": { fr: "Cadre légal", en: "Legal framework", fon: "Sɛ́n ɔ", yo: "Òfin" },
   "trust.3.desc": { fr: "Seules les autorités compétentes accèdent aux détails des signalements.", en: "Only competent authorities access report details.", fon: "Acɛkpikpa lɛ̌ kɛ́ɖɛ́ wɛ̀ nɔ kpɔ́n gbè lɛ̌ sín tínmɛ.", yo: "Àwọn aláṣẹ tó yẹ nìkan ló ní àǹfààní sí àlàyé ìròyìn." },
 
@@ -107,7 +107,7 @@ const translations: Record<string, T4> = {
 
   // ── CTA ──
   "cta.title": { fr: "Vous avez été victime d'une arnaque ?", en: "Have you been scammed?", fon: "Gblègblé xò we wɛ̌ à?", yo: "Ṣé wọ́n ti jí ẹ lólè?" },
-  "cta.text": { fr: "N'attendez pas. Votre signalement peut empêcher d'autres Béninois de tomber dans le piège.", en: "Don't wait. Your report can prevent other Beninese from falling into the trap.", fon: "Ma nɔ te ó. Gbè towe sixú hɛn Benɛ̀ví ɖěvo lɛ̌.", yo: "Má dúró. Ìròyìn rẹ lè da àwọn ará Benin mìíràn là." },
+  "cta.text": { fr: "N'attendez pas. Votre signalement peut protéger d'autres Béninois.", en: "Don't wait. Your report can protect other Beninese.", fon: "Ma nɔ te ó. Gbè towe sixú hɛn Benɛ̀ví ɖěvo lɛ̌.", yo: "Má dúró. Ìròyìn rẹ lè da àwọn ará Benin mìíràn là." },
   "cta.button": { fr: "Signaler maintenant", en: "Report now", fon: "Ðó gbè dìn", yo: "Ṣe ìròyìn báyìí" },
   "cta.link": { fr: "ou vérifier un numéro", en: "or check a number", fon: "alǒ kpɔ́n wěmánúmɛ ɖé", yo: "tàbí ṣàyẹ̀wò nọ́mbà kan" },
 
@@ -124,7 +124,7 @@ const translations: Record<string, T4> = {
   "search.platforms": { fr: "Plateformes utilisées", en: "Platforms used", fon: "Tɛn lɛ̌", yo: "Àwọn pẹpẹ" },
   "search.warning": { fr: "Soyez vigilant si vous recevez un appel ou un SMS de ce numéro.", en: "Be careful if you receive a call or SMS from this number.", fon: "Cɔ́ hwiɖée nú a sè wěmánúmɛ élɔ́ sín gbè.", yo: "Ṣọ́ra bí o bá gba ìpè tàbí SMS láti nọ́mbà yìí." },
   "search.no_result": { fr: "Aucun signalement trouvé", en: "No reports found", fon: "È ma mɔ nǔɖé ǎ", yo: "A kò rí ìròyìn kankan" },
-  "search.no_result.text": { fr: "Ce numéro n'a pas été signalé dans notre base de données. Restez toutefois vigilant.", en: "This number has not been reported in our database. Stay vigilant.", fon: "È ma ɖó gbè dó wěmánúmɛ élɔ́ wu ǎ. Amɔ̌, cɔ́ hwiɖée.", yo: "A kò tíì ròyìn nọ́mbà yìí. Ṣùgbọ́n, ṣọ́ra." },
+  "search.no_result.text": { fr: "Ce numéro n'est pas dans notre base. Restez vigilant.", en: "This number isn't in our database. Stay alert.", fon: "È ma ɖó gbè dó wěmánúmɛ élɔ́ wu ǎ. Amɔ̌, cɔ́ hwiɖée.", yo: "A kò tíì ròyìn nọ́mbà yìí. Ṣùgbọ́n, ṣọ́ra." },
 
   // ── Report form ──
   "report.title": { fr: "Signaler une arnaque", en: "Report a scam", fon: "Ðó gbè dó gblègblé ɖé wu", yo: "Ròyìn jìbìtì kan" },
@@ -151,7 +151,7 @@ const translations: Record<string, T4> = {
 
   // ── Tracking ──
   "tracking.title": { fr: "Suivre mon signalement", en: "Track my report", fon: "Xwedó gbè ce", yo: "Tọpasẹ́ ìròyìn mi" },
-  "tracking.subtitle": { fr: "Entrez le code de suivi reçu lors de votre signalement.", en: "Enter the tracking code received when you reported.", fon: "Zé kóɖú e a mɔ hwenu e a ɖó gbè é dó.", yo: "Tẹ koodu tí o gba nígbà tí o ṣe ìròyìn." },
+  "tracking.subtitle": { fr: "Entrez le code reçu lors de votre signalement.", en: "Enter the code you received after reporting.", fon: "Zé kóɖú e a mɔ hwenu e a ɖó gbè é dó.", yo: "Tẹ koodu tí o gba nígbà tí o ṣe ìròyìn." },
   "tracking.button": { fr: "Vérifier le statut", en: "Check status", fon: "Kpɔ́n ninɔmɛ", yo: "Ṣàyẹ̀wò ipò" },
   "tracking.code": { fr: "Code de suivi", en: "Tracking code", fon: "Kóɖú xwedó tɔn", yo: "Koodu ìtọpasẹ́" },
   "tracking.reported_number": { fr: "Numéro signalé", en: "Reported number", fon: "Wěmánúmɛ", yo: "Nọ́mbà" },
@@ -164,12 +164,12 @@ const translations: Record<string, T4> = {
   "tracking.step.confirmed": { fr: "Confirmé", en: "Confirmed", fon: "È ɖè wě", yo: "A fọwọ́sí" },
   "tracking.step.rejected": { fr: "Rejeté", en: "Rejected", fon: "È gbɛ́", yo: "A kọ̀" },
   "tracking.not_found": { fr: "Code introuvable", en: "Code not found", fon: "È ma mɔ kóɖú ɔ ǎ", yo: "A kò rí koodu náà" },
-  "tracking.not_found.text": { fr: "Vérifiez votre code de suivi et réessayez. Il est au format SA-2026-XXXXXX.", en: "Check your tracking code and try again. Format: SA-2026-XXXXXX.", fon: "Kpɔ́n kóɖú towe bo lɛ́ tɛ̀nkpɔn. SA-2026-XXXXXX.", yo: "Ṣàyẹ̀wò koodu rẹ kí o sì tún gbìyànjú. SA-2026-XXXXXX." },
+  "tracking.not_found.text": { fr: "Vérifiez votre code et réessayez. Format : SA-2026-XXXXXX.", en: "Check your code and try again. Format: SA-2026-XXXXXX.", fon: "Kpɔ́n kóɖú towe bo lɛ́ tɛ̀nkpɔn. SA-2026-XXXXXX.", yo: "Ṣàyẹ̀wò koodu rẹ kí o sì tún gbìyànjú. SA-2026-XXXXXX." },
 
   // ── Conseils ──
   "advice.label": { fr: "Guide pratique", en: "Practical guide", fon: "Alɔdó", yo: "Ìtọ́sọ́nà" },
   "advice.title": { fr: "Conseils & Sécurité", en: "Advice & Security", fon: "Wěmá kpó Hɛnhɛn kpó", yo: "Ìmọ̀ràn àti Ààbò" },
-  "advice.subtitle": { fr: "Tout ce que vous devez savoir pour vous protéger des arnaques au Bénin et réagir efficacement si vous en êtes victime.", en: "Everything you need to know to protect yourself from scams in Benin and react effectively if you are a victim.", fon: "Nǔ e a ɖó na tuun bo na hɛn hwiɖée sín gblègblé lɛ̌ sí ɖò Benɛ̀ é.", yo: "Ohun gbogbo tí o nílò láti mọ̀ láti dáàbòbò ara rẹ lọ́wọ́ jìbìtì ní Benin." },
+  "advice.subtitle": { fr: "Tout pour vous protéger des arnaques au Bénin et savoir quoi faire si vous êtes victime.", en: "Everything to protect yourself from scams in Benin and know what to do if you're a victim.", fon: "Nǔ e a ɖó na tuun bo na hɛn hwiɖée sín gblègblé lɛ̌ sí ɖò Benɛ̀ é.", yo: "Ohun gbogbo tí o nílò láti mọ̀ láti dáàbòbò ara rẹ lọ́wọ́ jìbìtì ní Benin." },
   "advice.tab.prevent": { fr: "Prévenir", en: "Prevent", fon: "Dǎ ji", yo: "Dènà" },
   "advice.tab.recognize": { fr: "Reconnaître", en: "Recognize", fon: "Dǒ nukún", yo: "Mọ̀" },
   "advice.tab.react": { fr: "Réagir", en: "React", fon: "Wà nǔ", yo: "Dahùn" },
@@ -183,7 +183,7 @@ const translations: Record<string, T4> = {
   "footer.tagline": { fr: "Plateforme béninoise de signalement d'arnaques. Protégez-vous et protégez les autres.", en: "Beninese platform for reporting scams. Protect yourself and others.", fon: "Tɛn Benɛ̀ tɔn bo na ɖó gbè dó gblègblé lɛ̌ wu. Hɛn hwiɖée kpó mɛ ɖěvo lɛ̌ kpó.", yo: "Pẹpẹ ilẹ̀ Benin fún ìròyìn jìbìtì. Dáàbòbò ara rẹ àti àwọn ẹlòmíràn." },
   "footer.nav": { fr: "Navigation", en: "Navigation", fon: "Tɛn lɛ̌", yo: "Àtọ̀nà" },
   "footer.privacy.title": { fr: "Confidentialité", en: "Privacy", fon: "Nǔhɛnmɛ", yo: "Ìkọ̀kọ̀" },
-  "footer.privacy.text": { fr: "Vos signalements sont traités de manière confidentielle. Aucune information personnelle n'est rendue publique.", en: "Your reports are handled confidentially. No personal information is made public.", fon: "Gbè e a ɖó lɛ̌ nɔ nɔ nǔhɛnmɛ. È nɔ ɖè nyǐkɔ́ towe tɔ́n ǎ.", yo: "Àwọn ìròyìn rẹ ni wọ́n ń tọ́jú ní ìkọ̀kọ̀. Kò sí ìwífún àdáni tí wọ́n fi hàn." },
+  "footer.privacy.text": { fr: "Vos signalements restent confidentiels. Aucune info personnelle n'est publiée.", en: "Your reports stay confidential. No personal info is published.", fon: "Gbè e a ɖó lɛ̌ nɔ nɔ nǔhɛnmɛ. È nɔ ɖè nyǐkɔ́ towe tɔ́n ǎ.", yo: "Àwọn ìròyìn rẹ ni wọ́n ń tọ́jú ní ìkọ̀kọ̀. Kò sí ìwífún àdáni tí wọ́n fi hàn." },
   "footer.copyright": { fr: "Tous droits réservés.", en: "All rights reserved.", fon: "Acɛ bǐ wɛ̀ è hɛn.", yo: "Gbogbo ẹ̀tọ́ ni a pa mọ́." },
   "footer.legal": { fr: "Légal", en: "Legal", fon: "Susu tɔn", yo: "Òfin" },
   "footer.mentions": { fr: "Mentions légales", en: "Legal notice", fon: "Xó lɛ́ɖɔwɛ̀", yo: "Ìkìlọ̀ òfin" },
@@ -229,8 +229,8 @@ const translations: Record<string, T4> = {
   "arnaques.label": { fr: "Guide des arnaques", en: "Scam guide", fon: "Gblègblé sín wěmá", yo: "Ìtọ́sọ́nà jìbìtì" },
   "arnaques.title": { fr: "Reconnaître une arnaque", en: "Recognize a scam", fon: "Tuùn gblègblé ɖé", yo: "Mọ jìbìtì kan" },
   "arnaques.subtitle": {
-    fr: "Vous avez été victime mais vous ne savez pas de quel type il s'agit ? Choisissez la situation qui vous ressemble le plus.",
-    en: "Were you a victim but unsure of the type? Choose the situation that best matches yours.",
+    fr: "Victime mais vous ne savez pas quel type ? Choisissez la situation qui vous ressemble.",
+    en: "Were you a victim but unsure of the type? Pick the situation that matches yours.",
     fon: "Gblègblé ko xò we bó ma tuùn alɔkpa e nyí é ǎ? Sɔ́ nùɖiɖɛ e jɛhun we é hugǎn ɔ ɖé.",
     yo: "Ṣé jìbìtì ti lu ọ tí o kò mọ irú rẹ? Yan ipò tó bá tirẹ mú jù.",
   },
@@ -241,12 +241,167 @@ const translations: Record<string, T4> = {
   "arnaques.cta.check": { fr: "Vérifier un numéro", en: "Check a number", fon: "Kpɔ́n wěmánúmɛ ɖé", yo: "Ṣàyẹ̀wò nọ́mbà kan" },
   "arnaques.victim.title": { fr: "Vous avez été victime ?", en: "Were you a victim?", fon: "Gblègblé ko xò we wɛ̌ à?", yo: "Ṣé wọ́n ti jí ẹ lólè?" },
   "arnaques.victim.text": {
-    fr: "Signalez l'arnaque maintenant. Chaque signalement aide à protéger d'autres personnes au Bénin.",
-    en: "Report the scam now. Each report helps protect other people in Benin.",
+    fr: "Signalez maintenant pour protéger d'autres Béninois.",
+    en: "Report now to protect other people in Benin.",
     fon: "Ðó gbè dó gblègblé ɔ dìn. Gbè ɖokpó ɖokpó nɔ hɛn Benɛ̀ví ɖěvo lɛ̌.",
     yo: "Ṣe ìròyìn jìbìtì náà báyìí. Ìròyìn kọ̀ọ̀kan ń dáàbòbò àwọn ará Benin mìíràn.",
   },
   "arnaques.victim.button": { fr: "Faire un signalement", en: "File a report", fon: "Ðó gbè ɖé", yo: "Fi ìròyìn sílẹ̀" },
+
+  // ── Contact ──
+  "contact.subtitle": { fr: "Une question ? Notre équipe vous répond sous 48h.", en: "A question? Our team replies within 48h.", fon: "Nùkanbyɔ́ ɖé wɛ̌ à? Mɛ̌si mǐtɔn na fó xó towe ɖò hwenu wɛ̌ mɛ.", yo: "Ìbéèrè? Àwọn ògbógi wa máa ń dáhùn ní wákàtí 48." },
+  "contact.reason.tracking": { fr: "Question sur un signalement", en: "Question about a report", fon: "Nùkanbyɔ́ dó gbè ɖé wu", yo: "Ìbéèrè nípa ìròyìn kan" },
+  "contact.reason.tech": { fr: "Problème technique", en: "Technical issue", fon: "Nǔ nyanya e jɛ tɛn ɔ jí", yo: "Ìṣòro ìmọ̀ ẹ̀rọ" },
+  "contact.reason.press": { fr: "Demande presse / partenariat", en: "Press / partnership inquiry", fon: "Nùkanbyɔ́ nú gazɛ̀ti alǒ kpɔ́ndó", yo: "Ìbéèrè ìròhìn / àjọṣepọ̀" },
+  "contact.reason.suggestion": { fr: "Demande de suppression de données", en: "Data deletion request", fon: "Wěmá e è ɖɔ na ɖè dátá towe tɔ́n", yo: "Ìbéèrè píparẹ́ dátà" },
+  "contact.reason.other": { fr: "Autre", en: "Other", fon: "Nǔ ɖěvo", yo: "Èlòmíràn" },
+  "contact.field.subject": { fr: "Sujet", en: "Subject", fon: "Tínmɛ", yo: "Kókó ọ̀rọ̀" },
+  "contact.field.name": { fr: "Votre nom", en: "Your name", fon: "Nyǐkɔ́ towe", yo: "Orúkọ rẹ" },
+  "contact.field.email": { fr: "Votre email", en: "Your email", fon: "Email towe", yo: "Ìméèlì rẹ" },
+  "contact.field.message": { fr: "Message", en: "Message", fon: "Xó", yo: "Ìsọ̀rọ̀" },
+  "contact.submit": { fr: "Envoyer le message", en: "Send message", fon: "Sɛ́ xó ɔ dó", yo: "Fi ìsọ̀rọ̀ ránṣẹ́" },
+  "contact.success.title": { fr: "Email prêt !", en: "Email ready!", fon: "Email ɔ ɖò ɖu wɛ̌ !", yo: "Ìméèlì ti ṣetán !" },
+  "contact.success.text": { fr: "Votre email est prêt. Vérifiez votre client de messagerie et envoyez-le.", en: "Your email is ready. Check your mail client and send it.", fon: "Email towe ɖò ɖu wɛ̌. Kpɔ́n email towe mɛ bo sɛ́ é dó.", yo: "Ìméèlì rẹ ti ṣetán. Ṣàyẹ̀wò apoti ìméèlì rẹ kí o sì fi ránṣẹ́." },
+  "contact.success.another": { fr: "Envoyer un autre message", en: "Send another message", fon: "Sɛ́ xó ɖěvo dó", yo: "Fi ìsọ̀rọ̀ mìíràn ránṣẹ́" },
+  "contact.info.delay.title": { fr: "Délai de réponse", en: "Response time", fon: "Hwenu e è na fó xó ɔ", yo: "Àkókò ìdáhùn" },
+  "contact.info.delay.value": { fr: "Sous 48 h ouvrées", en: "Within 48 business hours", fon: "Azǎn azɔ̌xwé 2 mɛ", yo: "Láàárín wákàtí 48 iṣẹ́" },
+  "contact.info.lang.title": { fr: "Langue", en: "Language", fon: "Gbè", yo: "Èdè" },
+  "contact.info.lang.value": { fr: "Français, English", en: "French, English", fon: "Fɛlɛnsí, Anglɛ", yo: "Faransé, Gẹ̀ẹ́sì" },
+  "contact.links.title": { fr: "Liens utiles", en: "Useful links", fon: "Ali ɖagbe lɛ̌", yo: "Àwọn ìjápọ̀ tó wúlò" },
+
+  // ── Error / Loading ──
+  "error.title": { fr: "Une erreur est survenue", en: "An error occurred", fon: "Blɔ̌ ɖé jɛ", yo: "Àṣìṣe kan ṣẹlẹ̀" },
+  "error.text": { fr: "Quelque chose s'est mal passé. Réessayez ou revenez à l'accueil.", en: "Something went wrong. Try again or go back home.", fon: "Nǔ ɖé nyanya jɛ. Lɛ́ tɛ̌nkpɔn alǒ lɛ̌kɔ xwégbé.", yo: "Nkan kan ṣe àṣìṣe. Tún gbìyànjú tàbí padà sí ilé." },
+  "error.retry": { fr: "Réessayer", en: "Try again", fon: "Lɛ́ tɛ̌nkpɔn", yo: "Tún gbìyànjú" },
+  "error.home": { fr: "Retour à l'accueil", en: "Back to home", fon: "Lɛ̌kɔ xwégbé", yo: "Padà sí ilé" },
+  "loading.text": { fr: "Chargement…", en: "Loading…", fon: "Ðò hɛn wɛ̌…", yo: "Ń gbẹ̀rù…" },
+
+  // ── Search chips and labels ──
+  "search.chip.phone": { fr: "Numéro", en: "Number", fon: "Wěmánúmɛ", yo: "Nọ́mbà" },
+  "search.chip.url": { fr: "Site web", en: "Website", fon: "Tɛn kpé lɛ̌ jí", yo: "Ojú-ìwé" },
+  "search.chip.name": { fr: "Nom", en: "Name", fon: "Nyǐkɔ́", yo: "Orúkọ" },
+  "search.input_hint": { fr: "Numéro, site web, nom du suspect", en: "Number, website, suspect name", fon: "Wěmánúmɛ, tɛn, nyǐkɔ́ mɛ e è ɖò biba wɛ̌ é", yo: "Nọ́mbà, ojú-ìwé, orúkọ afurasi" },
+  "search.unverified": { fr: "Signalements non vérifiés", en: "Unverified reports", fon: "Gbè e è ma kpɔ́n lɛ̌ ǎ", yo: "Àwọn ìròyìn tí a kò ṣàyẹ̀wò" },
+  "search.legal": { fr: "Données issues de signalements citoyens, sans valeur juridique.", en: "Data from citizen reports, with no legal value.", fon: "Dátá e gbɛtɔ́ lɛ̌ ɖó gbè d'é wu ɖè. È nɔ lɛ̌n gaan sɛ́n mɛ ǎ.", yo: "Dátà láti ìròyìn àwọn ọmọ ìlú, láìsí iye ìdájọ́ òfin." },
+  "search.urls_label": { fr: "Sites signalés", en: "Reported sites", fon: "Tɛn e è ɖó gbè d'é wu lɛ̌", yo: "Àwọn ojú-ìwé tí a ròyìn" },
+  "search.no_visit": { fr: "Ne pas visiter", en: "Do not visit", fon: "Ma yì tɛn élɔ́ ǎ", yo: "Má ṣàbẹ̀wò" },
+  "search.urgent": { fr: "Contact fortement suspect. Soyez très prudent.", en: "Highly suspicious contact. Be very careful.", fon: "Mɛ élɔ́ nyí gblègblétɔ́ hugǎn. Cɔ́ hwiɖée númɛ.", yo: "Ọ̀nà ìbánisọ̀rọ̀ arékerèké gan-an. Ṣọ́ra púpọ̀." },
+
+  // ── Search — no-result messages ──
+  "search.noresult.url": { fr: "Ce site n'est pas signalé. Restez vigilant.", en: "This site hasn't been reported. Stay alert.", fon: "Tɛn élɔ́ ɔ, è ma ɖó gbè d'é wu ǎ. Cɔ́ hwiɖée.", yo: "A kò tíì ròyìn ojú-ìwé yìí. Ṣọ́ra." },
+  "search.noresult.phone": { fr: "Ce numéro n'est pas dans notre base. Restez vigilant.", en: "This number isn't in our database. Stay alert.", fon: "Wěmánúmɛ élɔ́ ɔ, è ma ɖó gbè d'é wu ǎ. Cɔ́ hwiɖée.", yo: "A kò rí nọ́mbà yìí nínú àkójọ wa. Ṣọ́ra." },
+  "search.noresult.general": { fr: "Aucun résultat pour cette recherche. Restez vigilant.", en: "No results for this search. Stay alert.", fon: "È ma mɔ nǔɖé dó nùkanbyɔ́ élɔ́ wu ǎ. Cɔ́ hwiɖée.", yo: "A kò rí ohunkóhun fún ìwádìí yìí. Ṣọ́ra." },
+  "search.noresult.url_advice": { fr: "Comment vérifier ce site ?", en: "How to check this site?", fon: "Nɛ̌ è ka na kpɔ́n tɛn élɔ́ gbɔn?", yo: "Bí a ṣe lè ṣàyẹ̀wò ojú-ìwé yìí" },
+  "search.noresult.phone_advice": { fr: "Que faire avec ce numéro ?", en: "What to do with this number?", fon: "Nɛ̌ è ka na wà kpó wěmánúmɛ élɔ́ kpó gbɔn?", yo: "Kí ni a lè ṣe pẹ̀lú nọ́mbà yìí?" },
+  "search.noresult.general_advice": { fr: "Conseils de vigilance", en: "Vigilance advice", fon: "Nǔkplɔ́nkplɔ̌n dó cɔ́cɔ́ wu", yo: "Ìmọ̀ràn ìjágboyín" },
+
+  // ── Search — FoundResultAdvice ──
+  "search.found.urgent": { fr: "Contact très suspect. Soyez prudent.", en: "Very suspicious contact. Be careful.", fon: "Mɛ élɔ́ nyí gblègblétɔ́ tawun. Cɔ́ hwiɖée.", yo: "Ọ̀nà ìbánisọ̀rọ̀ afurasi gan-an. Ṣọ́ra." },
+  "search.found.title": { fr: "Que faire maintenant ?", en: "What to do now?", fon: "Nɛ̌ è ka na wà gbɔn?", yo: "Kí ni o lè ṣe báyìí?" },
+  "search.found.subtitle": { fr: "Ce contact a déjà été signalé. Voici comment réagir.", en: "This contact has been reported. Here's how to react.", fon: "Mɛ élɔ́ ko ɖó gbè d'é wu wɛ̌. Kpɔ́n nɛ̌ è ka na wà gbɔn.", yo: "Ọ̀nà ìbánisọ̀rọ̀ yìí ti jẹ́ ìròyìn tẹ́lẹ̀. Ìhà bí a ṣe lè dáhùn." },
+  "search.found.step1.title": { fr: "Ne répondez pas, ne payez pas", en: "Don't respond, don't pay", fon: "Ma fó xó ɔ, ma hun akwɛ́ ǎ", yo: "Má dáhùn, má san owó" },
+  "search.found.step1.text": { fr: "Refusez toute demande d'argent, de code OTP ou d'accès à vos comptes.", en: "Refuse any request for money, OTP codes or access to your accounts.", fon: "Gbɛ́ akwɛ́ byɔ́byɔ́, kóɖú OTP, alǒ kɔ́ntì towe sín byɔ́byɔ́.", yo: "Kọ gbogbo ìbéèrè owó, koodu OTP, tàbí ẹnu ìwọlé àkáǹtì rẹ." },
+  "search.found.step2.title": { fr: "Bloquez et sauvegardez les preuves", en: "Block and save the evidence", fon: "Sɔ́n mɛ ɔ bo hɛn kúnnuɖetɔ́n lɛ̌ nǔhɛnmɛ mɛ", yo: "Dínà wọ́n kí o sì tọ́jú ẹ̀rí" },
+  "search.found.step2.text": { fr: "Bloquez le contact et faites des captures d'écran avant de supprimer.", en: "Block the contact and take screenshots before deleting.", fon: "Sɔ́n mɛ ɔ bo kpé fɔtò lɛ̌ dó nukɔn nú è na ɖè.", yo: "Dínà ọ̀nà ìbánisọ̀rọ̀ náà kí o sì ya àwòrán ìfihàn ṣáájú píparẹ́." },
+  "search.found.step3.title": { fr: "Signalez sur notre plateforme", en: "Report on our platform", fon: "Ðó gbè dó tɛn mǐtɔn jí", yo: "Ṣe ìròyìn lórí pẹpẹ wa" },
+  "search.found.step3.text": { fr: "Votre signalement protège d'autres personnes lors des recherches.", en: "Your report protects other people during searches.", fon: "Gbè towe nɔ hɛn gbɛtɔ́ ɖěvo lɛ̌ hwenu e yě ɖò nùkanbyɔ́ wɛ̌.", yo: "Ìròyìn rẹ ń dáàbòbò àwọn ẹlòmíràn nígbà tí wọ́n bá ń wá." },
+  "search.found.step4.title": { fr: "Portez plainte si nécessaire", en: "File a complaint if needed", fon: "Yì kɔ́ ɖ'alixlɛ́mɛtɔ́ lɛ̌ gɔ̌n nú é jɛxa", yo: "Fi ẹsùn sílẹ̀ bí ó bá yẹ" },
+  "search.found.step4.text": { fr: "Rendez-vous à la BEFIC ou au CRIET à Cotonou avec vos preuves.", en: "Go to BEFIC or CRIET in Cotonou with your evidence.", fon: "Yì BEFIC alǒ CRIET ɖò Cotonou mɛ kpó kúnnuɖetɔ́n towe lɛ̌ kpó.", yo: "Lọ sí BEFIC tàbí CRIET ní Cotonou pẹ̀lú ẹ̀rí rẹ." },
+  "search.found.cta.report": { fr: "Signaler ce contact", en: "Report this contact", fon: "Ðó gbè dó mɛ élɔ́ wu", yo: "Ròyìn ọ̀nà ìbánisọ̀rọ̀ yìí" },
+  "search.found.cta.advice": { fr: "Voir tous nos conseils", en: "See all our advice", fon: "Kpɔ́n nǔkplɔ́nkplɔ̌n mǐtɔn lɛ̌ bǐ", yo: "Wo gbogbo ìmọ̀ràn wa" },
+
+  // ── Tips — Phone ──
+  "tip.phone.1.title": { fr: "Absent ≠ sûr", en: "Absent ≠ safe", fon: "È ma ɖè ɖě ǎ ≠ é nyí zɔ́", yo: "Kò sí ≠ ààbò" },
+  "tip.phone.1.text": { fr: "Absent de notre base ne garantit pas sa fiabilité.", en: "Not in our database doesn't guarantee reliability.", fon: "Nú è ma ɖè ɖě ɖò dátabási mǐtɔn mɛ ǎ ɔ, é ma ɖɔ é nyí zɔ́ ɖě ǎ.", yo: "Kíkọ wà nínú àkójọ wa kò túmọ̀ sí pé ó ní ìgbẹ́kẹ̀lé." },
+  "tip.phone.2.title": { fr: "Appel non sollicité", en: "Unsolicited call", fon: "Ylɔ́ e a ma byɔ́ ǎ", yo: "Ìpè tí a kò béèrè fún" },
+  "tip.phone.2.text": { fr: "Ne rappelez pas un numéro inconnu qui demande de l'argent ou des données.", en: "Don't call back an unknown number asking for money or personal data.", fon: "Ma ylɔ́ wěmánúmɛ e a ma tuùn ɔ lɛ̌ ǎ, majɛ é ɖò akwɛ́ alǒ dátá byɔ́ wɛ̌.", yo: "Má tún pè nọ́mbà aláìmọ̀ tó ń béèrè owó tàbí dátà àdáni." },
+  "tip.phone.3.title": { fr: "N'envoyez jamais d'argent", en: "Never send money", fon: "Ma sɛ́ akwɛ́ dó gbè ɖě ǎ", yo: "Má fi owó ránṣẹ́ rí" },
+  "tip.phone.3.text": { fr: "Aucune organisation légitime ne vous demande de payer pour recevoir un gain.", en: "No legitimate organisation asks you to pay to receive a prize.", fon: "Atɔ́xwɛdóxwé e nyí nugbǒ ɖé ma nɔ byɔ́ akwɛ́ ɖò we jí bo na hɛn nǔ we ǎ.", yo: "Kò sí ẹgbẹ́ tó bójú mu tó ń béèrè kí o san owó láti gba ẹ̀bùn." },
+  "tip.phone.4.title": { fr: "Vérifiez l'identité", en: "Verify the identity", fon: "Kpɔ́n nyǐkɔ́ mɛ ɔ tɔn", yo: "Ṣàyẹ̀wò ìdánimọ̀" },
+  "tip.phone.4.text": { fr: "Raccrochez et appelez directement l'institution officielle pour vérifier.", en: "Hang up and call the official institution directly to verify.", fon: "Sɔ́n wěmá ɔ bo ylɔ́ atɔ́xwɛdóxwé sín gannugán bo na kpɔ́n.", yo: "Pa fóònù kí o sì pè ilé-iṣẹ́ ìjọba tààrà láti ṣàyẹ̀wò." },
+
+  // ── Tips — URL ──
+  "tip.url.1.title": { fr: "Absent ≠ sûr", en: "Absent ≠ safe", fon: "È ma ɖè ɖě ǎ ≠ é nyí zɔ́", yo: "Kò sí ≠ ààbò" },
+  "tip.url.1.text": { fr: "De nouveaux sites frauduleux apparaissent chaque jour. Restez prudent.", en: "New fraudulent sites appear every day. Stay careful.", fon: "Tɛn gblègblé yɔyɔ lɛ̌ nɔ jɛ azǎn ɖokpó ɖokpó. Cɔ́ hwiɖée.", yo: "Àwọn ojú-ìwé jìbìtì tuntun máa ń farahàn lójoojúmọ́. Ṣọ́ra." },
+  "tip.url.2.title": { fr: "Vérifiez le nom de domaine", en: "Check the domain name", fon: "Kpɔ́n tɛn sín nyǐkɔ́", yo: "Ṣàyẹ̀wò orúkọ ìkànsí" },
+  "tip.url.2.text": { fr: "Méfiez-vous des extensions inhabituelles (.ga, .cf, .ml, .tk) imitant des marques connues.", en: "Beware of unusual extensions (.ga, .cf, .ml, .tk) imitating well-known brands.", fon: "Cɔ́ hwiɖée dó gbè e è ma nɔ zán ǎ (.ga, .cf, .ml, .tk) wu, e nɔ kpɔ́ndó azɔ̌xwémɛ tɔ́n lɛ̌ gbɔn.", yo: "Ṣọ́ fún àwọn ìfikún aásán (.ga, .cf, .ml, .tk) tó ń ṣe àfarawé àwọn àmì ìṣòwò tó mọ̀." },
+  "tip.url.3.title": { fr: "Vérifiez l'ancienneté du site", en: "Check the site's age", fon: "Kpɔ́n hwenu e è ɖó tɛn ɔ é", yo: "Ṣàyẹ̀wò ọjọ́ orí ojú-ìwé" },
+  "tip.url.3.text": { fr: "Vérifiez la date de création sur whois.domaintools.com — moins de 3 mois est suspect.", en: "Check the creation date on whois.domaintools.com — less than 3 months is suspicious.", fon: "Kpɔ́n azǎn e è ɖó tɛn ɔ ɖè whois.domaintools.com jí — sun atɔn kpɛ̌vi hugǎn é jɔ gblègblé.", yo: "Ṣàyẹ̀wò ọjọ́ ìdásílẹ̀ rẹ̀ lórí whois.domaintools.com — tí ó bá kéré ju oṣù 3 lọ, ó jẹ́ aféfé." },
+  "tip.url.4.title": { fr: "Ne payez jamais avant de recevoir", en: "Never pay before receiving", fon: "Ma hun akwɛ́ nukɔn nú a na yí nǔ ǎ", yo: "Má san owó ṣáájú gbígba" },
+  "tip.url.4.text": { fr: "Aucun site légitime ne demande un paiement Mobile Money avant livraison.", en: "No legitimate site asks for Mobile Money payment before delivery.", fon: "Tɛn e nyí nugbǒ ɖé ma nɔ byɔ́ akwɛ́ Mobile Money nukɔn nú è na sɛ́ nǔ dó ǎ.", yo: "Kò sí ojú-ìwé tó bójú mu tó ń béèrè ìsanwó Mobile Money ṣáájú ìfiránṣẹ́." },
+
+  // ── Tips — General ──
+  "tip.general.1.title": { fr: "Introuvable ne signifie pas sûr", en: "Not found doesn't mean safe", fon: "È ma mɔ é ǎ nú é nyí zɔ́ ɖɔhun ǎ", yo: "Kò rí kò túmọ̀ sí ó ní ààbò" },
+  "tip.general.1.text": { fr: "L'absence de résultat ne garantit pas la fiabilité de ce contact.", en: "No result doesn't guarantee this contact's reliability.", fon: "È ma mɔ nǔɖé dó mɛ élɔ́ wu ǎ nú é nyí zɔ́ ɖɔhun ǎ.", yo: "Àìrísí àbájáde kò túmọ̀ sí pé ọ̀nà ìbánisọ̀rọ̀ yìí ní ìgbẹ́kẹ̀lé." },
+  "tip.general.2.title": { fr: "Vérifiez les informations", en: "Check the information", fon: "Kpɔ́n xó lɛ̌ ɖó gɔ̌n ɖé", yo: "Ṣàyẹ̀wò ìwífún náà" },
+  "tip.general.2.text": { fr: "Cherchez des avis en ligne et vérifiez les coordonnées officielles avant de payer.", en: "Look for online reviews and check official contact details before paying.", fon: "Ba wěmá lɛ̌ kpé lɛ̌ jí bo kpɔ́n tɛn lɛ̌ sín xó e nyí nugbǒ ɔ nukɔn nú a na hun akwɛ́.", yo: "Wá àwọn àtúnyẹ̀wò lórí intánẹẹ̀tì kí o sì ṣàyẹ̀wò àlàyé ìbánisọ̀rọ̀ ìjọba ṣáájú ìsanwó." },
+  "tip.general.3.title": { fr: "Gardez vos données personnelles", en: "Keep your personal data private", fon: "Hɛn dátá towe nǔhɛnmɛ mɛ", yo: "Pa dátà àdáni rẹ mọ́" },
+  "tip.general.3.text": { fr: "Ne communiquez jamais vos codes PIN, mots de passe ou numéros de carte.", en: "Never share your PIN codes, passwords or card numbers.", fon: "Ma ɖɔ kóɖú PIN towe, xókpé towe, alǒ kàtí towe sín nǔmɛ gbè ɖě ǎ.", yo: "Má fi koodu PIN rẹ, ọ̀rọ̀ aṣínà, tàbí nọ́mbà káàdì rẹ hàn ẹnikẹ́ni." },
+  "tip.general.4.title": { fr: "Partagez l'information", en: "Share the information", fon: "Ðó xó ɔ sín ayi", yo: "Pín ìwífún náà" },
+  "tip.general.4.text": { fr: "Prévenez vos proches si vous suspectez une arnaque.", en: "Warn your loved ones if you suspect a scam.", fon: "Kplɔ́n kpɛví towe lɛ̌ nú a ɖò gblègblé ɖé ɖokpó wɛ̌.", yo: "Kìlọ̀ fún àwọn ẹbí rẹ tí o bá fura pé jìbìtì wà." },
+
+  // ── Report — success modal and trust ──
+  "report.success.title": { fr: "Signalement enregistré !", en: "Report submitted!", fon: "È yí gbè ɔ !", yo: "A ti gba ìròyìn !" },
+  "report.success.body": { fr: "Votre signalement a bien été enregistré. Conservez votre code de suivi.", en: "Your report has been recorded. Keep your tracking code safe.", fon: "È yí gbè towe. Hɛn kóɖú xwedó towe nǔhɛnmɛ mɛ.", yo: "A ti gba ìròyìn rẹ. Pa koodu ìtọpasẹ́ rẹ mọ́." },
+  "report.success.track.label": { fr: "Votre code de suivi", en: "Your tracking code", fon: "Kóɖú xwedó towe", yo: "Koodu ìtọpasẹ́ rẹ" },
+  "report.success.step1": { fr: "Notre équipe analyse votre dossier", en: "Our team is reviewing your case", fon: "Mɛ̌si mǐtɔn lɛ̌ ɖò dossier towe kpɔ́n wɛ̌", yo: "Àwọn ògbógi wa ń ṣàyẹ̀wò ẹjọ́ rẹ" },
+  "report.success.step2": { fr: "Retour sous 48h maximum", en: "Response within 48h at most", fon: "Azǎn 2 mɛ è na fó xó towe", yo: "Ìdáhùn ní wákàtí 48 jù bẹ́ẹ̀ kọ" },
+  "report.trust.title": { fr: "Votre signalement est protégé", en: "Your report is protected", fon: "Gbè towe ɔ è hɛn é", yo: "A dáàbòbò ìròyìn rẹ" },
+  "report.trust.text": { fr: "Votre identité reste confidentielle. Aucune information personnelle n'est partagée.", en: "Your identity remains confidential. No personal information is shared.", fon: "Nyǐkɔ́ towe nɔ nǔhɛnmɛ mɛ. È nɔ sɛ́ nǔxó e jɔ we ɖó gbè ɖě ǎ.", yo: "Ìdánimọ̀ rẹ ń wà ní ìkọ̀kọ̀. A kò fi ìwífún àdáni kankan hàn." },
+  "report.email.hint": { fr: "Utilisé uniquement pour le suivi de votre dossier. Jamais partagé.", en: "Used only to follow up on your case. Never shared.", fon: "È nɔ zán é bo na xwedó dossier towe kɛ́ɖɛ́. È nɔ ɖó é sín ayi ǎ.", yo: "A máa ń lo rẹ̀ fún ìtọpasẹ́ ẹjọ́ rẹ nìkan. A kò fí hàn ẹnikẹ́ni." },
+  "report.success.steps.title": { fr: "La suite", en: "Next steps", fon: "E bɔ nukɔn", yo: "Ìgbésẹ̀ tó kàn" },
+  "report.success.confirm": { fr: "J'ai noté mon code ✓", en: "I noted my code ✓", fon: "Un hɛn kóɖú ce ✓", yo: "Mo kọ koodu mi ✓" },
+  "report.guarantee.1": { fr: "100% anonyme et confidentiel", en: "100% anonymous and confidential", fon: "100% nǔhɛnmɛ mlɛ́mlɛ́", yo: "100% aṣírí àti ìkọ̀kọ̀" },
+  "report.guarantee.2": { fr: "Retour sous 48h garanti", en: "Response within 48h guaranteed", fon: "Azǎn 2 mɛ è na fó xó towe gan", yo: "Ìdáhùn ní wákàtí 48 tí a dá ní ìdánilójú" },
+  "report.guarantee.3": { fr: "Investigation par des experts", en: "Investigation by experts", fon: "Mɛ e tuùn é lɛ̌ wɛ̌ na ba mɔ gbɛ̌", yo: "Ìwádìí láti ọwọ́ àwọn amoye" },
+  "report.guarantee.4": { fr: "Code de suivi pour votre dossier", en: "Tracking code for your case", fon: "Kóɖú xwedó dossier towe tɔn", yo: "Koodu ìtọpasẹ́ fún ẹjọ́ rẹ" },
+
+  // ── Home — FAQ ──
+  "faq.1.q": { fr: "Est-ce que mon signalement est anonyme ?", en: "Is my report anonymous?", fon: "Gbè ce ka nɔ nǔhɛnmɛ mɛ wɛ̌ à?", yo: "Ṣé ìròyìn mi jẹ́ aṣírí?" },
+  "faq.1.a": { fr: "Oui. Votre identité n'est jamais révélée. L'email est facultatif.", en: "Yes. Your identity is never revealed. Email is optional.", fon: "Ɛ̌ɛ̌. È nɔ ɖè nyǐkɔ́ towe tɔ́n gbě ɖě ǎ. Email nɔ byɔ́ ǎ.", yo: "Bẹ́ẹ̀ni. Ìdánimọ̀ rẹ kò fi hàn rí. Ìméèlì kíí ṣe dandan." },
+  "faq.2.q": { fr: "Que se passe-t-il après mon signalement ?", en: "What happens after my report?", fon: "Nɛ̌ nǔ ka nɔ nyí gbɔn gudo e a ɖó gbè é?", yo: "Kí ló máa ṣẹlẹ̀ lẹ́yìn ìròyìn mi?" },
+  "faq.2.a": { fr: "Notre équipe analyse votre dossier. Si confirmé, le numéro est ajouté à la base publique.", en: "Our team reviews your case. If confirmed, the number is added to the public database.", fon: "Mɛ̌si mǐtɔn nɔ kpɔ́n dossier towe. Nú è ɖè wě ɔ, è na sɔ́ wěmánúmɛ ɔ dó dátabási gbejixwé ɔ mɛ.", yo: "Àwọn ògbógi wa ń ṣàyẹ̀wò ẹjọ́ rẹ. Bí a bá fọwọ́sí rẹ̀, nọ́mbà náà ń wọ àkójọ gbogbogbò." },
+  "faq.3.q": { fr: "Combien de temps prend le traitement ?", en: "How long does processing take?", fon: "Hwenu ɛlɛ é ka nɔ zán gbɔn kpɔ́ndó mɛ?", yo: "Ìgbà mélòó ni àgbátẹ̀rù ń gba?" },
+  "faq.3.a": { fr: "La plupart des dossiers sont traités sous 48h, 7 jours au maximum.", en: "Most cases are processed within 48h, 7 days at most.", fon: "Dossier lɛ̌ hugǎn è nɔ wà d'é jí ɖò azǎn 2 mɛ, azǎn 7 nukɔnmɛ hugǎn.", yo: "A máa ń ṣe àgbátẹ̀rù ẹjọ́ jù lọ ní wákàtí 48, ọjọ́ 7 jù bẹ́ẹ̀ kọ." },
+  "faq.4.q": { fr: "Les résultats de recherche révèlent-ils des informations personnelles ?", en: "Do search results reveal personal information?", fon: "Mɔ̌ e è ba lɛ̌ ka nɔ ɖè nǔxó e jɔ mɛɖesunɔ lɛ̌ jí à?", yo: "Ṣé àbájáde ìwádìí ń fi ìwífún àdáni hàn?" },
+  "faq.4.a": { fr: "Non. La recherche affiche uniquement le niveau de risque. Aucun détail personnel n'est visible.", en: "No. Search shows only the risk level. No personal details are visible.", fon: "Dɔ. Nùkanbyɔ́ ɔ nɔ xlɛ́ ayi sín dóhwɛ kɛ́ɖɛ́. È nɔ mɔ nǔxó e jɔ mɛɖesunɔ lɛ̌ ǎ.", yo: "Rárá. Ìwádìí máa ń fi ìpele ewu hàn nìkan. Kò sí àlàyé àdáni tó hàn." },
+
+  // ── Home — ScamTypes ──
+  "home.scam.1.name": { fr: "Appel frauduleux", en: "Fraudulent call", fon: "Ylɔ́ gblègblé", yo: "Ìpè jìbìtì" },
+  "home.scam.1.desc": { fr: "Faux conseillers ou agents de l'État.", en: "Fake advisors or government agents.", fon: "Mɛ e lɛ̀n ɖɔ é nyí alixlɛ́mɛtɔ́ alǒ gbɛ̀tɔ́ sín mɛ é.", yo: "Àwọn olùmọ̀ràn ìrọ̀ tàbí aṣojú ìjọba ìrọ̀." },
+  "home.scam.2.name": { fr: "SMS frauduleux", en: "Fraudulent SMS", fon: "Xó tì gblègblé", yo: "SMS jìbìtì" },
+  "home.scam.2.desc": { fr: "Faux Mobile Money ou remboursements fictifs.", en: "Fake Mobile Money or fictitious refunds.", fon: "Mobile Money ìrọ̀ alǒ akwɛ́ yíyí lɛ̌ nyí ìrọ̀.", yo: "Mobile Money ìrọ̀ tàbí àwọn ìpayà ìrọ̀." },
+  "home.scam.3.name": { fr: "Phishing", en: "Phishing", fon: "Sɛ́hùn", yo: "Phishing" },
+  "home.scam.3.desc": { fr: "Sites frauduleux pour voler vos identifiants.", en: "Fraudulent sites to steal your credentials.", fon: "Tɛn gblègblé lɛ̌ bo na hɛn xókpé towe.", yo: "Àwọn ojú-ìwé jìbìtì láti jí ìwífún ìwọlé rẹ." },
+  "home.scam.4.name": { fr: "Arnaque bancaire", en: "Banking scam", fon: "Gblègblé kpé akwɛ́ tɛn jí", yo: "Jìbìtì ilé-ìfowópamọ́" },
+  "home.scam.4.desc": { fr: "Faux agents bancaires cherchant vos codes.", en: "Fake bank agents looking for your codes.", fon: "Akwɛ́ tɛn sín gbɛtɔ́ nyì ìrọ̀ lɛ̌ bo ɖò kóɖú towe byɔ́ wɛ̌.", yo: "Àwọn aṣojú ilé-ìfowópamọ́ ìrọ̀ tó ń wá koodu rẹ." },
+  "home.scam.5.name": { fr: "Faux support tech", en: "Fake tech support", fon: "Alɔ nyanya kpé ero jí", yo: "Ìrànlọ́wọ́ ìmọ̀ ẹ̀rọ ìrọ̀" },
+  "home.scam.5.desc": { fr: "Faux techniciens accédant à votre appareil.", en: "Fake technicians accessing your device.", fon: "Gbɛtɔ́ nyì ìrọ̀ lɛ̌ bo byɔ́ ero towe mɛ.", yo: "Àwọn onímọ̀ ẹ̀rọ ìrọ̀ tó ń wọ ẹ̀rọ rẹ." },
+  "home.scam.6.name": { fr: "Usurpation d'identité", en: "Identity theft", fon: "Nyǐkɔ́ yiyi", yo: "Jíjí ìdánimọ̀" },
+  "home.scam.6.desc": { fr: "Quelqu'un se fait passer pour vous.", en: "Someone impersonates you.", fon: "Mɛ ɖé nɔ lɛ̀n ɖɔ é nyí we.", yo: "Ẹnikan ń ṣe àfarawé rẹ." },
+
+  // ── Home — StatsBar ──
+  "home.stat.reports": { fr: "Signalements", en: "Reports", fon: "Gbè lɛ̌", yo: "Ìròyìn" },
+  "home.stat.confirmed": { fr: "Confirmées", en: "Confirmed", fon: "E è ɖè wě lɛ̌", yo: "Tí a fọwọ́sí" },
+  "home.stat.searches": { fr: "Recherches", en: "Searches", fon: "Nùkanbyɔ́ lɛ̌", yo: "Àwọn ìwádìí" },
+  "home.stat.satisfaction": { fr: "Satisfaction", en: "Satisfaction", fon: "Fífá ayi", yo: "Ìtẹ́lọ́rùn" },
+
+  // ── Contact (additional keys) ──
+  "contact.label": { fr: "Contact", en: "Contact", fon: "Kɔntakti", yo: "Ìkànsí" },
+  "contact.info.title": { fr: "Informations", en: "Information", fon: "Xó lɛ̌", yo: "Ìwífún" },
+  "contact.info.email": { fr: "Email", en: "Email", fon: "Email", yo: "Ìméèlì" },
+  "contact.link.tracking": { fr: "Suivre mon dossier", en: "Track my case", fon: "Xwedó dosiye ce", yo: "Tọpasẹ́ ẹjọ́ mi" },
+  "contact.form.title": { fr: "Envoyer un message", en: "Send a message", fon: "Sɛ́ xó ɖé dó", yo: "Fi ìsọ̀rọ̀ ránṣẹ́" },
+  "contact.field.subject.placeholder": { fr: "— Choisir un sujet —", en: "— Choose a subject —", fon: "— Sɔ́ tínmɛ ɖé —", yo: "— Yan kókó ọ̀rọ̀ —" },
+  "contact.field.name.placeholder": { fr: "Ex : Kofi Mensah", en: "E.g.: Kofi Mensah", fon: "Kɛ́nsísɔ̀: Kofi Mensah", yo: "Àpẹẹrẹ: Kofi Mensah" },
+  "contact.field.email.placeholder": { fr: "vous@exemple.com", en: "you@example.com", fon: "ewe@kɛnsiso.bj", yo: "iwo@apere.com" },
+  "contact.field.message.placeholder": { fr: "Décrivez votre demande en détail…", en: "Describe your request in detail…", fon: "Tín xó towe mɛ bǐ mlɛ́mlɛ́…", yo: "Ṣàpèjúwe ìbéèrè rẹ ní àlàyé…" },
+  "contact.hint.mailto": { fr: "Cliquer sur Envoyer ouvrira votre client de messagerie avec le message prêt.", en: "Clicking Send will open your email client with the message ready.", fon: "Nú a kliki Sɛ́ dó ɔ, email towe na mɔ ɖu nú a na sɛ́ é.", yo: "Títẹ Firánṣẹ́ yóò ṣí apoti ìméèlì rẹ pẹ̀lú ìsọ̀rọ̀ tí ó ṣetán." },
+  "contact.security.note": { fr: "Ne nous envoyez jamais de mots de passe ou de codes PIN par email.", en: "Never send us passwords or PIN codes by email.", fon: "Ma sɛ́ xókpé alǒ kóɖú PIN lɛ̌ dó mǐ gbɔn email gblamɛ ǎ.", yo: "Má fi ọ̀rọ̀ aṣínà tàbí koodu PIN ránṣẹ́ sí wa nípa ìméèlì." },
+  "contact.security.form": { fr: "Pour un signalement, utilisez le", en: "To report, use the", fon: "Nú ka na ɖó gbè ɔ, zán", yo: "Láti ròyìn, lo" },
+  "contact.security.link": { fr: "formulaire dédié", en: "dedicated form", fon: "fɔ́mù e è ɖ'é tɔn", yo: "fọ́ọ̀mù tó yàn" },
+  "contact.email.name_label": { fr: "Nom", en: "Name", fon: "Nyǐkɔ́", yo: "Orúkọ" },
+  "contact.email.reply_label": { fr: "Email de réponse", en: "Reply email", fon: "Email fó xó tɔn", yo: "Ìméèlì ìdáhùn" },
 };
 
 export type TranslationKey = keyof typeof translations;
