@@ -29,21 +29,27 @@ function detectInputType(q: string): "url" | "phone" | "general" {
 }
 
 /**
- * `useSearchParams` impose une frontière Suspense : la page reste ainsi
- * prérendue statiquement, seule la lecture du paramètre est différée.
+ * Lecture du paramètre `?q=` isolée dans son propre composant.
+ *
+ * `useSearchParams` fait basculer en rendu client tout ce qui se trouve dans sa
+ * frontière Suspense. En enveloppant la page entière, on ne prérendait plus
+ * rien : ni titre, ni formulaire, ni texte. Ici la frontière ne contient qu'un
+ * composant qui ne rend rien, donc toute l'interface reste prérendue.
  */
-export default function RechercherPage() {
-  return (
-    <Suspense fallback={null}>
-      <SearchView />
-    </Suspense>
-  );
+function QuerySync({ onQuery }: { onQuery: (q: string) => void }) {
+  const searchParams = useSearchParams();
+  const urlQuery = searchParams.get("q")?.trim() ?? "";
+
+  useEffect(() => {
+    if (urlQuery) onQuery(urlQuery);
+  }, [urlQuery, onQuery]);
+
+  return null;
 }
 
-function SearchView() {
+export default function SearchView() {
   const { t } = useI18n();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<SearchResult | null>(null);
   const [searched, setSearched] = useState(false);
@@ -72,13 +78,15 @@ function SearchView() {
   // Une recherche est adressable par `?q=` : le lien est partageable, et la
   // SearchAction déclarée en JSON-LD correspond au comportement réel.
   const lastRunQuery = useRef<string | null>(null);
-  useEffect(() => {
-    const q = searchParams.get("q")?.trim() ?? "";
-    if (!q || lastRunQuery.current === q) return;
-    lastRunQuery.current = q;
-    setQuery(q);
-    void runSearch(q);
-  }, [searchParams, runSearch]);
+  const handleUrlQuery = useCallback(
+    (q: string) => {
+      if (lastRunQuery.current === q) return;
+      lastRunQuery.current = q;
+      setQuery(q);
+      void runSearch(q);
+    },
+    [runSearch],
+  );
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -119,6 +127,10 @@ function SearchView() {
 
   return (
     <div className="py-12 sm:py-20">
+      {/* Hors du rendu : lit ?q= sans faire basculer la page en client-only */}
+      <Suspense fallback={null}>
+        <QuerySync onQuery={handleUrlQuery} />
+      </Suspense>
       <div className="max-w-2xl mx-auto px-4 sm:px-6">
         <FadeIn>
           <div className="text-center mb-10">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   FadeInUp,
@@ -26,10 +26,101 @@ const EMERGENCY = [
   { label: "OCRC Cybercriminalité", value: "+229 21 30 84 50", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
 ];
 
+const SECTION_IDS = Object.keys(ADVICE_SECTIONS) as TabId[];
+
+/**
+ * Une section de conseils : toutes sont montées, seule l'active est visible.
+ */
+function AdviceSection({
+  tabId,
+  active,
+  ta,
+  t,
+}: {
+  tabId: TabId;
+  active: boolean;
+  ta: (key: string) => string;
+  t: (key: string) => string;
+}) {
+  const sectionData = ADVICE_SECTIONS[tabId];
+  return (
+    <motion.div
+      id={`section-${tabId}`}
+      role="region"
+      aria-labelledby={`onglet-${tabId}`}
+      hidden={!active}
+      initial={false}
+      animate={{ opacity: active ? 1 : 0, y: active ? 0 : 15 }}
+      transition={{ duration: 0.25 }}
+    >
+      <div className="text-center mb-10">
+        <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+          {ta(sectionData.titleKey)}
+        </h2>
+        <p className="mt-2 text-muted max-w-xl mx-auto">
+          {ta(sectionData.subtitleKey)}
+        </p>
+      </div>
+
+      <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {sectionData.cards.map((card) => (
+          <StaggerItem key={card.titleKey}>
+            <motion.div
+              whileHover={{ y: -3 }}
+              className={`rounded-2xl border p-6 transition-shadow hover:shadow-lg ${
+                card.type === "do"
+                  ? "bg-success/5 border-success/20"
+                  : card.type === "dont"
+                  ? "bg-primary/5 border-primary/20"
+                  : "bg-white border-border"
+              }`}
+            >
+              <div className="flex gap-4">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                  card.type === "do"
+                    ? "bg-success/15"
+                    : card.type === "dont"
+                    ? "bg-primary/15"
+                    : "bg-foreground/10"
+                }`}>
+                  <svg className={`w-5 h-5 ${
+                    card.type === "do"
+                      ? "text-success"
+                      : card.type === "dont"
+                      ? "text-primary"
+                      : "text-foreground"
+                  }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d={card.icon} />
+                  </svg>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <h3 className="font-bold text-foreground">{ta(card.titleKey)}</h3>
+                    {card.type === "do" && (
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-success bg-success/10 px-2 py-0.5 rounded-full">
+                        {t("advice.todo")}
+                      </span>
+                    )}
+                    {card.type === "dont" && (
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                        {t("advice.danger")}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted leading-relaxed">{ta(card.descKey)}</p>
+                </div>
+              </div>
+            </motion.div>
+          </StaggerItem>
+        ))}
+      </StaggerContainer>
+    </motion.div>
+  );
+}
+
 export default function ConseilsPage() {
   const { t, locale } = useI18n();
   const [activeTab, setActiveTab] = useState<TabId>("prevenir");
-  const section = ADVICE_SECTIONS[activeTab];
 
   function ta(key: string) {
     return getAdviceTranslation(key, locale);
@@ -57,6 +148,9 @@ export default function ConseilsPage() {
             {TABS.map((tab) => (
               <button
                 key={tab.id}
+                id={`onglet-${tab.id}`}
+                aria-expanded={activeTab === tab.id}
+                aria-controls={`section-${tab.id}`}
                 onClick={() => setActiveTab(tab.id)}
                 className={`relative flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-colors ${
                   activeTab === tab.id ? "text-white" : "text-gray-500 hover:text-foreground"
@@ -79,77 +173,12 @@ export default function ConseilsPage() {
         </div>
 
         {/* Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.25 }}
-          >
-            <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
-                {ta(section.titleKey)}
-              </h2>
-              <p className="mt-2 text-muted max-w-xl mx-auto">
-                {ta(section.subtitleKey)}
-              </p>
-            </div>
-
-            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {section.cards.map((card) => (
-                <StaggerItem key={card.titleKey}>
-                  <motion.div
-                    whileHover={{ y: -3 }}
-                    className={`rounded-2xl border p-6 transition-shadow hover:shadow-lg ${
-                      card.type === "do"
-                        ? "bg-success/5 border-success/20"
-                        : card.type === "dont"
-                        ? "bg-primary/5 border-primary/20"
-                        : "bg-white border-border"
-                    }`}
-                  >
-                    <div className="flex gap-4">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                        card.type === "do"
-                          ? "bg-success/15"
-                          : card.type === "dont"
-                          ? "bg-primary/15"
-                          : "bg-foreground/10"
-                      }`}>
-                        <svg className={`w-5 h-5 ${
-                          card.type === "do"
-                            ? "text-success"
-                            : card.type === "dont"
-                            ? "text-primary"
-                            : "text-foreground"
-                        }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d={card.icon} />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <h3 className="font-bold text-foreground">{ta(card.titleKey)}</h3>
-                          {card.type === "do" && (
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-success bg-success/10 px-2 py-0.5 rounded-full">
-                              {t("advice.todo")}
-                            </span>
-                          )}
-                          {card.type === "dont" && (
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                              {t("advice.danger")}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm text-muted leading-relaxed">{ta(card.descKey)}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </motion.div>
-        </AnimatePresence>
+        {/* Les trois sections sont rendues, les inactives masquées en CSS.
+            Avant, seule la section active existait dans le DOM : 15 conseils sur
+            23 n'étaient jamais servis alors que le JSON-LD les décrivait. */}
+        {SECTION_IDS.map((tabId) => (
+          <AdviceSection key={tabId} tabId={tabId} active={tabId === activeTab} ta={ta} t={t} />
+        ))}
 
         {/* Emergency numbers */}
         <FadeInUp className="mt-20">

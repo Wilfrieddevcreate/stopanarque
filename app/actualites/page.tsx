@@ -9,6 +9,12 @@ import { NewsList } from "./NewsList";
  * Le filtrage par catégorie reste côté client.
  */
 
+/**
+ * Régénération incrémentale : sans cela, la page est figée au build et un
+ * article publié après le déploiement reste invisible jusqu'au prochain build.
+ */
+export const revalidate = 300;
+
 export default async function ActualitesPage() {
   const articles = await getPublishedArticles();
 

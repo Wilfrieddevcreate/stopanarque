@@ -14,8 +14,16 @@ export const CONTACT_EMAIL = "contact@stopanarque.bj";
 /** Réseaux sociaux officiels — alimente `sameAs` du JSON-LD Organization. */
 export const SOCIAL_PROFILES: string[] = [];
 
+/**
+ * Image sociale par défaut.
+ *
+ * Elle est produite par app/opengraph-image.tsx (généré à la volée en 1200×630)
+ * et non par un fichier statique : l'ancien /og-image.png faisait 432×578 en
+ * portrait alors que les balises annonçaient 1200×630, d'où des vignettes
+ * recadrées ou floues sur WhatsApp, Facebook et LinkedIn.
+ */
 export const DEFAULT_OG_IMAGE = {
-  url: "/og-image.png",
+  url: "/opengraph-image",
   width: 1200,
   height: 630,
   alt: "StopArnaque Bénin — Plateforme de signalement d'arnaques",
@@ -51,5 +59,59 @@ export function breadcrumb(items: { name: string; path: string }[]) {
       name: item.name,
       item: absoluteUrl(item.path),
     })),
+  };
+}
+
+/**
+ * Fabrique de métadonnées de page.
+ *
+ * Next fusionne les metadata de façon SUPERFICIELLE : un layout enfant qui
+ * redéclare `openGraph` remplace intégralement celui du parent. Six pages
+ * avaient ainsi perdu leur `og:image` en redéclarant `openGraph` sans `images`.
+ * Passer par cette fabrique garantit que chaque page émet des blocs openGraph et
+ * twitter complets — le piège ne peut plus se reproduire sur une page ajoutée.
+ */
+export function pageMetadata(options: {
+  title: string;
+  description: string;
+  path: string;
+  keywords?: string[];
+  type?: "website" | "article";
+  ogTitle?: string;
+  ogDescription?: string;
+  robots?: { index: boolean; follow: boolean };
+}) {
+  const {
+    title,
+    description,
+    path,
+    keywords,
+    type = "website",
+    ogTitle = `${title} | ${SITE_NAME}`,
+    ogDescription = description,
+    robots,
+  } = options;
+
+  return {
+    title,
+    description,
+    ...(keywords ? { keywords } : {}),
+    ...(robots ? { robots } : {}),
+    openGraph: {
+      type,
+      title: ogTitle,
+      description: ogDescription,
+      url: absoluteUrl(path),
+      siteName: SITE_NAME,
+      locale: SITE_LOCALE,
+      images: [{ ...DEFAULT_OG_IMAGE }],
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: ogTitle,
+      description: ogDescription,
+      images: [DEFAULT_OG_IMAGE.url],
+    },
+    alternates: { canonical: path },
   };
 }

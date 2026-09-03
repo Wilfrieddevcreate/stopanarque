@@ -91,6 +91,7 @@ const translations: Record<string, T4> = {
   "scam.label": { fr: "Types d'arnaques", en: "Types of scams", fon: "Gblègblé sín alɔkpa lɛ̌", yo: "Irú jìbìtì" },
   "scam.title": { fr: "Quelles arnaques pouvez-vous signaler ?", en: "What scams can you report?", fon: "Gblègblé alɔkpa tɛ lɛ̌ a ka sixú ɖó gbè d'é wu?", yo: "Irú jìbìtì wo ni o lè ròyìn?" },
   "scam.subtitle": { fr: "Tous les types de fraudes téléphoniques et en ligne", en: "All types of phone and online fraud", fon: "Gblègblé alɔkpa lɛ̌ bǐ", yo: "Gbogbo irú jìbìtì fóònù àti lórí ayélujára" },
+  "scam.cta.all": { fr: "Voir les 17 types d'arnaques", en: "See all 17 scam types", fon: "Kpɔ́n gblègblé wɛ̌n 17 lɛ̌", yo: "Wo gbogbo irú jìbìtì 17" },
 
   // ── Trust ──
   "trust.label": { fr: "Confiance & Sécurité", en: "Trust & Security", fon: "Jiɖiɖe kpó Hɛnhɛn kpó", yo: "Ìgbẹ́kẹ̀lé àti Ààbò" },

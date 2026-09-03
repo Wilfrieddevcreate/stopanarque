@@ -1,33 +1,15 @@
 import type { Metadata } from "next";
-import { SITE_NAME, SITE_LANG, SITE_LOCALE, absoluteUrl, breadcrumb } from "@/lib/seo";
+import { SITE_LANG, SITE_NAME, absoluteUrl, breadcrumb, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Signaler une arnaque au Bénin",
   description:
     "Signalez un numéro frauduleux, un faux vendeur ou un arnaqueur au Bénin. Formulaire gratuit, anonyme et confidentiel : 2 minutes pour protéger la communauté.",
-  keywords: [
-    "signaler arnaque Bénin",
-    "dénoncer arnaqueur Bénin",
-    "signalement numéro frauduleux",
-    "porter plainte arnaque Bénin",
-    "signaler arnaque Mobile Money",
-    "signaler arnaque WhatsApp Bénin",
-  ],
-  openGraph: {
-    type: "website",
-    title: `Signaler une arnaque au Bénin | ${SITE_NAME}`,
-    description: "Signalez un numéro frauduleux. Gratuit, anonyme, confidentiel.",
-    url: absoluteUrl("/signaler"),
-    siteName: SITE_NAME,
-    locale: SITE_LOCALE,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `Signaler une arnaque au Bénin | ${SITE_NAME}`,
-    description: "Signalez un numéro frauduleux. Gratuit, anonyme, confidentiel.",
-  },
-  alternates: { canonical: "/signaler" },
-};
+  path: "/signaler",
+  ogDescription:
+    "Signalez un numéro frauduleux. Gratuit, anonyme, confidentiel.",
+  keywords: ["signaler arnaque Bénin", "dénoncer arnaqueur Bénin", "signalement numéro frauduleux", "porter plainte arnaque Bénin", "signaler arnaque Mobile Money", "signaler arnaque WhatsApp Bénin"],
+});
 
 const jsonLdService = {
   "@context": "https://schema.org",

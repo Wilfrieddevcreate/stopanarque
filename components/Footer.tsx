@@ -36,6 +36,7 @@ export function Footer() {
               <li><Link href="/signaler" className="text-sm text-muted hover:text-foreground transition-colors">{t("nav.report")}</Link></li>
               <li><Link href="/rechercher" className="text-sm text-muted hover:text-foreground transition-colors">{t("nav.search")}</Link></li>
               <li><Link href="/suivi" className="text-sm text-muted hover:text-foreground transition-colors">{t("nav.tracking")}</Link></li>
+              <li><Link href="/arnaques" className="text-sm text-muted hover:text-foreground transition-colors">{t("nav.scams")}</Link></li>
               <li><Link href="/conseils" className="text-sm text-muted hover:text-foreground transition-colors">{t("nav.advice")}</Link></li>
               <li><Link href="/actualites" className="text-sm text-muted hover:text-foreground transition-colors">{t("nav.news")}</Link></li>
             </ul>

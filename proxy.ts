@@ -12,6 +12,26 @@ const SCANNER_UA_RE = /nikto|sqlmap|masscan|nmap|dirbuster|gobuster|wfuzz|hydra|
 
 type EdgeThreat = "sql_injection" | "xss" | "path_traversal" | "scanner";
 
+/**
+ * Portion de l'URL soumise à la détection d'attaque.
+ *
+ * Le paramètre `q` porte du texte saisi par l'internaute : un nom, un numéro,
+ * l'URL d'un site frauduleux. Le passer aux heuristiques SQL/XSS produisait des
+ * blocages 403 sur des recherches parfaitement légitimes — « Marie--Claire »
+ * (double tiret), « delete my account » (le site a une locale anglaise),
+ * « arnaque sur document.pdf » (motif `document\.`).
+ *
+ * L'exclure ne dégrade pas la protection : `q` n'est jamais interpolé dans une
+ * requête (Prisma paramètre tout, voir app/api/search/route.ts) et React échappe
+ * son rendu. Le chemin et tous les autres paramètres restent analysés.
+ */
+function scannableUrl(pathname: string, search: string): string {
+  const params = new URLSearchParams(search);
+  params.delete("q");
+  const rest = params.toString();
+  return pathname + (rest ? `?${rest}` : "");
+}
+
 function detectUrlThreat(url: string, ua: string): EdgeThreat | null {
   if (SCANNER_UA_RE.test(ua)) return "scanner";
   let decoded = url;
@@ -56,7 +76,10 @@ export function proxy(request: NextRequest) {
   // ── Edge threat detection ──────────────────────────────────────────────────
   const ua = request.headers.get("user-agent") ?? "";
   const fullUrl = request.nextUrl.pathname + request.nextUrl.search;
-  const threat = detectUrlThreat(fullUrl, ua);
+  const threat = detectUrlThreat(
+    scannableUrl(request.nextUrl.pathname, request.nextUrl.search),
+    ua,
+  );
 
   if (threat) {
     const ip = clientIpEdge(request);

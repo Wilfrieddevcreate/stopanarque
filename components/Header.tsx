@@ -124,15 +124,15 @@ function NavDropdown({ label, items }: { label: string; items: { href: string; l
         </svg>
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -6, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6, scale: 0.97 }}
-            transition={{ duration: 0.15 }}
-            className="absolute top-full right-0 mt-1.5 min-w-[170px] bg-white rounded-xl shadow-lg border border-border py-1.5 z-50"
-          >
+      {/* Toujours monté (masqué quand fermé) : sinon ces liens n'existent dans
+          aucune page servie et les cibles du menu deviennent orphelines. */}
+      <motion.div
+        hidden={!open}
+        initial={false}
+        animate={{ opacity: open ? 1 : 0, y: open ? 0 : -6, scale: open ? 1 : 0.97 }}
+        transition={{ duration: 0.15 }}
+        className="absolute top-full right-0 mt-1.5 min-w-[170px] bg-white rounded-xl shadow-lg border border-border py-1.5 z-50"
+      >
             {items.map((item) => (
               <Link
                 key={item.href}
@@ -143,9 +143,7 @@ function NavDropdown({ label, items }: { label: string; items: { href: string; l
                 {item.label}
               </Link>
             ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </motion.div>
     </div>
   );
 }

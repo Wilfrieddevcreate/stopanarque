@@ -10,6 +10,12 @@ import { ArticleView } from "./ArticleView";
  * l'article en `useEffect`, les moteurs ne voyaient qu'une page vide).
  */
 
+/**
+ * Régénération incrémentale : sans cela, la page est figée au build et un
+ * article publié après le déploiement reste invisible jusqu'au prochain build.
+ */
+export const revalidate = 300;
+
 export async function generateStaticParams() {
   const articles = await getArticleSitemapEntries();
   return articles.map((a) => ({ slug: a.slug }));
