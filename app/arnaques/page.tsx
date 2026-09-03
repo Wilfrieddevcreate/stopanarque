@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/MotionDiv";
 import { useI18n } from "@/lib/i18n/context";
 import { getScamData, type ScamEntry } from "@/lib/i18n/arnaques-data";
@@ -212,6 +212,16 @@ export default function ArnaquesPage() {
   const { t, locale } = useI18n();
   const scams = getScamData(locale);
   const [activeId, setActiveId] = useState<string>(scams[0].id);
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  // Bloque le scroll du body quand le bottom sheet est ouvert
+  useEffect(() => {
+    if (sheetOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
+  }, [sheetOpen]);
+
+  const activeScam = scams.find((s) => s.id === activeId) ?? scams[0];
 
   return (
     <div className="py-12 sm:py-20">
@@ -246,15 +256,19 @@ export default function ArnaquesPage() {
                     label={scam.label}
                     tagline={scam.tagline}
                     active={activeId === scam.id}
-                    onClick={() => setActiveId(scam.id)}
+                    onClick={() => {
+                      setActiveId(scam.id);
+                      setSheetOpen(true);
+                    }}
                   />
                 </StaggerItem>
               ))}
             </StaggerContainer>
           </div>
 
-          {/* Colonne droite — fiches détaillées (toutes rendues, une seule visible) */}
-          <div className="lg:col-span-3 lg:sticky lg:top-24">
+          {/* Colonne droite — fiches détaillées (toutes rendues pour le SEO, une seule visible) */}
+          {/* Sur mobile : hidden mais présente dans le DOM pour les moteurs */}
+          <div className="hidden lg:block lg:col-span-3 lg:sticky lg:top-24">
             {scams.map((scam) => (
               <ScamPanel key={scam.id} scam={scam} active={scam.id === activeId} t={t} />
             ))}
@@ -289,6 +303,60 @@ export default function ArnaquesPage() {
             ))}
           </div>
         </FadeInUp>
+
+        {/* ── Bottom sheet mobile (invisible sur lg+) ────────────────────── */}
+        <AnimatePresence>
+          {sheetOpen && (
+            <>
+              {/* Fond assombri */}
+              <motion.div
+                className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setSheetOpen(false)}
+              />
+
+              {/* Tiroir */}
+              <motion.div
+                className="fixed bottom-0 left-0 right-0 z-50 lg:hidden rounded-t-3xl bg-white shadow-2xl"
+                style={{ maxHeight: "88vh" }}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={{ type: "spring", damping: 32, stiffness: 320 }}
+                drag="y"
+                dragConstraints={{ top: 0 }}
+                dragElastic={{ top: 0, bottom: 0.4 }}
+                onDragEnd={(_, info) => {
+                  if (info.offset.y > 80) setSheetOpen(false);
+                }}
+              >
+                {/* Poignée de glissement */}
+                <div className="flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing">
+                  <div className="w-10 h-1 rounded-full bg-gray-300" />
+                </div>
+
+                {/* Bouton fermer */}
+                <button
+                  onClick={() => setSheetOpen(false)}
+                  className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors"
+                  aria-label="Fermer"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+
+                {/* Contenu scrollable */}
+                <div className="overflow-y-auto px-4 pb-10" style={{ maxHeight: "calc(88vh - 48px)" }}>
+                  <ScamPanel scam={activeScam} active={true} t={t} />
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
 
         {/* CTA bas de page */}
         <FadeInUp className="mt-16 text-center">
