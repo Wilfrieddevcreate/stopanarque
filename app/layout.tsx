@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Inter } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -9,15 +9,10 @@ import { VisitTracker } from "@/components/VisitTracker";
 import { I18nProvider } from "@/lib/i18n/context";
 import { DEFAULT_OG_IMAGE, SITE_LOCALE, SITE_NAME, SITE_URL } from "@/lib/seo";
 
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-heading",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-sans",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-body",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -120,7 +115,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" suppressHydrationWarning className={`${jakarta.variable} ${inter.variable} h-full antialiased`}>
+    <html lang="fr" suppressHydrationWarning className={`${spaceGrotesk.variable} h-full antialiased`}>
       <head>
         <SiteJsonLd />
       </head>

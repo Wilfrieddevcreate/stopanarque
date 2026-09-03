@@ -89,15 +89,15 @@ export function HeroIllustration() {
 
           {/* Title */}
           <text x="90" y="146" fill="#0f172a" fontSize="13" fontWeight="800"
-            fontFamily="system-ui, -apple-system, sans-serif">Arnaque détectée</text>
+            fontFamily="'Space Grotesk', sans-serif">Arnaque détectée</text>
           {/* Sub */}
           <text x="90" y="163" fill="#64748b" fontSize="10.5"
-            fontFamily="system-ui, sans-serif">Faux Mobile Money</text>
+            fontFamily="'Space Grotesk', sans-serif">Faux Mobile Money</text>
 
           {/* Badge */}
           <rect x="90" y="173" width="86" height="20" rx="10" fill="#FEF3C7" />
           <text x="133" y="187" textAnchor="middle" fill="#D97706" fontSize="9.5" fontWeight="700"
-            fontFamily="system-ui, sans-serif">× 3 signalements</text>
+            fontFamily="'Space Grotesk', sans-serif">× 3 signalements</text>
 
           {/* Divider */}
           <line x1="30" y1="207" x2="220" y2="207" stroke="#f1f5f9" strokeWidth="1.2" />
@@ -106,7 +106,7 @@ export function HeroIllustration() {
           <circle cx="36" cy="226" r="4.5" fill="#F59E0B" fillOpacity="0.45" />
           <circle cx="36" cy="226" r="2.5" fill="#F59E0B" />
           <text x="48" y="230" fill="#94a3b8" fontSize="9.5"
-            fontFamily="system-ui, sans-serif">il y a 2 min · Cotonou</text>
+            fontFamily="'Space Grotesk', sans-serif">il y a 2 min · Cotonou</text>
         </g>
 
         {/* ── Success card (right, tilted +4°) ── */}
@@ -123,15 +123,15 @@ export function HeroIllustration() {
 
           {/* Title */}
           <text x="320" y="178" fill="#0f172a" fontSize="13" fontWeight="800"
-            fontFamily="system-ui, -apple-system, sans-serif">Numéro vérifié</text>
+            fontFamily="'Space Grotesk', sans-serif">Numéro vérifié</text>
           {/* Sub — masked phone */}
           <text x="320" y="196" fill="#64748b" fontSize="10.5"
-            fontFamily="system-ui, sans-serif">+229 97 ●● ●● ●●</text>
+            fontFamily="'Space Grotesk', sans-serif">+229 97 ●● ●● ●●</text>
 
           {/* Badge */}
           <rect x="320" y="206" width="72" height="20" rx="10" fill="#DCFCE7" />
           <text x="356" y="220" textAnchor="middle" fill="#16A34A" fontSize="9.5" fontWeight="700"
-            fontFamily="system-ui, sans-serif">Confirmé ✓</text>
+            fontFamily="'Space Grotesk', sans-serif">Confirmé ✓</text>
 
           {/* Divider */}
           <line x1="260" y1="240" x2="450" y2="240" stroke="#f1f5f9" strokeWidth="1.2" />
@@ -141,7 +141,7 @@ export function HeroIllustration() {
           <path d="M263 259 L265.5 261.5 L270 257" stroke="#16A34A" strokeWidth="1.5"
             strokeLinecap="round" strokeLinejoin="round" />
           <text x="278" y="263" fill="#94a3b8" fontSize="9.5"
-            fontFamily="system-ui, sans-serif">Vérifié par l'équipe admin</text>
+            fontFamily="'Space Grotesk', sans-serif">Vérifié par l'équipe admin</text>
         </g>
 
         {/* ── Dark stats strip (bottom) ── */}
@@ -152,34 +152,34 @@ export function HeroIllustration() {
           <circle cx="66" cy="382" r="7" fill="#22C55E" fillOpacity="0.22" />
           <circle cx="66" cy="382" r="4" fill="#22C55E" />
           <text x="79" y="386" fill="#64748b" fontSize="9" fontWeight="700" letterSpacing="0.08em"
-            fontFamily="system-ui, sans-serif">EN DIRECT</text>
+            fontFamily="'Space Grotesk', sans-serif">EN DIRECT</text>
 
           {/* Rule */}
           <line x1="40" y1="398" x2="440" y2="398" stroke="white" strokeOpacity="0.06" strokeWidth="1" />
 
           {/* Stat 1 */}
           <text x="66" y="422" fill="white" fontSize="18" fontWeight="800"
-            fontFamily="system-ui, -apple-system, sans-serif">47</text>
+            fontFamily="'Space Grotesk', sans-serif">47</text>
           <text x="90" y="422" fill="#64748b" fontSize="10"
-            fontFamily="system-ui, sans-serif">arnaques signalées</text>
+            fontFamily="'Space Grotesk', sans-serif">arnaques signalées</text>
 
           {/* Separator */}
           <line x1="198" y1="408" x2="198" y2="428" stroke="white" strokeOpacity="0.08" strokeWidth="1" />
 
           {/* Stat 2 */}
           <text x="210" y="422" fill="#22C55E" fontSize="18" fontWeight="800"
-            fontFamily="system-ui, -apple-system, sans-serif">12</text>
+            fontFamily="'Space Grotesk', sans-serif">12</text>
           <text x="234" y="422" fill="#64748b" fontSize="10"
-            fontFamily="system-ui, sans-serif">bloquées</text>
+            fontFamily="'Space Grotesk', sans-serif">bloquées</text>
 
           {/* Separator */}
           <line x1="312" y1="408" x2="312" y2="428" stroke="white" strokeOpacity="0.08" strokeWidth="1" />
 
           {/* Stat 3 */}
           <text x="324" y="422" fill="#FCD20F" fontSize="18" fontWeight="800"
-            fontFamily="system-ui, -apple-system, sans-serif">3k+</text>
-          <text x="352" y="422" fill="#64748b" fontSize="10"
-            fontFamily="system-ui, sans-serif">recherches</text>
+            fontFamily="'Space Grotesk', sans-serif">3k+</text>
+          <text x="368" y="422" fill="#64748b" fontSize="10"
+            fontFamily="'Space Grotesk', sans-serif">recherches</text>
         </g>
 
         {/* Benin flag accent */}

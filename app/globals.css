@@ -14,8 +14,8 @@
   --color-success-light: #00a86b;
   --color-muted: #64748b;
   --color-border: #e2e8f0;
-  --font-heading: var(--font-heading);
-  --font-body: var(--font-body);
+  --font-heading: var(--font-sans);
+  --font-body: var(--font-sans);
 }
 
 body {
