@@ -18,6 +18,7 @@ import { AlertBanner } from "@/components/AlertBanner";
 import { useI18n } from "@/lib/i18n/context";
 import { HomeJsonLd } from "@/components/JsonLd";
 import { stripHtml } from "@/lib/content";
+import { HeroIllustration, StepIllustration1, StepIllustration2, StepIllustration3, CommunityIllustration } from "@/components/Illustrations";
 
 export function HomeView({ articles }: { articles: Article[] }) {
   return (
@@ -45,125 +46,119 @@ function HeroSection() {
   return (
     <section className="relative flex items-center bg-linear-to-b from-primary/5 via-white to-white">
       <HeroBackground />
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
-        <div className="text-center max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
-            className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm text-primary px-5 py-2 rounded-full text-sm font-medium mb-8 border border-primary/20"
-          >
-            <motion.span
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-2 h-2 bg-accent rounded-full"
-            />
-            {t("hero.badge")}
-          </motion.div>
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-          {/* Benin flag accent bar */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex h-1 w-24 mx-auto mb-8 rounded-full overflow-hidden"
-          >
-            <div className="flex-1 bg-success" />
-            <div className="flex-1 bg-accent" />
-            <div className="flex-1 bg-primary" />
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.1]"
-          >
-            {t("hero.title1")}
-            <br />
-            {t("hero.title2")}{" "}
-            <motion.span
-              className="relative inline-block text-primary"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              {t("hero.title3")}
-              <motion.svg
-                className="absolute -bottom-2 left-0 w-full"
-                viewBox="0 0 200 12"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
-              >
-                <motion.path
-                  d="M2 8 Q50 2 100 7 Q150 12 198 4"
-                  stroke="#E8112D"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
-                />
-              </motion.svg>
-            </motion.span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="mt-8 text-lg sm:text-xl text-muted leading-relaxed max-w-2xl mx-auto"
-          >
-            {t("hero.subtitle")}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/signaler"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-2xl font-semibold text-base transition-colors shadow-xl shadow-primary/25"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-                {t("hero.cta.report")}
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/rechercher"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-white hover:bg-gray-50 text-foreground px-8 py-4 rounded-2xl font-semibold text-base transition-colors border border-border shadow-lg"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                {t("hero.cta.search")}
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            className="mt-16"
-          >
+          {/* ── Left: text + CTAs ── */}
+          <div>
             <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="mx-auto w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center pt-2"
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+              className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm text-primary px-5 py-2 rounded-full text-sm font-medium mb-8 border border-primary/20"
             >
-              <motion.div className="w-1.5 h-1.5 bg-gray-400 rounded-full" />
+              <motion.span
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-2 h-2 bg-accent rounded-full"
+              />
+              {t("hero.badge")}
             </motion.div>
-          </motion.div>
+
+            {/* Benin flag accent bar */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="flex h-1 w-20 mb-7 rounded-full overflow-hidden"
+              style={{ transformOrigin: "left" }}
+            >
+              <div className="flex-1 bg-success" />
+              <div className="flex-1 bg-accent" />
+              <div className="flex-1 bg-primary" />
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1]"
+            >
+              {t("hero.title1")}
+              <br />
+              {t("hero.title2")}{" "}
+              <motion.span
+                className="relative inline-block text-primary"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                {t("hero.title3")}
+                <motion.svg
+                  className="absolute -bottom-2 left-0 w-full"
+                  viewBox="0 0 200 12"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+                >
+                  <motion.path
+                    d="M2 8 Q50 2 100 7 Q150 12 198 4"
+                    stroke="#E8112D"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    fill="none"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+                  />
+                </motion.svg>
+              </motion.span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="mt-7 text-lg text-muted leading-relaxed"
+            >
+              {t("hero.subtitle")}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="mt-9 flex flex-col sm:flex-row items-start gap-4"
+            >
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href="/signaler"
+                  className="inline-flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-2xl font-semibold text-base transition-colors shadow-xl shadow-primary/25"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                  {t("hero.cta.report")}
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href="/rechercher"
+                  className="inline-flex items-center justify-center gap-2.5 bg-white hover:bg-gray-50 text-foreground px-8 py-4 rounded-2xl font-semibold text-base transition-colors border border-border shadow-lg"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  {t("hero.cta.search")}
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* ── Right: illustration ── */}
+          <div className="hidden lg:block">
+            <HeroIllustration />
+          </div>
         </div>
       </div>
     </section>
@@ -282,19 +277,19 @@ function HowItWorks() {
             {[
               {
                 step: 1,
-                icon: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
+                illustration: <StepIllustration1 />,
                 title: t("how.step1.title"),
                 desc: t("how.step1.desc"),
               },
               {
                 step: 2,
-                icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+                illustration: <StepIllustration2 />,
                 title: t("how.step2.title"),
                 desc: t("how.step2.desc"),
               },
               {
                 step: 3,
-                icon: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
+                illustration: <StepIllustration3 />,
                 title: t("how.step3.title"),
                 desc: t("how.step3.desc"),
               },
@@ -305,22 +300,15 @@ function HowItWorks() {
                   className="relative bg-white rounded-2xl p-8 border border-border shadow-sm hover:shadow-xl transition-shadow group"
                 >
                   <div className="flex items-center justify-center mb-6">
-                    <motion.div
-                      whileHover={{ rotate: 5, scale: 1.05 }}
-                      className="relative w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20"
-                    >
-                      <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
-                      </svg>
-                      <span className="absolute -top-2 -right-2 w-7 h-7 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-primary shadow-sm">
+                    <motion.div whileHover={{ rotate: 5, scale: 1.05 }} className="relative">
+                      {item.illustration}
+                      <span className="absolute -top-2 -right-2 w-7 h-7 bg-primary rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md">
                         {item.step}
                       </span>
                     </motion.div>
                   </div>
-
                   <h3 className="text-xl font-bold text-foreground text-center mb-3">{item.title}</h3>
                   <p className="text-muted leading-relaxed text-center">{item.desc}</p>
-
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-300 -z-10" />
                 </motion.div>
               </StaggerItem>
@@ -389,7 +377,13 @@ function WhyReport() {
           </SlideInLeft>
 
           <SlideInRight>
-            <div className="relative">
+            <div className="space-y-6">
+              {/* Community illustration */}
+              <div className="flex justify-center">
+                <CommunityIllustration />
+              </div>
+
+              <div className="relative">
               <motion.div
                 whileHover={{ rotate: -2, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 200 }}
@@ -474,6 +468,7 @@ function WhyReport() {
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute -bottom-4 -left-4 w-16 h-16 bg-primary/5 rounded-2xl -z-10"
               />
+              </div>
             </div>
           </SlideInRight>
         </div>
