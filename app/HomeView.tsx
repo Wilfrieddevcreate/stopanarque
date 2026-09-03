@@ -44,33 +44,40 @@ export function HomeView({ articles }: { articles: Article[] }) {
 function HeroSection() {
   const { t } = useI18n();
   return (
-    <section className="relative flex items-center bg-linear-to-b from-primary/5 via-white to-white">
+    <section className="relative overflow-hidden bg-[#F6F8FC]">
       <HeroBackground />
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+      {/* Subtle decorative blobs */}
+      <div className="pointer-events-none absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-0 w-72 h-72 rounded-full bg-success/5 blur-2xl" />
+
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 sm:pt-20 sm:pb-14 lg:pt-24 lg:pb-16 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-10 lg:gap-8 items-center">
 
           {/* ── Left: text + CTAs ── */}
-          <div>
+          <div className="max-w-xl">
+
+            {/* Badge */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
-              className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm text-primary px-5 py-2 rounded-full text-sm font-medium mb-8 border border-primary/20"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="inline-flex items-center gap-2 bg-white text-primary px-3.5 py-1.5 rounded-full text-xs font-semibold mb-7 border border-primary/20 shadow-sm"
             >
               <motion.span
-                animate={{ scale: [1, 1.3, 1] }}
+                animate={{ scale: [1, 1.4, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-2 h-2 bg-accent rounded-full"
+                className="w-1.5 h-1.5 bg-primary rounded-full"
               />
               {t("hero.badge")}
             </motion.div>
 
-            {/* Benin flag accent bar */}
+            {/* Benin flag bar */}
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="flex h-1 w-20 mb-7 rounded-full overflow-hidden"
+              transition={{ duration: 0.5, delay: 0.08 }}
+              className="flex h-[3px] w-14 mb-5 rounded-full overflow-hidden"
               style={{ transformOrigin: "left" }}
             >
               <div className="flex-1 bg-success" />
@@ -78,81 +85,105 @@ function HeroSection() {
               <div className="flex-1 bg-primary" />
             </motion.div>
 
+            {/* Title */}
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1]"
+              transition={{ duration: 0.55, delay: 0.12 }}
+              className="text-[2.75rem] sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight text-slate-900 leading-[1.1]"
             >
-              {t("hero.title1")}
-              <br />
-              {t("hero.title2")}{" "}
-              <motion.span
-                className="relative inline-block text-primary"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                {t("hero.title3")}
-                <motion.svg
-                  className="absolute -bottom-2 left-0 w-full"
-                  viewBox="0 0 200 12"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+              <span className="block">{t("hero.title1")}</span>
+              <span className="block">
+                {t("hero.title2")}{" "}
+                <motion.span
+                  className="relative inline-block text-primary"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.45 }}
                 >
-                  <motion.path
-                    d="M2 8 Q50 2 100 7 Q150 12 198 4"
-                    stroke="#E8112D"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
-                  />
-                </motion.svg>
-              </motion.span>
+                  {t("hero.title3")}
+                  <motion.svg
+                    className="absolute -bottom-1.5 left-0 w-full"
+                    viewBox="0 0 200 10"
+                    preserveAspectRatio="none"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{ delay: 0.75, duration: 0.9, ease: "easeOut" }}
+                  >
+                    <motion.path
+                      d="M2 7 Q50 2 100 6 Q150 10 198 3"
+                      stroke="#E8112D"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      fill="none"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ delay: 0.75, duration: 0.9, ease: "easeOut" }}
+                    />
+                  </motion.svg>
+                </motion.span>
+              </span>
             </motion.h1>
 
+            {/* Subtitle */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="mt-7 text-lg text-muted leading-relaxed"
+              transition={{ duration: 0.45, delay: 0.28 }}
+              className="mt-5 text-[0.95rem] text-slate-500 leading-relaxed max-w-sm"
             >
               {t("hero.subtitle")}
             </motion.p>
 
+            {/* CTAs */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="mt-9 flex flex-col sm:flex-row items-start gap-4"
+              transition={{ duration: 0.45, delay: 0.4 }}
+              className="mt-8 flex flex-row items-center gap-3"
             >
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+              {/* Primary */}
+              <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/signaler"
-                  className="inline-flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-2xl font-semibold text-base transition-colors shadow-xl shadow-primary/25"
+                  className="group inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white pl-4 pr-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-150 shadow-lg shadow-primary/30 hover:shadow-primary/40"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                   </svg>
                   {t("hero.cta.report")}
+                  <svg className="w-3.5 h-3.5 shrink-0 translate-x-0 group-hover:translate-x-1 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+
+              {/* Secondary */}
+              <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/rechercher"
-                  className="inline-flex items-center justify-center gap-2.5 bg-white hover:bg-gray-50 text-foreground px-8 py-4 rounded-2xl font-semibold text-base transition-colors border border-border shadow-lg"
+                  className="group inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 pl-4 pr-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-150 border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow-md"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <svg className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-primary transition-colors duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                   {t("hero.cta.search")}
                 </Link>
               </motion.div>
             </motion.div>
+
+            {/* Trust micro-line */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+              className="mt-4 text-xs text-slate-400 flex items-center gap-1.5"
+            >
+              <svg className="w-3.5 h-3.5 text-success" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              100% gratuit · données sécurisées · Bénin
+            </motion.p>
           </div>
 
           {/* ── Right: illustration ── */}

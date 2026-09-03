@@ -2,128 +2,221 @@
 
 import { motion } from "framer-motion";
 
-/* ─── Hero — phone + shield scene ─── */
+/* ─── Hero — floating cards + shield ─── */
 export function HeroIllustration() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay: 0.2 }}
-      className="relative w-full max-w-sm mx-auto select-none"
+      initial={{ opacity: 0, x: 28 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.65, delay: 0.22, ease: "easeOut" }}
+      className="relative w-full max-w-[460px] mx-auto select-none"
     >
-      <svg viewBox="0 0 400 440" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-        {/* Background circles */}
-        <circle cx="200" cy="230" r="190" fill="#E8112D" fillOpacity="0.04" />
-        <circle cx="200" cy="230" r="130" fill="#E8112D" fillOpacity="0.04" />
-
-        {/* Phone body */}
-        <rect x="130" y="80" width="140" height="250" rx="24" fill="#0f172a" />
-        {/* Camera notch */}
-        <rect x="183" y="88" width="34" height="8" rx="4" fill="#1e293b" />
-        {/* Screen */}
-        <rect x="141" y="100" width="118" height="210" rx="14" fill="#f8fafc" />
-        {/* Home bar */}
-        <rect x="173" y="320" width="54" height="4" rx="2" fill="#334155" />
-
-        {/* Screen content — form */}
-        <rect x="155" y="116" width="90" height="7" rx="3.5" fill="#cbd5e1" />
-
-        {/* Input fields */}
-        <rect x="155" y="136" width="90" height="22" rx="7" fill="white" stroke="#e2e8f0" strokeWidth="1.5" />
-        <rect x="162" y="143" width="55" height="7" rx="3.5" fill="#e2e8f0" />
-
-        <rect x="155" y="165" width="90" height="22" rx="7" fill="white" stroke="#e2e8f0" strokeWidth="1.5" />
-        <rect x="162" y="172" width="40" height="7" rx="3.5" fill="#e2e8f0" />
-
-        <rect x="155" y="194" width="90" height="22" rx="7" fill="white" stroke="#e2e8f0" strokeWidth="1.5" />
-        <rect x="162" y="201" width="65" height="7" rx="3.5" fill="#e2e8f0" />
-
-        {/* Submit button */}
-        <rect x="155" y="228" width="90" height="30" rx="10" fill="#E8112D" />
-        <text x="200" y="248" textAnchor="middle" fill="white" fontSize="11" fontWeight="700" fontFamily="system-ui">Signaler</text>
-
-        {/* Arrow icon on button */}
-        <path d="M232 243 L236 247 L232 251" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-
-        {/* Shield — overlapping phone top */}
-        <path d="M200 55 L248 74 L248 138 Q248 178 200 198 Q152 178 152 138 L152 74 Z"
-          fill="#E8112D" fillOpacity="0.08" stroke="#E8112D" strokeWidth="2.5" />
-        {/* Shield checkmark */}
-        <path d="M187 122 L197 134 L217 110" stroke="#E8112D" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-
-        {/* ── Floating left card — warning ── */}
-        <g filter="url(#shadow1)">
-          <rect x="10" y="130" width="126" height="58" rx="14" fill="white" />
-          {/* amber icon */}
-          <circle cx="34" cy="159" r="13" fill="#FEF3C7" />
-          <path d="M34 153 L34 160" stroke="#D97706" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="34" cy="164" r="1.5" fill="#D97706" />
-          <text x="53" y="154" fill="#0f172a" fontSize="9.5" fontWeight="700" fontFamily="system-ui">SMS suspect</text>
-          <text x="53" y="167" fill="#64748b" fontSize="8.5" fontFamily="system-ui">Faux Mobile Money</text>
-        </g>
-
-        {/* ── Floating right card — confirmed ── */}
-        <g filter="url(#shadow2)">
-          <rect x="264" y="168" width="130" height="58" rx="14" fill="white" />
-          {/* green icon */}
-          <circle cx="287" cy="197" r="13" fill="#DCFCE7" />
-          <path d="M281 197 L285 201 L293 192" stroke="#16A34A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <text x="306" y="192" fill="#0f172a" fontSize="9.5" fontWeight="700" fontFamily="system-ui">Confirmé</text>
-          <text x="306" y="205" fill="#64748b" fontSize="8.5" fontFamily="system-ui">Numéro blacklisté</text>
-        </g>
-
-        {/* ── Floating bottom card — count badge ── */}
-        <g filter="url(#shadow3)">
-          <rect x="60" y="360" width="280" height="54" rx="14" fill="white" />
-          <circle cx="88" cy="387" r="14" fill="#FEE2E2" />
-          <text x="88" y="392" textAnchor="middle" fill="#E8112D" fontSize="13" fontWeight="800" fontFamily="system-ui">12</text>
-          <text x="110" y="383" fill="#0f172a" fontSize="9.5" fontWeight="700" fontFamily="system-ui">signalements cette semaine</text>
-          <text x="110" y="396" fill="#64748b" fontSize="8.5" fontFamily="system-ui">au Bénin · mis à jour en temps réel</text>
-          <circle cx="324" cy="387" r="5" fill="#22C55E" />
-        </g>
-
-        {/* Decorative dots */}
-        <circle cx="50" cy="85" r="7" fill="#E8112D" fillOpacity="0.15" />
-        <circle cx="370" cy="110" r="5" fill="#22C55E" fillOpacity="0.25" />
-        <circle cx="20" cy="310" r="5" fill="#F59E0B" fillOpacity="0.25" />
-        <circle cx="390" cy="340" r="8" fill="#E8112D" fillOpacity="0.1" />
-        <circle cx="350" cy="60" r="4" fill="#E8112D" fillOpacity="0.2" />
-        <circle cx="70" cy="250" r="4" fill="#22C55E" fillOpacity="0.2" />
-
-        {/* Benin flag accent stripe */}
-        <rect x="152" y="425" width="32" height="5" rx="2.5" fill="#008751" />
-        <rect x="188" y="425" width="32" height="5" rx="2.5" fill="#FCD20F" />
-        <rect x="224" y="425" width="32" height="5" rx="2.5" fill="#E8112D" />
-
-        {/* SVG filters for shadows */}
+      <svg viewBox="0 0 480 460" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
         <defs>
-          <filter id="shadow1" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#0f172a" floodOpacity="0.08" />
+          {/* Atmosphere */}
+          <radialGradient id="gAtm" cx="50%" cy="46%" r="52%">
+            <stop offset="0%" stopColor="#E8112D" stopOpacity="0.07" />
+            <stop offset="100%" stopColor="#E8112D" stopOpacity="0" />
+          </radialGradient>
+          {/* Shield gradient */}
+          <linearGradient id="gSh" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#E8112D" />
+            <stop offset="100%" stopColor="#9f1239" />
+          </linearGradient>
+          {/* Warning accent */}
+          <linearGradient id="gWn" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#F59E0B" />
+            <stop offset="100%" stopColor="#D97706" />
+          </linearGradient>
+          {/* Success accent */}
+          <linearGradient id="gOk" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#22C55E" />
+            <stop offset="100%" stopColor="#16A34A" />
+          </linearGradient>
+          {/* Dark stats card */}
+          <linearGradient id="gDk" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#0f172a" />
+            <stop offset="100%" stopColor="#1e293b" />
+          </linearGradient>
+          {/* Card drop shadows */}
+          <filter id="fSh" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="6" stdDeviation="18" floodColor="#E8112D" floodOpacity="0.30" />
           </filter>
-          <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#0f172a" floodOpacity="0.08" />
+          <filter id="fCd" x="-25%" y="-25%" width="150%" height="150%">
+            <feDropShadow dx="0" dy="10" stdDeviation="18" floodColor="#1e293b" floodOpacity="0.11" />
           </filter>
-          <filter id="shadow3" x="-10%" y="-20%" width="120%" height="160%">
-            <feDropShadow dx="0" dy="6" stdDeviation="10" floodColor="#0f172a" floodOpacity="0.1" />
+          <filter id="fDk" x="-15%" y="-30%" width="130%" height="170%">
+            <feDropShadow dx="0" dy="14" stdDeviation="22" floodColor="#E8112D" floodOpacity="0.14" />
           </filter>
         </defs>
+
+        {/* ── Atmosphere ── */}
+        <ellipse cx="240" cy="224" rx="218" ry="200" fill="url(#gAtm)" />
+        <ellipse cx="380" cy="140" rx="88" ry="78" fill="#22C55E" fillOpacity="0.04" />
+        <ellipse cx="82" cy="310" rx="74" ry="66" fill="#F59E0B" fillOpacity="0.04" />
+
+        {/* ── Shield badge (top center, floating) ── */}
+        {/* Glow rings */}
+        <circle cx="240" cy="58" r="46" fill="#E8112D" fillOpacity="0.07" />
+        <circle cx="240" cy="58" r="34" fill="#E8112D" fillOpacity="0.08" />
+        {/* Shield shape */}
+        <g filter="url(#fSh)">
+          <path d="M240 26 L268 40 L268 66 Q268 86 240 98 Q212 86 212 66 L212 40 Z"
+            fill="url(#gSh)" />
+          <path d="M229 59 L236 67 L252 49" stroke="white" strokeWidth="3.5"
+            strokeLinecap="round" strokeLinejoin="round" />
+        </g>
+
+        {/* Dotted connector lines — shield to cards */}
+        <path d="M226 96 Q180 110 148 138" stroke="#E8112D" strokeWidth="1.2"
+          strokeOpacity="0.18" strokeDasharray="5 4" fill="none" />
+        <path d="M254 96 Q300 110 334 144" stroke="#E8112D" strokeWidth="1.2"
+          strokeOpacity="0.18" strokeDasharray="5 4" fill="none" />
+
+        {/* ── Warning card (left, tilted -5°) ── */}
+        <g filter="url(#fCd)" transform="rotate(-5, 125, 192)">
+          {/* Card */}
+          <rect x="18" y="116" width="214" height="152" rx="22" fill="white" />
+          {/* Accent bar */}
+          <rect x="18" y="116" width="6" height="152" rx="3" fill="url(#gWn)" />
+
+          {/* Icon circle */}
+          <circle cx="58" cy="158" r="22" fill="#FEF3C7" />
+          {/* Warning triangle */}
+          <path d="M58 144 L73 170 H43 Z" fill="#F59E0B" />
+          <rect x="56.5" y="150" width="3" height="11" rx="1.5" fill="white" />
+          <circle cx="58" cy="165" r="2" fill="white" />
+
+          {/* Title */}
+          <text x="90" y="146" fill="#0f172a" fontSize="13" fontWeight="800"
+            fontFamily="system-ui, -apple-system, sans-serif">Arnaque détectée</text>
+          {/* Sub */}
+          <text x="90" y="163" fill="#64748b" fontSize="10.5"
+            fontFamily="system-ui, sans-serif">Faux Mobile Money</text>
+
+          {/* Badge */}
+          <rect x="90" y="173" width="86" height="20" rx="10" fill="#FEF3C7" />
+          <text x="133" y="187" textAnchor="middle" fill="#D97706" fontSize="9.5" fontWeight="700"
+            fontFamily="system-ui, sans-serif">× 3 signalements</text>
+
+          {/* Divider */}
+          <line x1="30" y1="207" x2="220" y2="207" stroke="#f1f5f9" strokeWidth="1.2" />
+
+          {/* Footer */}
+          <circle cx="36" cy="226" r="4.5" fill="#F59E0B" fillOpacity="0.45" />
+          <circle cx="36" cy="226" r="2.5" fill="#F59E0B" />
+          <text x="48" y="230" fill="#94a3b8" fontSize="9.5"
+            fontFamily="system-ui, sans-serif">il y a 2 min · Cotonou</text>
+        </g>
+
+        {/* ── Success card (right, tilted +4°) ── */}
+        <g filter="url(#fCd)" transform="rotate(4, 355, 224)">
+          {/* Card */}
+          <rect x="248" y="148" width="214" height="152" rx="22" fill="white" />
+          {/* Accent bar */}
+          <rect x="248" y="148" width="6" height="152" rx="3" fill="url(#gOk)" />
+
+          {/* Icon circle */}
+          <circle cx="288" cy="192" r="22" fill="#DCFCE7" />
+          <path d="M279 192 L285 198 L298 182" stroke="#16A34A" strokeWidth="3"
+            strokeLinecap="round" strokeLinejoin="round" />
+
+          {/* Title */}
+          <text x="320" y="178" fill="#0f172a" fontSize="13" fontWeight="800"
+            fontFamily="system-ui, -apple-system, sans-serif">Numéro vérifié</text>
+          {/* Sub — masked phone */}
+          <text x="320" y="196" fill="#64748b" fontSize="10.5"
+            fontFamily="system-ui, sans-serif">+229 97 ●● ●● ●●</text>
+
+          {/* Badge */}
+          <rect x="320" y="206" width="72" height="20" rx="10" fill="#DCFCE7" />
+          <text x="356" y="220" textAnchor="middle" fill="#16A34A" fontSize="9.5" fontWeight="700"
+            fontFamily="system-ui, sans-serif">Confirmé ✓</text>
+
+          {/* Divider */}
+          <line x1="260" y1="240" x2="450" y2="240" stroke="#f1f5f9" strokeWidth="1.2" />
+
+          {/* Footer */}
+          <circle cx="266" cy="259" r="4.5" fill="#DCFCE7" />
+          <path d="M263 259 L265.5 261.5 L270 257" stroke="#16A34A" strokeWidth="1.5"
+            strokeLinecap="round" strokeLinejoin="round" />
+          <text x="278" y="263" fill="#94a3b8" fontSize="9.5"
+            fontFamily="system-ui, sans-serif">Vérifié par l'équipe admin</text>
+        </g>
+
+        {/* ── Dark stats strip (bottom) ── */}
+        <g filter="url(#fDk)">
+          <rect x="40" y="364" width="400" height="74" rx="22" fill="url(#gDk)" />
+
+          {/* Live dot */}
+          <circle cx="66" cy="382" r="7" fill="#22C55E" fillOpacity="0.22" />
+          <circle cx="66" cy="382" r="4" fill="#22C55E" />
+          <text x="79" y="386" fill="#64748b" fontSize="9" fontWeight="700" letterSpacing="0.08em"
+            fontFamily="system-ui, sans-serif">EN DIRECT</text>
+
+          {/* Rule */}
+          <line x1="40" y1="398" x2="440" y2="398" stroke="white" strokeOpacity="0.06" strokeWidth="1" />
+
+          {/* Stat 1 */}
+          <text x="66" y="422" fill="white" fontSize="18" fontWeight="800"
+            fontFamily="system-ui, -apple-system, sans-serif">47</text>
+          <text x="90" y="422" fill="#64748b" fontSize="10"
+            fontFamily="system-ui, sans-serif">arnaques signalées</text>
+
+          {/* Separator */}
+          <line x1="198" y1="408" x2="198" y2="428" stroke="white" strokeOpacity="0.08" strokeWidth="1" />
+
+          {/* Stat 2 */}
+          <text x="210" y="422" fill="#22C55E" fontSize="18" fontWeight="800"
+            fontFamily="system-ui, -apple-system, sans-serif">12</text>
+          <text x="234" y="422" fill="#64748b" fontSize="10"
+            fontFamily="system-ui, sans-serif">bloquées</text>
+
+          {/* Separator */}
+          <line x1="312" y1="408" x2="312" y2="428" stroke="white" strokeOpacity="0.08" strokeWidth="1" />
+
+          {/* Stat 3 */}
+          <text x="324" y="422" fill="#FCD20F" fontSize="18" fontWeight="800"
+            fontFamily="system-ui, -apple-system, sans-serif">3k+</text>
+          <text x="352" y="422" fill="#64748b" fontSize="10"
+            fontFamily="system-ui, sans-serif">recherches</text>
+        </g>
+
+        {/* Benin flag accent */}
+        <rect x="196" y="450" width="28" height="4" rx="2" fill="#008751" />
+        <rect x="228" y="450" width="28" height="4" rx="2" fill="#FCD20F" />
+        <rect x="260" y="450" width="28" height="4" rx="2" fill="#E8112D" />
+
+        {/* Decorative dots */}
+        <circle cx="36" cy="82" r="9" fill="#E8112D" fillOpacity="0.09" />
+        <circle cx="36" cy="82" r="4.5" fill="#E8112D" fillOpacity="0.17" />
+        <circle cx="448" cy="116" r="8" fill="#22C55E" fillOpacity="0.20" />
+        <circle cx="14" cy="318" r="7" fill="#F59E0B" fillOpacity="0.25" />
+        <circle cx="462" cy="360" r="10" fill="#E8112D" fillOpacity="0.06" />
+        <circle cx="406" cy="50" r="5" fill="#F59E0B" fillOpacity="0.18" />
+        <circle cx="52" cy="448" r="5" fill="#22C55E" fillOpacity="0.15" />
       </svg>
 
-      {/* Animated floating dots */}
+      {/* Floating ambient dots */}
       <motion.div
-        animate={{ y: [0, -12, 0] }}
-        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-8 right-4 w-4 h-4 rounded-full bg-primary/20"
+        animate={{ y: [0, -16, 0] }}
+        transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-12 right-4 w-5 h-5 rounded-full bg-primary/12"
       />
       <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute bottom-24 left-4 w-3 h-3 rounded-full bg-success/30"
+        animate={{ y: [0, 13, 0] }}
+        transition={{ duration: 3.9, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+        className="absolute bottom-28 right-2 w-3.5 h-3.5 rounded-full bg-success/20"
       />
       <motion.div
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute top-32 left-0 w-2 h-2 rounded-full bg-accent/40"
+        animate={{ y: [0, -9, 0], x: [0, 4, 0] }}
+        transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 2.1 }}
+        className="absolute top-1/2 left-1 w-3 h-3 rounded-full bg-accent/28"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.6, 1], opacity: [0.2, 0.5, 0.2] }}
+        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+        className="absolute top-16 right-14 w-2 h-2 rounded-full bg-primary/40"
       />
     </motion.div>
   );
