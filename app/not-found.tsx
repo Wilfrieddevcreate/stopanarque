@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LogoIcon } from "@/components/Logo";
+
+export const metadata: Metadata = {
+  title: "Page introuvable",
+  robots: { index: false, follow: false },
+  // `null` supprime le canonical hérité du layout racine : une 404 qui se
+  // déclare canonique vers l'accueil est un signal de « soft 404 ».
+  alternates: { canonical: null },
+};
 
 export default function NotFound() {
   return (

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { getRiskLevel } from "@/lib/types";
 import { FadeIn } from "@/components/MotionDiv";
@@ -26,8 +27,22 @@ function detectInputType(q: string): "url" | "phone" | "general" {
   return "general";
 }
 
+/**
+ * `useSearchParams` impose une frontière Suspense : la page reste ainsi
+ * prérendue statiquement, seule la lecture du paramètre est différée.
+ */
 export default function RechercherPage() {
+  return (
+    <Suspense fallback={null}>
+      <SearchView />
+    </Suspense>
+  );
+}
+
+function SearchView() {
   const { t } = useI18n();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [result, setResult] = useState<SearchResult | null>(null);
   const [searched, setSearched] = useState(false);
@@ -35,13 +50,13 @@ export default function RechercherPage() {
 
   const inputType = query.trim() ? detectInputType(query) : "general";
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    if (!query.trim()) return;
+  const runSearch = useCallback(async (raw: string) => {
+    const q = raw.trim();
+    if (!q) return;
     setLoading(true);
     setSearched(false);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(query.trim())}`);
+      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
       const data = await res.json();
       setResult(data.result);
       setSearched(true);
@@ -51,6 +66,26 @@ export default function RechercherPage() {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  // Une recherche est adressable par `?q=` : le lien est partageable, et la
+  // SearchAction déclarée en JSON-LD correspond au comportement réel.
+  const lastRunQuery = useRef<string | null>(null);
+  useEffect(() => {
+    const q = searchParams.get("q")?.trim() ?? "";
+    if (!q || lastRunQuery.current === q) return;
+    lastRunQuery.current = q;
+    setQuery(q);
+    void runSearch(q);
+  }, [searchParams, runSearch]);
+
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    const q = query.trim();
+    if (!q) return;
+    lastRunQuery.current = q;
+    router.replace(`/rechercher?q=${encodeURIComponent(q)}`, { scroll: false });
+    void runSearch(q);
   }
 
   const risk = result ? getRiskLevel(result.count) : null;

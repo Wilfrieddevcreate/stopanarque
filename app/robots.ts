@@ -1,16 +1,25 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://stopanarque.bj";
-
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/api/"],
+        // /suivi et /offline sont volontairement absents : ils portent une
+        // balise `noindex`, que Google ne peut lire que s'il a le droit de les
+        // explorer. Les interdire ici laisserait /suivi — lié depuis le pied de
+        // page — indexable sous forme d'URL nue.
+        // /uploads/ reste autorisé : les images de couverture d'articles y sont
+        // servies et alimentent le sitemap images.
+        disallow: [
+          "/admin",  // back-office, protégé par authentification
+          "/api/",   // réponses JSON, sans valeur en recherche
+        ],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }

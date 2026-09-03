@@ -48,7 +48,9 @@ export async function generateMetadata({
   const authorName = article.author?.name ?? SITE_NAME;
 
   return {
-    title,
+    // Le template ajoute " | StopArnaque Bénin" (20 caractères) : sur un titre
+    // déjà long, le cumul serait tronqué dans les résultats de recherche.
+    title: title.length > 45 ? { absolute: title } : title,
     description,
     authors: [{ name: authorName }],
     category: article.category,

@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Hors connexion",
+  description: "Vous êtes hors connexion. Reconnectez-vous pour accéder à StopArnaque Bénin.",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/offline" },
 };
 
 export default function OfflinePage() {

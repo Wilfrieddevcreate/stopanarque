@@ -12,9 +12,7 @@ export const metadata: Metadata = {
     index: false,
     follow: false,
   },
-  alternates: {
-    canonical: "/suivi",
-  },
+  alternates: { canonical: "/suivi" },
 };
 
 export default function SuiviLayout({ children }: { children: React.ReactNode }) {

@@ -16,11 +16,13 @@ import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { HeroBackground } from "@/components/HeroBackground";
 import { AlertBanner } from "@/components/AlertBanner";
 import { useI18n } from "@/lib/i18n/context";
+import { HomeJsonLd } from "@/components/JsonLd";
 import { stripHtml } from "@/lib/content";
 
 export default function Home() {
   return (
     <div className="overflow-hidden">
+      <HomeJsonLd />
       <AlertBanner />
       <HeroSection />
       <StatsBar />

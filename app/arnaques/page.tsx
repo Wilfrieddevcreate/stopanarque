@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/MotionDiv";
 import { useI18n } from "@/lib/i18n/context";
-import { getScamData } from "@/lib/i18n/arnaques-data";
+import { getScamData, type ScamEntry } from "@/lib/i18n/arnaques-data";
 
 // ── Config visuelle (non traduite) ────────────────────────────────────────────
 
@@ -133,7 +133,10 @@ function ScamCard({
   const v = VISUAL_CONFIG[id];
   return (
     <motion.button
+      id={`onglet-${id}`}
       onClick={onClick}
+      aria-expanded={active}
+      aria-controls={`fiche-${id}`}
       whileHover={{ y: -1 }}
       whileTap={{ scale: 0.98 }}
       className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
@@ -155,14 +158,120 @@ function ScamCard({
   );
 }
 
+/**
+ * Fiche détaillée d'une arnaque.
+ * Les 17 fiches sont toutes rendues dans le HTML — les inactives sont masquées
+ * en CSS. Auparavant seule la fiche active existait dans le DOM : les 16 autres
+ * (le contenu le plus riche du site) étaient invisibles pour les moteurs.
+ */
+function ScamPanel({
+  scam,
+  active,
+  t,
+}: {
+  scam: ScamEntry;
+  active: boolean;
+  t: (key: string) => string;
+}) {
+  const v = VISUAL_CONFIG[scam.id];
+  return (
+    <motion.div
+      id={`fiche-${scam.id}`}
+      role="region"
+      aria-labelledby={`onglet-${scam.id}`}
+      hidden={!active}
+      initial={false}
+      animate={{ opacity: active ? 1 : 0, y: active ? 0 : 8 }}
+      transition={{ duration: 0.2 }}
+      className={`rounded-2xl border-2 p-6 sm:p-8 ${v.color}`}
+    >
+        {/* Titre */}
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center shrink-0">
+            <svg className={`w-6 h-6 ${v.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d={v.icon} />
+            </svg>
+          </div>
+          <div>
+            <span className={`inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full mb-1 ${v.badgeColor}`}>
+              {scam.tagline}
+            </span>
+            <h2 className="text-xl font-bold text-foreground">{scam.label}</h2>
+          </div>
+        </div>
+
+        {/* Description */}
+        <p className="text-foreground/80 leading-relaxed mb-5 text-sm sm:text-base">{scam.description}</p>
+
+        {/* Exemple */}
+        <div className="bg-white/60 rounded-xl p-4 mb-5 border border-white/80">
+          <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-1.5">
+            {t("arnaques.section.example")}
+          </p>
+          <p className="text-sm text-foreground italic">&laquo;&nbsp;{scam.example}&nbsp;&raquo;</p>
+        </div>
+
+        {/* Signes */}
+        <div className="mb-5">
+          <p className="text-sm font-semibold text-foreground mb-2.5 flex items-center gap-2">
+            <svg className="w-4 h-4 text-orange-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M18.364 5.636A9 9 0 105.636 18.364 9 9 0 0018.364 5.636z" />
+            </svg>
+            {t("arnaques.section.signs")}
+          </p>
+          <ul className="space-y-1.5">
+            {scam.signs.map((sign, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-2 shrink-0" />
+                {sign}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Protection */}
+        <div className="mb-7">
+          <p className="text-sm font-semibold text-foreground mb-2.5 flex items-center gap-2">
+            <svg className="w-4 h-4 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            {t("arnaques.section.protect")}
+          </p>
+          <ul className="space-y-1.5">
+            {scam.protect.map((tip, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 shrink-0" />
+                {tip}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Link
+            href="/signaler"
+            className="flex-1 bg-primary hover:bg-primary-dark text-white py-3.5 rounded-xl font-semibold text-sm text-center transition-colors shadow-lg shadow-primary/25"
+          >
+            {t("arnaques.cta.report")}
+          </Link>
+          <Link
+            href="/rechercher"
+            className="flex-1 bg-white/70 hover:bg-white text-foreground py-3.5 rounded-xl font-semibold text-sm text-center transition-colors border border-white/80"
+          >
+            {t("arnaques.cta.check")}
+          </Link>
+        </div>
+    </motion.div>
+  );
+}
+
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default function ArnaquesPage() {
   const { t, locale } = useI18n();
   const scams = getScamData(locale);
   const [activeId, setActiveId] = useState<string>(scams[0].id);
-  const active = scams.find((s) => s.id === activeId) ?? scams[0];
-  const v = VISUAL_CONFIG[active.id];
 
   return (
     <div className="py-12 sm:py-20">
@@ -201,96 +310,11 @@ export default function ArnaquesPage() {
             </StaggerContainer>
           </div>
 
-          {/* Colonne droite — fiche détaillée */}
+          {/* Colonne droite — fiches détaillées (toutes rendues, une seule visible) */}
           <div className="lg:col-span-3 lg:sticky lg:top-24">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
-                className={`rounded-2xl border-2 p-6 sm:p-8 ${v.color}`}
-              >
-                {/* Titre */}
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-12 h-12 rounded-2xl bg-white/70 flex items-center justify-center shrink-0">
-                    <svg className={`w-6 h-6 ${v.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d={v.icon} />
-                    </svg>
-                  </div>
-                  <div>
-                    <span className={`inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full mb-1 ${v.badgeColor}`}>
-                      {active.tagline}
-                    </span>
-                    <h2 className="text-xl font-bold text-foreground">{active.label}</h2>
-                  </div>
-                </div>
-
-                {/* Description */}
-                <p className="text-foreground/80 leading-relaxed mb-5 text-sm sm:text-base">{active.description}</p>
-
-                {/* Exemple */}
-                <div className="bg-white/60 rounded-xl p-4 mb-5 border border-white/80">
-                  <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-1.5">
-                    {t("arnaques.section.example")}
-                  </p>
-                  <p className="text-sm text-foreground italic">"{active.example}"</p>
-                </div>
-
-                {/* Signes */}
-                <div className="mb-5">
-                  <p className="text-sm font-semibold text-foreground mb-2.5 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-orange-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M18.364 5.636A9 9 0 105.636 18.364 9 9 0 0018.364 5.636z" />
-                    </svg>
-                    {t("arnaques.section.signs")}
-                  </p>
-                  <ul className="space-y-1.5">
-                    {active.signs.map((sign, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
-                        <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-2 shrink-0" />
-                        {sign}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Protection */}
-                <div className="mb-7">
-                  <p className="text-sm font-semibold text-foreground mb-2.5 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                    {t("arnaques.section.protect")}
-                  </p>
-                  <ul className="space-y-1.5">
-                    {active.protect.map((tip, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 shrink-0" />
-                        {tip}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* CTA */}
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/signaler"
-                    className="flex-1 bg-primary hover:bg-primary-dark text-white py-3.5 rounded-xl font-semibold text-sm text-center transition-colors shadow-lg shadow-primary/25"
-                  >
-                    {t("arnaques.cta.report")}
-                  </Link>
-                  <Link
-                    href="/rechercher"
-                    className="flex-1 bg-white/70 hover:bg-white text-foreground py-3.5 rounded-xl font-semibold text-sm text-center transition-colors border border-white/80"
-                  >
-                    {t("arnaques.cta.check")}
-                  </Link>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+            {scams.map((scam) => (
+              <ScamPanel key={scam.id} scam={scam} active={scam.id === activeId} t={t} />
+            ))}
           </div>
         </div>
 

@@ -3,10 +3,11 @@ import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/JsonLd";
+import { SiteJsonLd } from "@/components/JsonLd";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { VisitTracker } from "@/components/VisitTracker";
 import { I18nProvider } from "@/lib/i18n/context";
+import { DEFAULT_OG_IMAGE, SITE_LOCALE, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-heading",
@@ -20,13 +21,11 @@ const inter = Inter({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://stopanarque.bj";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "StopArnaque Bénin — Signalez et vérifiez les arnaques",
-    template: "%s | StopArnaque Bénin",
+    default: "StopArnaque Bénin — Signaler et vérifier une arnaque",
+    template: `%s | ${SITE_NAME}`,
   },
   description:
     "Plateforme béninoise de signalement d'arnaques téléphoniques et en ligne. Signalez un numéro frauduleux, vérifiez un suspect et protégez la communauté.",
@@ -45,9 +44,10 @@ export const metadata: Metadata = {
     "phishing Bénin",
     "signaler arnaque en ligne",
   ],
-  authors: [{ name: "StopArnaque Bénin" }],
-  creator: "StopArnaque Bénin",
-  publisher: "StopArnaque Bénin",
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   category: "security",
   robots: {
     index: true,
@@ -62,31 +62,44 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "fr_BJ",
+    locale: SITE_LOCALE,
+    alternateLocale: ["en_US"],
     url: SITE_URL,
-    siteName: "StopArnaque Bénin",
-    title: "StopArnaque Bénin — Signalez et vérifiez les arnaques",
+    siteName: SITE_NAME,
+    title: "StopArnaque Bénin — Signaler et vérifier une arnaque",
     description:
       "Plateforme béninoise de signalement d'arnaques. Signalez un numéro frauduleux, vérifiez un suspect et protégez la communauté.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "StopArnaque Bénin - Plateforme de signalement d'arnaques",
-      },
-    ],
+    images: [{ ...DEFAULT_OG_IMAGE }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "StopArnaque Bénin — Signalez et vérifiez les arnaques",
+    title: "StopArnaque Bénin — Signaler et vérifier une arnaque",
     description:
       "Plateforme béninoise de signalement d'arnaques. Protégez-vous et protégez les autres.",
-    images: ["/og-image.png"],
+    images: [DEFAULT_OG_IMAGE.url],
   },
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico"],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "StopArnaque",
+    statusBarStyle: "default",
+  },
+  // Renseigner NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION pour valider la propriété
+  // du domaine dans la Search Console sans redéployer de code.
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
   alternates: {
-    canonical: SITE_URL,
+    canonical: "/",
   },
   formatDetection: {
     telephone: false,
@@ -109,9 +122,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning className={`${jakarta.variable} ${inter.variable} h-full antialiased`}>
       <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
-        <OrganizationJsonLd />
-        <WebsiteJsonLd />
+        <SiteJsonLd />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-body" suppressHydrationWarning>
         <I18nProvider>

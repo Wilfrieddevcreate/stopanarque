@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { getScamData } from "@/lib/i18n/arnaques-data";
+import { SITE_NAME, SITE_LANG, SITE_LOCALE, absoluteUrl, breadcrumb } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Guide des arnaques",
@@ -17,10 +19,19 @@ export const metadata: Metadata = {
     "protection arnaque",
   ],
   openGraph: {
-    title: "Guide des arnaques au Bénin | StopArnaque",
+    type: "article",
+    title: `Guide des arnaques au Bénin | ${SITE_NAME}`,
     description:
       "17 types d'arnaques expliqués : comment les reconnaître, exemples réels et conseils de protection.",
-    type: "article",
+    url: absoluteUrl("/arnaques"),
+    siteName: SITE_NAME,
+    locale: SITE_LOCALE,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Guide des arnaques au Bénin | ${SITE_NAME}`,
+    description:
+      "17 types d'arnaques expliqués : les reconnaître, exemples réels et conseils de protection.",
   },
   alternates: {
     canonical: "/arnaques",
@@ -47,19 +58,48 @@ const jsonLdFaq = {
   })),
 };
 
-const jsonLdBreadcrumb = {
+const jsonLdBreadcrumb = breadcrumb([
+  { name: "Accueil", path: "/" },
+  { name: "Guide des arnaques", path: "/arnaques" },
+]);
+
+/**
+ * Catalogue structuré des 17 types d'arnaques : chaque fiche devient une entité
+ * distincte pour les moteurs, avec ses signes d'alerte et ses conseils.
+ */
+const SCAMS = getScamData("fr");
+
+const jsonLdScams = {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Accueil", item: "https://stopanarque.bj" },
-    { "@type": "ListItem", position: 2, name: "Guide des arnaques", item: "https://stopanarque.bj/arnaques" },
-  ],
+  "@type": "ItemList",
+  name: "Types d'arnaques recensés au Bénin",
+  description:
+    "Catalogue des arnaques les plus courantes au Bénin, avec pour chacune sa description, un exemple réel, les signes d'alerte et les conseils de protection.",
+  url: absoluteUrl("/arnaques"),
+  numberOfItems: SCAMS.length,
+  itemListElement: SCAMS.map((scam, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    url: absoluteUrl(`/arnaques#fiche-${scam.id}`),
+    item: {
+      "@type": "Article",
+      name: scam.label,
+      headline: `${scam.label} — ${scam.tagline}`,
+      description: scam.description,
+      url: absoluteUrl(`/arnaques#fiche-${scam.id}`),
+      inLanguage: SITE_LANG,
+      about: { "@type": "Thing", name: scam.label },
+      articleSection: "Guide des arnaques",
+      publisher: { "@type": "Organization", name: SITE_NAME, url: absoluteUrl("/") },
+    },
+  })),
 };
 
 export default function ArnaquesLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFaq) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdScams) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }} />
       {children}
     </>

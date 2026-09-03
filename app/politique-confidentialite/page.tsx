@@ -1,17 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { breadcrumb } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Politique de confidentialité",
   description: "Politique de confidentialité de StopArnaque Bénin — données collectées, finalités, droits des utilisateurs et sécurité.",
-  robots: { index: true, follow: false },
+  alternates: { canonical: "/politique-confidentialite" },
 };
+
+const jsonLdBreadcrumb = breadcrumb([
+  { name: "Accueil", path: "/" },
+  { name: "Politique de confidentialité", path: "/politique-confidentialite" },
+]);
 
 const UPDATED = "31 juillet 2026";
 
 export default function PolitiqueConfidentialitePage() {
   return (
     <div className="py-12 sm:py-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }}
+      />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="mb-10">

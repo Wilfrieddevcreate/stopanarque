@@ -1,17 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { breadcrumb } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Mentions légales",
   description: "Mentions légales de StopArnaque Bénin — éditeur, hébergeur, propriété intellectuelle et responsabilités.",
-  robots: { index: true, follow: false },
+  alternates: { canonical: "/mentions-legales" },
 };
+
+const jsonLdBreadcrumb = breadcrumb([
+  { name: "Accueil", path: "/" },
+  { name: "Mentions légales", path: "/mentions-legales" },
+]);
 
 const UPDATED = "31 juillet 2026";
 
 export default function MentionsLegalesPage() {
   return (
     <div className="py-12 sm:py-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }}
+      />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="mb-10">

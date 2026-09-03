@@ -1,6 +1,6 @@
 import { getPublishedArticles } from "@/lib/articles";
 import { stripHtml } from "@/lib/content";
-import { SITE_LANG, SITE_NAME, absoluteUrl } from "@/lib/seo";
+import { SITE_LANG, SITE_NAME, absoluteUrl, breadcrumb } from "@/lib/seo";
 import { NewsList } from "./NewsList";
 
 /**
@@ -32,11 +32,20 @@ export default async function ActualitesPage() {
     },
   };
 
+  const jsonLdBreadcrumb = breadcrumb([
+    { name: "Accueil", path: "/" },
+    { name: "Actualités", path: "/actualites" },
+  ]);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdList) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }}
       />
       <NewsList
         articles={articles.map((a) => ({
