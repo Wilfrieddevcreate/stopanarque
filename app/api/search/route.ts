@@ -84,8 +84,10 @@ export async function GET(request: NextRequest) {
     };
   }
 
+  const confirmedWhere = { ...whereClause, status: "CONFIRME" };
+
   const reports = await prisma.report.findMany({
-    where: whereClause,
+    where: confirmedWhere,
     select: {
       phoneNumber: true,
       scamType: true,
@@ -97,6 +99,14 @@ export async function GET(request: NextRequest) {
   });
 
   if (reports.length === 0) {
+    // Check if 5+ pending reports exist for this term (without revealing any data)
+    const pendingCount = await prisma.report.count({ where: whereClause });
+    if (pendingCount >= 5) {
+      return NextResponse.json(
+        { result: { pendingReview: true, queryType } },
+        { headers: rateLimitHeaders(remaining, resetAt) }
+      );
+    }
     return NextResponse.json(
       { result: { query: searchTerm, queryType, count: 0, scamTypes: [], phones: [], names: [], platforms: [], urls: [] } },
       { headers: rateLimitHeaders(remaining, resetAt) }

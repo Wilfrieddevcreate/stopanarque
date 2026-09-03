@@ -311,6 +311,18 @@ const translations: Record<string, T4> = {
   "search.found.cta.report": { fr: "Signaler ce contact", en: "Report this contact", fon: "Ðó gbè dó mɛ élɔ́ wu", yo: "Ròyìn ọ̀nà ìbánisọ̀rọ̀ yìí" },
   "search.found.cta.advice": { fr: "Voir tous nos conseils", en: "See all our advice", fon: "Kpɔ́n nǔkplɔ́nkplɔ̌n mǐtɔn lɛ̌ bǐ", yo: "Wo gbogbo ìmọ̀ràn wa" },
 
+  // ── Pending review panel ──
+  "search.pending.badge": { fr: "Examen en cours", en: "Under review", fon: "È ɖò kpɔ́n wɛ̌", yo: "Lábẹ́ àyẹ̀wò" },
+  "search.pending.title": { fr: "Un signalement est en cours d'examen", en: "A report is currently under review", fon: "Gbè ɖokpó ɔ ɖò kpɔ́n wɛ̌", yo: "Ìròyìn kan wà lábẹ́ àyẹ̀wò" },
+  "search.pending.text": { fr: "Plusieurs personnes ont signalé ce contact. Notre équipe vérifie les informations avant de les publier. En attendant, soyez très prudent.", en: "Multiple people have reported this contact. Our team is verifying the information before publishing. In the meantime, be very careful.", fon: "Gbɛtɔ́ lɛ̌ dǒ gbè dó mɛ élɔ́ wu. Sinsɛn mǐtɔn ɖò kpɔ́n nǔ e è ɖɔ lɛ̌ wɛ̌ cobonu è na xlɛ́. Cɔ́ hwiɖée tawun.", yo: "Ọpọ̀ ènìyàn ti ròyìn ọ̀nà ìbánisọ̀rọ̀ yìí. Ẹgbẹ́ wa ń ṣàyẹ̀wò àlàyé náà kí wọ́n tó gbé e jáde. Nígbà yìí, ṣọ́ra púpọ̀." },
+  "search.pending.tip1.title": { fr: "Ne transférez pas d'argent", en: "Don't transfer money", fon: "Ma sɛ́ akwɛ́ ǎ", yo: "Má gbé owó ranse" },
+  "search.pending.tip1.text": { fr: "Aucun paiement avant que notre vérification soit terminée.", en: "No payment until our verification is complete.", fon: "Akwɛ́ ɖě ǎ cobonu kpɔ́n mǐtɔn ɔ bɛ́.", yo: "Kò sí sisanowó títí tí àyẹ̀wò wa fi parí." },
+  "search.pending.tip2.title": { fr: "Ne partagez pas d'informations personnelles", en: "Don't share personal information", fon: "Ma ɖè nǔ e wu hwɛ̌ lɛ̌ bɛ́ ǎ", yo: "Má pín àlàyé tọ̀ọ̀ rẹ" },
+  "search.pending.tip2.text": { fr: "Pas de code OTP, mot de passe, numéro de carte ou photo d'identité.", en: "No OTP code, password, card number or ID photo.", fon: "Kóɖú OTP, xó gbɛ̌ mɛ, kàd nú, alǒ fɔtò kɔ́dɔ̌n towe ǎ.", yo: "Kò sí koodu OTP, ọ̀rọ̀ àṣírí, nọ́mbà kàdì, tàbí fọ́tò ìdánimọ̀." },
+  "search.pending.tip3.title": { fr: "Signalez si vous êtes victimes", en: "Report if you are a victim", fon: "Ðó gbè nú é nyí wɛ̌ è hu hwɛ towe", yo: "Ròyìn bí o bá jẹ́ olùjìyà" },
+  "search.pending.tip3.text": { fr: "Votre témoignage accélère la vérification et protège d'autres personnes.", en: "Your testimony speeds up verification and protects others.", fon: "Nǔ e hwɛjijɔ towe ɖɔ ɔ nɔ lɛ́ vɛ́ kpɔ́n ɔ bo hɛn gbɛtɔ́ ɖěvo lɛ̌.", yo: "Ẹ̀rí rẹ yóò yára àyẹ̀wò kí ó sì dáàbòbò àwọn ẹlòmíràn." },
+  "search.pending.cta": { fr: "Signaler ce contact", en: "Report this contact", fon: "Ðó gbè dó mɛ élɔ́ wu", yo: "Ròyìn ọ̀nà ìbánisọ̀rọ̀ yìí" },
+
   // ── Tips — Phone ──
   "tip.phone.1.title": { fr: "Absent ≠ sûr", en: "Absent ≠ safe", fon: "È ma ɖè ɖě ǎ ≠ é nyí zɔ́", yo: "Kò sí ≠ ààbò" },
   "tip.phone.1.text": { fr: "Absent de notre base ne garantit pas sa fiabilité.", en: "Not in our database doesn't guarantee reliability.", fon: "Nú è ma ɖè ɖě ɖò dátabási mǐtɔn mɛ ǎ ɔ, é ma ɖɔ é nyí zɔ́ ɖě ǎ.", yo: "Kíkọ wà nínú àkójọ wa kò túmọ̀ sí pé ó ní ìgbẹ́kẹ̀lé." },

@@ -16,6 +16,7 @@ interface SearchResult {
   names: string[];
   platforms: string[];
   urls: string[];
+  pendingReview?: boolean;
 }
 
 const URL_RE_CLIENT = /^(https?:\/\/)?([\w-]+\.)+[\w]{2,}(\/\S*)?$/i;
@@ -171,13 +172,15 @@ function SearchView() {
           <AnimatePresence mode="wait">
             {searched && (
               <motion.div
-                key={result?.count ?? "empty"}
+                key={result?.pendingReview ? "pending" : (result?.count ?? "empty")}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                {result && result.count > 0 ? (
+                {result?.pendingReview ? (
+                  <PendingReviewPanel />
+                ) : result && result.count > 0 ? (
                   <div className="space-y-4">
                     {/* Result card */}
                     <div className={`rounded-2xl border p-6 sm:p-8 ${risk!.bgColor}`}>
@@ -365,6 +368,95 @@ function FoundResultAdvice({ count }: { count: number }) {
         >
           {t("search.found.cta.advice")}
         </a>
+      </div>
+    </div>
+  );
+}
+
+function PendingReviewPanel() {
+  const { t } = useI18n();
+
+  const tips = [
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      title: t("search.pending.tip1.title"),
+      text: t("search.pending.tip1.text"),
+      color: "text-danger bg-danger/5 border-danger/20",
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      ),
+      title: t("search.pending.tip2.title"),
+      text: t("search.pending.tip2.text"),
+      color: "text-amber-700 bg-amber-50 border-amber-200",
+    },
+    {
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+        </svg>
+      ),
+      title: t("search.pending.tip3.title"),
+      text: t("search.pending.tip3.text"),
+      color: "text-primary bg-primary/5 border-primary/20",
+    },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* Warning banner */}
+      <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-6 sm:p-8">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center shrink-0">
+            <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <span className="inline-block text-xs font-bold uppercase tracking-widest text-amber-600 bg-amber-100 border border-amber-300 px-2.5 py-0.5 rounded-full mb-1">
+              {t("search.pending.badge")}
+            </span>
+            <h3 className="text-lg font-bold text-amber-900">{t("search.pending.title")}</h3>
+          </div>
+        </div>
+        <p className="text-sm text-amber-800 leading-relaxed">{t("search.pending.text")}</p>
+      </div>
+
+      {/* Tips */}
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted mb-4">{t("search.found.title")}</p>
+        <div className="space-y-3">
+          {tips.map((tip, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className={`flex gap-3 rounded-xl border p-4 ${tip.color}`}
+            >
+              <span className="shrink-0 mt-0.5">{tip.icon}</span>
+              <div>
+                <p className="text-sm font-semibold mb-0.5">{tip.title}</p>
+                <p className="text-xs leading-relaxed opacity-80">{tip.text}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <div className="mt-5">
+          <a
+            href="/signaler"
+            className="w-full block text-center bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-xl text-sm transition-colors"
+          >
+            {t("search.pending.cta")}
+          </a>
+        </div>
       </div>
     </div>
   );
