@@ -333,10 +333,10 @@ function HowItWorks() {
 }
 
 const ALL_NOTIFS = [
-  { type: "danger", icon: "!", title: "Appel suspect détecté", sub: "+229 97 12 34 56 · Signalé 4 fois", time: "à l'instant" },
+  { type: "danger", icon: "!", title: "Appel suspect détecté", sub: "+229 97 ●● ●● ●● · Signalé 4 fois", time: "à l'instant" },
   { type: "warning", icon: "?", title: "SMS frauduleux signalé", sub: "Faux Mobile Money — Vérification", time: "il y a 1 min" },
   { type: "success", icon: "✓", title: "Arnaque confirmée", sub: "Numéro ajouté à la base", time: "il y a 3 min" },
-  { type: "danger", icon: "!", title: "Usurpation d'identité", sub: "+229 61 98 76 54 · Nouveau", time: "à l'instant" },
+  { type: "danger", icon: "!", title: "Usurpation d'identité", sub: "+229 61 ●● ●● ●● · Nouveau", time: "à l'instant" },
   { type: "warning", icon: "?", title: "Faux conseiller bancaire", sub: "UBA Bénin — Signalé 7 fois", time: "il y a 2 min" },
 ];
 
