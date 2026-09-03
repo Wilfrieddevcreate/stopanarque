@@ -359,7 +359,8 @@ export default function SecuritePage() {
 // ── MFA Setup Section ─────────────────────────────────────────────────────────
 
 export function MfaSetup() {
-  const [step, setStep] = useState<"idle" | "scan" | "done">("idle");
+  const [step, setStep] = useState<"idle" | "scan" | "done" | "backup">("idle");
+  const [backupCodes, setBackupCodes] = useState<string[]>([]);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const [secret, setSecret] = useState<string | null>(null);
   const [token, setToken] = useState("");
@@ -403,7 +404,8 @@ export function MfaSetup() {
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error); setToken(""); return; }
-      setStep("done");
+      setBackupCodes(data.backupCodes ?? []);
+      setStep("backup");
       setMfaEnabled(true);
     } catch {
       setError("Erreur serveur");
@@ -480,6 +482,26 @@ export function MfaSetup() {
               {loading ? "..." : "Activer"}
             </button>
           </form>
+        </div>
+      )}
+
+      {step === "backup" && backupCodes.length > 0 && (
+        <div className="space-y-4">
+          <div className="bg-amber-50 border border-amber-300 rounded-xl p-4">
+            <p className="text-sm font-bold text-amber-900 mb-1">⚠ Sauvegardez ces codes maintenant</p>
+            <p className="text-xs text-amber-800 mb-3">Ces 8 codes de secours s'affichent une seule fois. Si vous perdez votre téléphone, utilisez-en un pour vous connecter. Chaque code ne peut être utilisé qu'une fois.</p>
+            <div className="grid grid-cols-2 gap-2">
+              {backupCodes.map((c, i) => (
+                <div key={i} className="font-mono text-sm bg-white border border-amber-200 rounded-lg px-3 py-1.5 text-center select-all">{c}</div>
+              ))}
+            </div>
+          </div>
+          <button
+            onClick={() => setStep("done")}
+            className="w-full bg-success hover:bg-success/90 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors"
+          >
+            J'ai sauvegardé mes codes
+          </button>
         </div>
       )}
 

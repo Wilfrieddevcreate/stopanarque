@@ -27,6 +27,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const ct = request.headers.get("content-type") ?? "";
+  if (!ct.includes("application/json")) {
+    return NextResponse.json({ error: "Content-Type application/json requis" }, { status: 415 });
+  }
+
   try {
     const body = await request.json().catch(() => null);
     if (!body?.email || !body?.password) {

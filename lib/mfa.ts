@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import QRCode from "qrcode";
+import bcrypt from "bcryptjs";
 
 const APP_NAME = "StopAnarque";
 const PERIOD = 30;
@@ -92,4 +93,44 @@ export function generateTotpSetup(email: string): { secret: string; otpauthUrl: 
   const secret = generateTotpSecret();
   const otpauthUrl = buildOtpauthUrl(email, secret);
   return { secret, otpauthUrl };
+}
+
+// ── Backup codes ─────────────────────────────────────────────────────────────
+
+const BACKUP_CODE_COUNT = 8;
+
+/** Generate plaintext backup codes + their bcrypt hashes (for storage). */
+export async function generateBackupCodes(): Promise<{
+  plainCodes: string[];
+  hashedCodes: string[];
+}> {
+  const plainCodes = Array.from({ length: BACKUP_CODE_COUNT }, () =>
+    crypto.randomBytes(5).toString("hex").toUpperCase() // e.g. "A1B2C3D4E5"
+  );
+  const hashedCodes = await Promise.all(
+    plainCodes.map((c) => bcrypt.hash(c, 10))
+  );
+  return { plainCodes, hashedCodes };
+}
+
+/**
+ * Try to consume a backup code. Returns true and removes the code if valid.
+ * storedJson is the JSON array of bcrypt hashes stored in the DB.
+ * Returns { valid, remaining } — persist `remaining` if valid.
+ */
+export async function consumeBackupCode(
+  inputCode: string,
+  storedJson: string
+): Promise<{ valid: boolean; remaining: string[] }> {
+  let hashes: string[] = [];
+  try { hashes = JSON.parse(storedJson); } catch { return { valid: false, remaining: [] }; }
+
+  const upper = inputCode.replace(/\s/g, "").toUpperCase();
+  for (let i = 0; i < hashes.length; i++) {
+    if (await bcrypt.compare(upper, hashes[i])) {
+      const remaining = [...hashes.slice(0, i), ...hashes.slice(i + 1)];
+      return { valid: true, remaining };
+    }
+  }
+  return { valid: false, remaining: hashes };
 }

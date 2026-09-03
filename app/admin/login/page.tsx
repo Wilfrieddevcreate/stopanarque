@@ -225,16 +225,16 @@ export default function AdminLoginPage() {
                 <input
                   type="text"
                   inputMode="numeric"
-                  pattern="\d{6}"
-                  maxLength={6}
+                  maxLength={10}
                   required
                   autoFocus
                   value={mfaToken}
-                  onChange={(e) => setMfaToken(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  onChange={(e) => setMfaToken(e.target.value.replace(/[\s-]/g, "").slice(0, 10))}
                   disabled={loading}
                   className="w-full px-4 py-3 rounded-xl border border-border bg-white text-center text-xl font-mono tracking-widest focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                   placeholder="000000"
                 />
+                <p className="text-xs text-muted text-center">Code à 6 chiffres (appli) ou code de secours à 10 caractères</p>
               </div>
 
               <motion.button
