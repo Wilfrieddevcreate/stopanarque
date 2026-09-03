@@ -4,52 +4,39 @@ import { motion } from "framer-motion";
 
 export function HeroBackground() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Animated gradient orbs - Benin green/yellow */}
-      <motion.div
-        className="absolute -top-40 -right-40 w-96 h-96 bg-primary/10 rounded-full blur-3xl"
-        animate={{ x: [0, 30, 0], y: [0, -20, 0], scale: [1, 1.1, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute -bottom-20 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl"
-        animate={{ x: [0, -20, 0], y: [0, 30, 0], scale: [1, 1.15, 1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/5 rounded-full blur-3xl"
-        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      {/* Static blobs — blur-3xl is already visually smooth without JS animation */}
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/8 rounded-full blur-3xl" />
+      <div className="absolute -bottom-20 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
 
-      {/* Grid pattern */}
+      {/* Dot grid */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.025]"
         style={{
-          backgroundImage: `radial-gradient(circle, #E8112D 1px, transparent 1px)`,
+          backgroundImage: "radial-gradient(circle, #E8112D 1px, transparent 1px)",
           backgroundSize: "32px 32px",
         }}
       />
 
-      {/* Floating shield icons */}
+      {/* Floating shield icons — y only, GPU composited */}
       {[
-        { top: "15%", left: "10%", delay: 0, size: 20 },
-        { top: "25%", right: "15%", delay: 1.5, size: 16 },
-        { top: "60%", left: "8%", delay: 3, size: 14 },
-        { top: "70%", right: "10%", delay: 2, size: 18 },
-        { top: "40%", left: "85%", delay: 4, size: 12 },
+        { top: "15%", left: "10%", delay: 0, size: 18 },
+        { top: "25%", right: "15%", delay: 1.8, size: 14 },
+        { top: "62%", left: "8%", delay: 3.2, size: 13 },
+        { top: "68%", right: "10%", delay: 2.2, size: 16 },
       ].map((item, i) => (
         <motion.div
           key={i}
-          className="absolute text-primary/15"
-          style={{ top: item.top, left: item.left, right: item.right }}
-          animate={{
-            y: [0, -15, 0],
-            rotate: [0, 5, -5, 0],
-            opacity: [0.15, 0.3, 0.15],
+          className="absolute text-primary/12"
+          style={{
+            top: item.top,
+            left: item.left,
+            right: item.right,
+            willChange: "transform",
           }}
+          animate={{ y: [0, -12, 0] }}
           transition={{
-            duration: 4 + i,
+            duration: 5 + i * 0.7,
             repeat: Infinity,
             delay: item.delay,
             ease: "easeInOut",

@@ -7,6 +7,7 @@ import { SiteJsonLd } from "@/components/JsonLd";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { VisitTracker } from "@/components/VisitTracker";
 import { I18nProvider } from "@/lib/i18n/context";
+import { MotionConfig } from "framer-motion";
 import { DEFAULT_OG_IMAGE, SITE_LOCALE, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const spaceGrotesk = Space_Grotesk({
@@ -120,11 +121,13 @@ export default function RootLayout({
         <SiteJsonLd />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-body" suppressHydrationWarning>
-        <I18nProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </I18nProvider>
+        <MotionConfig reducedMotion="user">
+          <I18nProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </I18nProvider>
+        </MotionConfig>
         <ServiceWorkerRegister />
         <VisitTracker />
       </body>

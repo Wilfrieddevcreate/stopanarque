@@ -38,15 +38,15 @@ export function HeroIllustration() {
             <stop offset="0%" stopColor="#0f172a" />
             <stop offset="100%" stopColor="#1e293b" />
           </linearGradient>
-          {/* Card drop shadows */}
-          <filter id="fSh" x="-40%" y="-40%" width="180%" height="180%">
-            <feDropShadow dx="0" dy="6" stdDeviation="18" floodColor="#E8112D" floodOpacity="0.30" />
+          {/* Card shadows — stdDeviation réduit pour perf GPU */}
+          <filter id="fSh" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="5" stdDeviation="10" floodColor="#E8112D" floodOpacity="0.28" />
           </filter>
-          <filter id="fCd" x="-25%" y="-25%" width="150%" height="150%">
-            <feDropShadow dx="0" dy="10" stdDeviation="18" floodColor="#1e293b" floodOpacity="0.11" />
+          <filter id="fCd" x="-18%" y="-18%" width="136%" height="136%">
+            <feDropShadow dx="0" dy="6" stdDeviation="10" floodColor="#1e293b" floodOpacity="0.10" />
           </filter>
-          <filter id="fDk" x="-15%" y="-30%" width="130%" height="170%">
-            <feDropShadow dx="0" dy="14" stdDeviation="22" floodColor="#E8112D" floodOpacity="0.14" />
+          <filter id="fDk" x="-12%" y="-22%" width="124%" height="150%">
+            <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#E8112D" floodOpacity="0.12" />
           </filter>
         </defs>
 
@@ -199,24 +199,16 @@ export function HeroIllustration() {
 
       {/* Floating ambient dots */}
       <motion.div
-        animate={{ y: [0, -16, 0] }}
-        transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-12 right-4 w-5 h-5 rounded-full bg-primary/12"
+        animate={{ y: [0, -14, 0] }}
+        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+        style={{ willChange: "transform" }}
+        className="absolute top-12 right-4 w-4 h-4 rounded-full bg-primary/12"
       />
       <motion.div
-        animate={{ y: [0, 13, 0] }}
-        transition={{ duration: 3.9, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
-        className="absolute bottom-28 right-2 w-3.5 h-3.5 rounded-full bg-success/20"
-      />
-      <motion.div
-        animate={{ y: [0, -9, 0], x: [0, 4, 0] }}
-        transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 2.1 }}
-        className="absolute top-1/2 left-1 w-3 h-3 rounded-full bg-accent/28"
-      />
-      <motion.div
-        animate={{ scale: [1, 1.6, 1], opacity: [0.2, 0.5, 0.2] }}
-        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-        className="absolute top-16 right-14 w-2 h-2 rounded-full bg-primary/40"
+        animate={{ y: [0, 11, 0] }}
+        transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
+        style={{ willChange: "transform" }}
+        className="absolute bottom-28 right-2 w-3 h-3 rounded-full bg-success/18"
       />
     </motion.div>
   );

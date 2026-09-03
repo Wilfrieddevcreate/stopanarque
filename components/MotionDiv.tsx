@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 
+const gpuStyle = { willChange: "transform" } as const;
+
 export function FadeIn({
   children,
   className,
@@ -13,9 +15,10 @@ export function FadeIn({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
+      transition={{ duration: 0.4, delay, ease: "easeOut" }}
+      style={gpuStyle}
       className={className}
     >
       {children}
@@ -34,10 +37,11 @@ export function FadeInUp({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      style={gpuStyle}
       className={className}
     >
       {children}
@@ -56,10 +60,11 @@ export function ScaleIn({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
+      initial={{ opacity: 0, scale: 0.92 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay, type: "spring", stiffness: 100 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.45, delay, ease: "easeOut" }}
+      style={gpuStyle}
       className={className}
     >
       {children}
@@ -78,10 +83,11 @@ export function SlideInLeft({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -60 }}
+      initial={{ opacity: 0, x: -32 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      style={gpuStyle}
       className={className}
     >
       {children}
@@ -100,10 +106,11 @@ export function SlideInRight({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: 60 }}
+      initial={{ opacity: 0, x: 32 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      style={gpuStyle}
       className={className}
     >
       {children}
@@ -122,9 +129,9 @@ export function StaggerContainer({
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
+      viewport={{ once: true, margin: "-40px" }}
       variants={{
-        visible: { transition: { staggerChildren: 0.15 } },
+        visible: { transition: { staggerChildren: 0.1 } },
       }}
       className={className}
     >
@@ -143,9 +150,10 @@ export function StaggerItem({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
       }}
+      style={gpuStyle}
       className={className}
     >
       {children}
