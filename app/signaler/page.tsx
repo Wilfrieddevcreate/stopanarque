@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Swal from "sweetalert2";
+// SweetAlert2 : import dynamique — ne charge que si l'utilisateur déclenche une alerte
+const swal = () => import("sweetalert2").then((m) => m.default);
 import { SCAM_TYPES, PLATFORMS } from "@/lib/types";
 import { FadeIn } from "@/components/MotionDiv";
 import { useI18n } from "@/lib/i18n/context";
@@ -110,7 +111,7 @@ export default function SignalerPage() {
 
       const res = await fetch("/api/reports", { method: "POST", body: fd });
       if (res.status === 429) {
-        await Swal.fire({ icon: "warning", title: "Trop de signalements", text: "Veuillez patienter une minute.", confirmButtonColor: "#E8112D" });
+        await (await swal()).fire({ icon: "warning", title: "Trop de signalements", text: "Veuillez patienter une minute.", confirmButtonColor: "#E8112D" });
         return;
       }
       if (!res.ok) {
@@ -119,7 +120,7 @@ export default function SignalerPage() {
       }
 
       const data = await res.json();
-      await Swal.fire({
+      await (await swal()).fire({
         icon: "success",
         title: t("report.success.title"),
         html: `
@@ -148,7 +149,7 @@ export default function SignalerPage() {
       setIncidentDate(""); setContactEmail(""); setIsAttemptOnly(false);
       setFiles([]); setErrors({}); setStep(1);
     } catch (err) {
-      await Swal.fire({
+      await (await swal()).fire({
         icon: "error",
         title: "Erreur",
         text: err instanceof Error ? err.message : "Une erreur est survenue. Veuillez réessayer.",

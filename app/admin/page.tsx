@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import Swal from "sweetalert2";
+const swal = () => import("sweetalert2").then((m) => m.default);
 import { STATUS_LABELS, STATUS_COLORS, type ReportStatus } from "@/lib/types";
 import { FadeIn } from "@/components/MotionDiv";
 
@@ -299,7 +299,7 @@ export default function AdminDashboard() {
   }
 
   async function handleAction(reportId: string, action: string, label: string) {
-    const result = await Swal.fire({
+    const result = await (await swal()).fire({
       title: `${label} ce signalement ?`,
       input: "textarea",
       inputLabel: "Commentaire (optionnel)",
@@ -319,7 +319,7 @@ export default function AdminDashboard() {
       if (res.ok) {
         await refreshAll();
         closeModal();
-        await Swal.fire({
+        await (await swal()).fire({
           icon: "success",
           title: "Action effectuée",
           timer: 1500,
@@ -327,7 +327,7 @@ export default function AdminDashboard() {
         });
       }
     } catch {
-      await Swal.fire({ icon: "error", title: "Erreur" });
+      await (await swal()).fire({ icon: "error", title: "Erreur" });
     }
   }
 

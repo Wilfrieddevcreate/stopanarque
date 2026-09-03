@@ -3,8 +3,14 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Swal from "sweetalert2";
-import { RichEditor } from "@/components/RichEditor";
+import dynamic from "next/dynamic";
+
+// Imports dynamiques — TipTap (~80 kB) et SweetAlert2 (~40 kB) ne chargent qu'à l'usage
+const RichEditor = dynamic(() => import("@/components/RichEditor").then((m) => m.RichEditor), {
+  ssr: false,
+  loading: () => <div className="h-40 bg-gray-100 animate-pulse rounded-xl" />,
+});
+const swal = () => import("sweetalert2").then((m) => m.default);
 
 const CATEGORIES = ["Alerte", "Conseil", "Actualité", "Communiqué"];
 
@@ -68,11 +74,11 @@ export function ArticleForm({ initial, articleId }: { initial?: Partial<FormData
 
   async function uploadFile(file: File) {
     if (!["image/jpeg", "image/png", "image/webp", "image/gif"].includes(file.type)) {
-      await Swal.fire({ icon: "error", title: "Format invalide", text: "JPG, PNG, WebP ou GIF uniquement.", confirmButtonColor: "#E8112D" });
+      await (await swal()).fire({ icon: "error", title: "Format invalide", text: "JPG, PNG, WebP ou GIF uniquement.", confirmButtonColor: "#E8112D" });
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      await Swal.fire({ icon: "error", title: "Fichier trop lourd", text: "Taille maximale : 5 Mo.", confirmButtonColor: "#E8112D" });
+      await (await swal()).fire({ icon: "error", title: "Fichier trop lourd", text: "Taille maximale : 5 Mo.", confirmButtonColor: "#E8112D" });
       return;
     }
     setUploading(true);
@@ -84,7 +90,7 @@ export function ArticleForm({ initial, articleId }: { initial?: Partial<FormData
       if (!res.ok) throw new Error(data.error || "Erreur upload");
       set("coverImage", data.url);
     } catch (e: unknown) {
-      await Swal.fire({ icon: "error", title: "Erreur", text: e instanceof Error ? e.message : "Upload échoué", confirmButtonColor: "#E8112D" });
+      await (await swal()).fire({ icon: "error", title: "Erreur", text: e instanceof Error ? e.message : "Upload échoué", confirmButtonColor: "#E8112D" });
     } finally {
       setUploading(false);
     }
@@ -92,7 +98,7 @@ export function ArticleForm({ initial, articleId }: { initial?: Partial<FormData
 
   async function handleSave(publish?: boolean) {
     if (!form.title.trim() || !form.excerpt.trim() || htmlIsEmpty(form.content)) {
-      await Swal.fire({ icon: "warning", title: "Champs requis", text: "Le titre, le résumé et le contenu en Français sont obligatoires.", confirmButtonColor: "#E8112D" });
+      await (await swal()).fire({ icon: "warning", title: "Champs requis", text: "Le titre, le résumé et le contenu en Français sont obligatoires.", confirmButtonColor: "#E8112D" });
       setLang("fr");
       return;
     }
@@ -111,11 +117,11 @@ export function ArticleForm({ initial, articleId }: { initial?: Partial<FormData
         const d = await res.json();
         throw new Error(d.error || "Erreur serveur");
       }
-      await Swal.fire({ icon: "success", title: isEdit ? "Article mis à jour" : "Article créé", timer: 1500, showConfirmButton: false });
+      await (await swal()).fire({ icon: "success", title: isEdit ? "Article mis à jour" : "Article créé", timer: 1500, showConfirmButton: false });
       router.push("/admin/actualites");
       router.refresh();
     } catch (e: unknown) {
-      await Swal.fire({ icon: "error", title: "Erreur", text: e instanceof Error ? e.message : "Erreur inconnue", confirmButtonColor: "#E8112D" });
+      await (await swal()).fire({ icon: "error", title: "Erreur", text: e instanceof Error ? e.message : "Erreur inconnue", confirmButtonColor: "#E8112D" });
     } finally {
       setSaving(false);
     }

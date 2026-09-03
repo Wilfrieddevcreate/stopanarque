@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Swal from "sweetalert2";
+const swal = () => import("sweetalert2").then((m) => m.default);
 import { stripHtml } from "@/lib/content";
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -56,7 +56,7 @@ export default function AdminActualitesPage() {
   }
 
   async function handleDelete(article: Article) {
-    const result = await Swal.fire({
+    const result = await (await swal()).fire({
       title: "Supprimer cet article ?",
       text: article.title,
       icon: "warning",
