@@ -142,9 +142,17 @@ export default function ConseilsPage() {
           </p>
         </FadeInUp>
 
-        {/* Tabs */}
+        {/* Tabs.
+            En dessous de `sm` (640px), "Reconnaître" + son icône dépasse la
+            largeur des petits téléphones (~360px et moins) : la barre à largeur
+            libre (inline-flex) débordait du viewport des deux côtés, rendant
+            "Prévenir" et "Réagir" inatteignables. La grille à 3 colonnes égales
+            (minmax(0,1fr)) ne peut structurellement pas dépasser son conteneur ;
+            le libellé s'enroule sur deux lignes si besoin plutôt que de sortir
+            de la pastille. À partir de `sm`, la barre reprend sa largeur libre
+            d'origine, identique à avant. */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex bg-gray-100 rounded-2xl p-1.5 gap-1">
+          <div className="grid grid-cols-3 gap-1 w-full max-w-sm rounded-2xl bg-gray-100 p-1.5 sm:inline-flex sm:w-auto sm:max-w-none">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
@@ -152,7 +160,7 @@ export default function ConseilsPage() {
                 aria-expanded={activeTab === tab.id}
                 aria-controls={`section-${tab.id}`}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                className={`relative flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-1.5 py-2 sm:px-5 sm:py-3 rounded-xl text-xs sm:text-sm font-semibold text-center leading-tight transition-colors ${
                   activeTab === tab.id ? "text-white" : "text-gray-500 hover:text-foreground"
                 }`}
               >
@@ -163,7 +171,7 @@ export default function ConseilsPage() {
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
-                <svg className="w-4 h-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 relative z-10 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={tab.icon} />
                 </svg>
                 <span className="relative z-10">{t(tab.labelKey)}</span>
