@@ -355,3 +355,146 @@ export default function SecuritePage() {
     </motion.div>
   );
 }
+
+// ── MFA Setup Section ─────────────────────────────────────────────────────────
+
+export function MfaSetup() {
+  const [step, setStep] = useState<"idle" | "scan" | "done">("idle");
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const [secret, setSecret] = useState<string | null>(null);
+  const [token, setToken] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [mfaEnabled, setMfaEnabled] = useState(false);
+  const [disabling, setDisabling] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/admin/me").then(r => r.json()).then(d => {
+      if (d.mfaEnabled) setMfaEnabled(true);
+    }).catch(() => {});
+  }, []);
+
+  async function startSetup() {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/auth/mfa");
+      const data = await res.json();
+      if (!res.ok) { setError(data.error); return; }
+      setQrDataUrl(data.qrDataUrl);
+      setSecret(data.secret);
+      setStep("scan");
+    } catch {
+      setError("Erreur serveur");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function activate(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/auth/mfa", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "activate", token }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error); setToken(""); return; }
+      setStep("done");
+      setMfaEnabled(true);
+    } catch {
+      setError("Erreur serveur");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function disable() {
+    setDisabling(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/auth/mfa", { method: "DELETE" });
+      if (res.ok) { setMfaEnabled(false); setStep("idle"); }
+    } catch {
+      setError("Erreur serveur");
+    } finally {
+      setDisabling(false);
+    }
+  }
+
+  return (
+    <div className="bg-white rounded-2xl border border-border p-6">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="font-semibold text-foreground">Double authentification (MFA)</h3>
+          <p className="text-xs text-muted mt-0.5">Protège votre compte même si votre mot de passe est compromis.</p>
+        </div>
+        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${mfaEnabled ? "bg-success/10 text-success" : "bg-gray-100 text-gray-500"}`}>
+          {mfaEnabled ? "Activée" : "Désactivée"}
+        </span>
+      </div>
+
+      {error && <p className="text-xs text-danger mb-4">{error}</p>}
+
+      {step === "idle" && !mfaEnabled && (
+        <button
+          onClick={startSetup}
+          disabled={loading}
+          className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors"
+        >
+          {loading ? "Chargement..." : "Configurer la MFA"}
+        </button>
+      )}
+
+      {step === "scan" && qrDataUrl && (
+        <div className="space-y-4">
+          <p className="text-sm text-muted">Scannez ce QR code avec Google Authenticator, Authy ou toute appli TOTP.</p>
+          <div className="flex justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={qrDataUrl} alt="QR code MFA" className="w-48 h-48 rounded-xl border border-border" />
+          </div>
+          {secret && (
+            <div className="bg-gray-50 rounded-xl p-3 text-center">
+              <p className="text-xs text-muted mb-1">Ou entrez ce code manuellement</p>
+              <p className="font-mono text-sm font-semibold tracking-widest select-all">{secret}</p>
+            </div>
+          )}
+          <form onSubmit={activate} className="flex gap-3">
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={6}
+              placeholder="000000"
+              value={token}
+              onChange={(e) => setToken(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              className="flex-1 px-4 py-2.5 rounded-xl border border-border text-center font-mono tracking-widest text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            />
+            <button
+              type="submit"
+              disabled={loading || token.length !== 6}
+              className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
+            >
+              {loading ? "..." : "Activer"}
+            </button>
+          </form>
+        </div>
+      )}
+
+      {(step === "done" || (step === "idle" && mfaEnabled)) && (
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-success font-medium">✓ MFA active sur votre compte</p>
+          <button
+            onClick={disable}
+            disabled={disabling}
+            className="text-xs text-danger hover:underline disabled:opacity-50 transition-colors"
+          >
+            {disabling ? "..." : "Désactiver"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

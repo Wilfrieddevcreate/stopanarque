@@ -35,6 +35,10 @@ export default function SuiviPage() {
   const [result, setResult] = useState<TrackingResult | null>(null);
   const [searched, setSearched] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleted, setDeleted] = useState(false);
 
   async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -55,6 +59,28 @@ export default function SuiviPage() {
   }
 
   const step = result ? STATUS_STEP[result.status] || 1 : 0;
+
+  async function handleDelete() {
+    if (!result) return;
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      const res = await fetch(`/api/tracking?code=${encodeURIComponent(result.trackingCode)}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok) {
+        setDeleteError(data.error || "Erreur lors de la suppression.");
+        setDeleteConfirm(false);
+        return;
+      }
+      setDeleted(true);
+      setResult(null);
+    } catch {
+      setDeleteError("Impossible de contacter le serveur.");
+    } finally {
+      setDeleting(false);
+      setDeleteConfirm(false);
+    }
+  }
 
   return (
     <div className="py-12 sm:py-20">
@@ -83,6 +109,18 @@ export default function SuiviPage() {
               {loading ? "..." : t("tracking.button")}
             </motion.button>
           </form>
+
+          {deleted && (
+            <div className="rounded-2xl border border-success/30 bg-success/5 p-6 text-center mb-6">
+              <div className="w-12 h-12 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg className="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p className="font-semibold text-foreground mb-1">Signalement supprimé</p>
+              <p className="text-sm text-muted">Vos données ont été effacées de notre système.</p>
+            </div>
+          )}
 
           <AnimatePresence mode="wait">
             {searched && (
@@ -222,6 +260,41 @@ export default function SuiviPage() {
                             </div>
                           ))}
                         </div>
+                      </div>
+                    )}
+
+                    {/* Right to erasure — only for non-confirmed reports */}
+                    {result.status !== "CONFIRME" && (
+                      <div className="border-t border-border pt-5">
+                        {!deleteConfirm ? (
+                          <button
+                            onClick={() => setDeleteConfirm(true)}
+                            className="text-xs text-gray-400 hover:text-danger transition-colors underline underline-offset-2"
+                          >
+                            Supprimer mon signalement
+                          </button>
+                        ) : (
+                          <div className="rounded-xl border border-danger/20 bg-danger/5 p-4">
+                            <p className="text-sm font-semibold text-danger mb-1">Confirmer la suppression ?</p>
+                            <p className="text-xs text-muted mb-4">Cette action est irréversible. Votre signalement et toutes les pièces jointes seront définitivement effacés.</p>
+                            {deleteError && <p className="text-xs text-danger mb-3">{deleteError}</p>}
+                            <div className="flex gap-3">
+                              <button
+                                onClick={handleDelete}
+                                disabled={deleting}
+                                className="flex-1 bg-danger hover:bg-danger/90 disabled:opacity-50 text-white text-sm font-semibold py-2 rounded-lg transition-colors"
+                              >
+                                {deleting ? "Suppression..." : "Oui, supprimer"}
+                              </button>
+                              <button
+                                onClick={() => { setDeleteConfirm(false); setDeleteError(null); }}
+                                className="flex-1 border border-border hover:bg-gray-50 text-foreground text-sm font-medium py-2 rounded-lg transition-colors"
+                              >
+                                Annuler
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

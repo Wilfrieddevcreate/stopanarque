@@ -58,6 +58,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // If MFA is enabled, do NOT create a session yet — return a signal for step 2
+    if (user.mfaEnabled) {
+      return NextResponse.json(
+        { requiresMfa: true, userId: user.id },
+        { headers: rateLimitHeaders(remaining, resetAt) }
+      );
+    }
+
     await createSession(user.id);
     return NextResponse.json(
       { success: true, user: { id: user.id, name: user.name } },

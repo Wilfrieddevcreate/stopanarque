@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { allowedEnum, optStr, REPORT_STATUSES, ADMIN_ACTIONS } from "@/lib/validation";
+import { decrypt } from "@/lib/crypto";
 
 const PAGE_SIZE = 20;
 
@@ -32,7 +33,10 @@ export async function GET(request: NextRequest) {
   });
 
   const hasMore = reports.length > PAGE_SIZE;
-  const data = hasMore ? reports.slice(0, PAGE_SIZE) : reports;
+  const data = (hasMore ? reports.slice(0, PAGE_SIZE) : reports).map((r) => ({
+    ...r,
+    contactEmail: decrypt(r.contactEmail),
+  }));
   const nextCursor = hasMore ? data[data.length - 1].id : null;
 
   return NextResponse.json({ reports: data, nextCursor });

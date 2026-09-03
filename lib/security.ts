@@ -164,8 +164,17 @@ export async function logThreat(opts: LogThreatOptions): Promise<boolean> {
   return false;
 }
 
-// ── Cleanup helper (cron-like, called lazily) ──────────────────────────────────
+// ── Cleanup helpers (called lazily) ───────────────────────────────────────────
 
 export async function pruneExpiredBans(): Promise<void> {
   await prisma.securityBan.deleteMany({ where: { expiresAt: { lt: new Date() } } });
+}
+
+/** Purge SecurityEvent and PageVisit records older than retentionDays (default 90). */
+export async function pruneOldLogs(retentionDays = 90): Promise<void> {
+  const cutoff = new Date(Date.now() - retentionDays * 24 * 60 * 60 * 1000);
+  await Promise.all([
+    prisma.securityEvent.deleteMany({ where: { createdAt: { lt: cutoff } } }),
+    prisma.pageVisit.deleteMany({ where: { createdAt: { lt: cutoff } } }),
+  ]);
 }

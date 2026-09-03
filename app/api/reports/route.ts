@@ -10,6 +10,7 @@ import {
 } from "@/lib/validation";
 import { checkBan } from "@/lib/security";
 import path from "path";
+import { encrypt } from "@/lib/crypto";
 
 const MAX_FILES = 5;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -135,7 +136,7 @@ export async function POST(request: NextRequest) {
       suspectUrl,
       amountLost,
       incidentDate,
-      contactEmail,
+      contactEmail: encrypt(contactEmail),
       isAttemptOnly,
       duplicateOf: existing?.id ?? null,
     },
