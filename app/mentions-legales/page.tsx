@@ -123,8 +123,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex gap-2">
-      <dt className="text-muted shrink-0 w-44">{label} :</dt>
+    <div className="flex flex-col sm:flex-row sm:gap-2 py-1">
+      <dt className="text-muted shrink-0 sm:w-44">{label} :</dt>
       <dd className="text-foreground font-medium">{children}</dd>
     </div>
   );

@@ -138,12 +138,12 @@ export default function PolitiqueConfidentialitePage() {
                 ["Email de contact", "Durée du traitement du dossier", "Puis suppression immédiate"],
                 ["Statistiques anonymes", "Indéfinie", "Aucune donnée personnelle associée"],
               ].map(([type, duration, note]) => (
-                <div key={type} className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                <div key={type} className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3 p-3 bg-gray-50 rounded-xl">
                   <div className="flex-1">
                     <span className="font-medium text-foreground">{type}</span>
                     <span className="text-muted"> — {note}</span>
                   </div>
-                  <span className="shrink-0 text-xs font-semibold bg-foreground/10 px-2 py-0.5 rounded-full">{duration}</span>
+                  <span className="self-start shrink-0 text-xs font-semibold bg-foreground/10 px-2 py-0.5 rounded-full whitespace-nowrap">{duration}</span>
                 </div>
               ))}
             </div>
@@ -197,11 +197,13 @@ export default function PolitiqueConfidentialitePage() {
                 ["mfa_verified", "Validation MFA (authentification à deux facteurs)", "Durée de la session", "Strictement nécessaire"],
                 ["locale", "Préférence de langue (fr, en, fon, yo)", "1 an", "Strictement nécessaire"],
               ].map(([name, purpose, duration, type]) => (
-                <div key={name} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                  <code className="text-xs font-mono bg-white border border-border px-2 py-0.5 rounded shrink-0">{name}</code>
-                  <span className="flex-1 text-foreground/80">{purpose}</span>
-                  <span className="text-xs text-muted shrink-0">{duration}</span>
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full shrink-0">{type}</span>
+                <div key={name} className="p-3 bg-gray-50 rounded-xl space-y-1.5">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <code className="text-xs font-mono bg-white border border-border px-2 py-0.5 rounded">{name}</code>
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">{type}</span>
+                    <span className="text-xs text-muted ml-auto">{duration}</span>
+                  </div>
+                  <p className="text-xs text-foreground/75 leading-relaxed">{purpose}</p>
                 </div>
               ))}
             </div>
@@ -271,8 +273,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex gap-2">
-      <dt className="text-muted shrink-0 w-44">{label} :</dt>
+    <div className="flex flex-col sm:flex-row sm:gap-2 py-1">
+      <dt className="text-muted shrink-0 sm:w-44">{label} :</dt>
       <dd className="text-foreground font-medium">{children}</dd>
     </div>
   );
@@ -282,29 +284,32 @@ function DataTable({ title, rows }: { title: string; rows: string[][] }) {
   return (
     <div>
       <p className="font-semibold text-foreground text-sm mb-2">{title}</p>
+      {/* Table scrollable sur mobile */}
       <div className="border border-border rounded-xl overflow-hidden">
-        <table className="w-full text-xs">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="text-left p-3 text-muted font-semibold">Donnée</th>
-              <th className="text-left p-3 text-muted font-semibold">Caractère</th>
-              <th className="text-left p-3 text-muted font-semibold">Finalité</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {rows.map(([data, required, purpose]) => (
-              <tr key={data} className="hover:bg-gray-50/50">
-                <td className="p-3 text-foreground font-medium">{data}</td>
-                <td className="p-3">
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${required === "Automatique" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-600"}`}>
-                    {required}
-                  </span>
-                </td>
-                <td className="p-3 text-foreground/70">{purpose}</td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs min-w-[480px]">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="text-left p-3 text-muted font-semibold">Donnée</th>
+                <th className="text-left p-3 text-muted font-semibold whitespace-nowrap">Caractère</th>
+                <th className="text-left p-3 text-muted font-semibold">Finalité</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {rows.map(([data, required, purpose]) => (
+                <tr key={data} className="hover:bg-gray-50/50">
+                  <td className="p-3 text-foreground font-medium">{data}</td>
+                  <td className="p-3">
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${required === "Automatique" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-600"}`}>
+                      {required}
+                    </span>
+                  </td>
+                  <td className="p-3 text-foreground/70">{purpose}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
