@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
   FadeInUp,
@@ -24,8 +24,10 @@ export function HomeView({ articles }: { articles: Article[] }) {
     <div className="overflow-hidden">
       <HomeJsonLd />
       <AlertBanner />
+      <LiveActivityToast />
       <HeroSection />
       <StatsBar />
+      <ActivityTicker />
       <HowItWorks />
       <WhyReport />
       <ScamTypes />
@@ -43,7 +45,7 @@ function HeroSection() {
   return (
     <section className="relative flex items-center bg-linear-to-b from-primary/5 via-white to-white">
       <HeroBackground />
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
         <div className="text-center max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -214,6 +216,13 @@ function StatsBar() {
     <section className="relative -mt-8 z-10 max-w-5xl mx-auto px-4 sm:px-6">
       <ScaleIn>
         <div className="bg-white rounded-2xl shadow-xl border border-border/50 p-6 sm:p-8">
+          <div className="flex items-center justify-between mb-5 pb-4 border-b border-border/40">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-success rounded-full animate-pulse" />
+              <span className="text-xs font-semibold text-success uppercase tracking-widest">En direct</span>
+            </div>
+            <span className="text-[11px] text-muted">Données mises à jour en temps réel</span>
+          </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {items.map((stat, i) => (
               <div key={i} className="text-center">
@@ -323,9 +332,23 @@ function HowItWorks() {
   );
 }
 
+const ALL_NOTIFS = [
+  { type: "danger", icon: "!", title: "Appel suspect détecté", sub: "+229 97 12 34 56 · Signalé 4 fois", time: "à l'instant" },
+  { type: "warning", icon: "?", title: "SMS frauduleux signalé", sub: "Faux Mobile Money — Vérification", time: "il y a 1 min" },
+  { type: "success", icon: "✓", title: "Arnaque confirmée", sub: "Numéro ajouté à la base", time: "il y a 3 min" },
+  { type: "danger", icon: "!", title: "Usurpation d'identité", sub: "+229 61 98 76 54 · Nouveau", time: "à l'instant" },
+  { type: "warning", icon: "?", title: "Faux conseiller bancaire", sub: "UBA Bénin — Signalé 7 fois", time: "il y a 2 min" },
+];
+
 /* ─── Why report ─── */
 function WhyReport() {
   const { t } = useI18n();
+  const [topIdx, setTopIdx] = useState(0);
+
+  useEffect(() => {
+    const iv = setInterval(() => setTopIdx(i => (i + 1) % ALL_NOTIFS.length), 3800);
+    return () => clearInterval(iv);
+  }, []);
   return (
     <section className="py-24 bg-linear-to-b from-primary/5 to-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -378,17 +401,47 @@ function WhyReport() {
                   <div className="w-3 h-3 rounded-full bg-primary" />
                 </div>
 
-                {[
-                  { type: "danger", icon: "!", title: "Appel suspect détecté", sub: "+229 97 12 34 56 - Signalé 4 fois", time: "Il y a 2 min" },
-                  { type: "warning", icon: "?", title: "SMS frauduleux signalé", sub: "Faux Mobile Money - Vérification", time: "Il y a 15 min" },
-                  { type: "success", icon: "✓", title: "Arnaque confirmée", sub: "Numéro ajouté à la base", time: "Il y a 1h" },
-                ].map((notif, i) => (
+                {/* Top notification — cycles automatically */}
+                <AnimatePresence mode="popLayout">
+                  {(() => {
+                    const notif = ALL_NOTIFS[topIdx];
+                    return (
+                      <motion.div
+                        key={topIdx}
+                        initial={{ opacity: 0, y: -12, scale: 0.97 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 12, scale: 0.97 }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        className={`mb-3 p-4 rounded-xl border ${
+                          notif.type === "danger"
+                            ? "bg-danger/5 border-danger/20"
+                            : notif.type === "warning"
+                            ? "bg-accent/10 border-accent/30"
+                            : "bg-primary/5 border-primary/20"
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold shrink-0 ${notif.type === "danger" ? "bg-danger" : notif.type === "warning" ? "bg-accent-dark" : "bg-primary"}`}>
+                            {notif.icon}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <p className="text-sm font-semibold text-foreground">{notif.title}</p>
+                              <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse shrink-0" />
+                            </div>
+                            <p className="text-xs text-muted mt-0.5">{notif.sub}</p>
+                          </div>
+                          <span className="text-[10px] text-gray-400 shrink-0">{notif.time}</span>
+                        </div>
+                      </motion.div>
+                    );
+                  })()}
+                </AnimatePresence>
+
+                {/* Bottom 2 — static */}
+                {[ALL_NOTIFS[(topIdx + 1) % ALL_NOTIFS.length], ALL_NOTIFS[(topIdx + 2) % ALL_NOTIFS.length]].map((notif, i) => (
                   <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + i * 0.2 }}
+                    key={`static-${i}`}
                     className={`mb-3 p-4 rounded-xl border ${
                       notif.type === "danger"
                         ? "bg-danger/5 border-danger/20"
@@ -398,15 +451,7 @@ function WhyReport() {
                     }`}
                   >
                     <div className="flex items-start gap-3">
-                      <span
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold shrink-0 ${
-                          notif.type === "danger"
-                            ? "bg-danger"
-                            : notif.type === "warning"
-                            ? "bg-accent-dark"
-                            : "bg-primary"
-                        }`}
-                      >
+                      <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold shrink-0 ${notif.type === "danger" ? "bg-danger" : notif.type === "warning" ? "bg-accent-dark" : "bg-primary"}`}>
                         {notif.icon}
                       </span>
                       <div className="flex-1 min-w-0">
@@ -450,7 +495,7 @@ function ScamTypes() {
   ];
 
   return (
-    <section className="py-24">
+    <section className="py-24 bg-gray-50/70">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeInUp className="text-center mb-16">
           <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-3">
@@ -732,6 +777,89 @@ function FAQ() {
         </StaggerContainer>
       </div>
     </section>
+  );
+}
+
+/* ─── Activity ticker ─── */
+const TICKER_ITEMS = [
+  "● +229 97 ●● ●● ●● — Signalé 6 fois",
+  "✅ Arnaque confirmée — Faux conseiller bancaire",
+  "● +229 61 ●● ●● ●● — Signalé à l'instant",
+  "⚠️ SMS frauduleux — Mobile Money",
+  "● +229 95 ●● ●● ●● — Signalé 3 fois",
+  "✅ Numéro blacklisté — Usurpation d'identité",
+  "● +229 66 ●● ●● ●● — Nouveau signalement",
+  "⚠️ Faux recrutement — WhatsApp",
+];
+
+function ActivityTicker() {
+  return (
+    <div className="bg-primary/5 border-y border-primary/10 py-2.5 overflow-hidden">
+      <motion.div
+        className="flex gap-14 whitespace-nowrap"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+      >
+        {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
+          <span key={i} className="text-xs text-primary/60 font-medium shrink-0 tracking-wide">
+            {item}
+          </span>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+/* ─── Live activity toast ─── */
+const LIVE_ACTIVITIES = [
+  { icon: "🚨", label: "Nouveau signalement", detail: "+229 97 ●● ●● ●●", loc: "Cotonou" },
+  { icon: "✅", label: "Arnaque confirmée", detail: "Numéro ajouté à la base", loc: "Porto-Novo" },
+  { icon: "🔍", label: "Recherche effectuée", detail: "+229 61 ●● ●● ●●", loc: "Parakou" },
+  { icon: "⚠️", label: "SMS suspect signalé", detail: "Faux Mobile Money", loc: "Bohicon" },
+  { icon: "✅", label: "Signalement validé", detail: "Usurpation d'identité", loc: "Abomey" },
+];
+
+function LiveActivityToast() {
+  const [idx, setIdx] = useState(0);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const first = setTimeout(() => setShow(true), 4000);
+    const iv = setInterval(() => {
+      setShow(false);
+      setTimeout(() => {
+        setIdx(i => (i + 1) % LIVE_ACTIVITIES.length);
+        setShow(true);
+      }, 500);
+    }, 7000);
+    return () => { clearTimeout(first); clearInterval(iv); };
+  }, []);
+
+  const a = LIVE_ACTIVITIES[idx];
+
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, x: -24, scale: 0.95 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          exit={{ opacity: 0, x: -24, scale: 0.95 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="fixed bottom-8 left-6 z-50 hidden lg:flex items-start gap-3 bg-white rounded-2xl shadow-xl border border-border/60 px-4 py-3 max-w-[260px]"
+        >
+          <span className="text-lg mt-0.5">{a.icon}</span>
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-semibold text-foreground truncate">{a.label}</span>
+              <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+            </div>
+            <p className="text-[11px] text-muted mt-0.5 truncate">{a.detail}</p>
+            <p className="text-[11px] text-muted/70">{a.loc} · à l'instant</p>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
