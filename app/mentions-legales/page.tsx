@@ -13,7 +13,7 @@ const jsonLdBreadcrumb = breadcrumb([
   { name: "Mentions légales", path: "/mentions-legales" },
 ]);
 
-const UPDATED = "31 juillet 2026";
+const UPDATED = "3 septembre 2026";
 
 export default function MentionsLegalesPage() {
   return (
@@ -46,9 +46,9 @@ export default function MentionsLegalesPage() {
           <Section title="2. Hébergement">
             <p>Le site est hébergé par :</p>
             <dl className="mt-3 space-y-1 text-sm">
-              <Row label="Hébergeur">Vercel Inc.</Row>
-              <Row label="Adresse">340 Pine Street, Suite 701, San Francisco, CA 94104, États-Unis</Row>
-              <Row label="Site web"><a href="https://vercel.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">vercel.com</a></Row>
+              <Row label="Hébergeur">Render Inc.</Row>
+              <Row label="Adresse">525 Brannan St, Suite 300, San Francisco, CA 94107, États-Unis</Row>
+              <Row label="Site web"><a href="https://render.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">render.com</a></Row>
             </dl>
           </Section>
 

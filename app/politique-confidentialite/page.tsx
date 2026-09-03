@@ -13,7 +13,7 @@ const jsonLdBreadcrumb = breadcrumb([
   { name: "Politique de confidentialité", path: "/politique-confidentialite" },
 ]);
 
-const UPDATED = "31 juillet 2026";
+const UPDATED = "3 septembre 2026";
 
 export default function PolitiqueConfidentialitePage() {
   return (
@@ -82,6 +82,7 @@ export default function PolitiqueConfidentialitePage() {
                 rows={[
                   ["Adresse IP", "Automatique", "Sécurité, prévention des abus"],
                   ["Pages visitées", "Automatique", "Statistiques anonymes d'usage"],
+                  ["Durée de navigation par page", "Automatique", "Statistiques anonymes d'usage — aucun identifiant associé"],
                   ["User-agent (navigateur)", "Automatique", "Compatibilité et sécurité"],
                 ]}
               />
@@ -153,7 +154,7 @@ export default function PolitiqueConfidentialitePage() {
             <ul className="mt-3 space-y-2">
               {[
                 "Les autorités judiciaires béninoises (OCRC, CRIET, Police) sur réquisition judiciaire",
-                "Notre hébergeur (Vercel) pour le fonctionnement technique du site — soumis à des garanties contractuelles strictes",
+                "Notre hébergeur (Render) pour le fonctionnement technique du site — soumis à des garanties contractuelles strictes",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2 text-sm">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
@@ -192,8 +193,9 @@ export default function PolitiqueConfidentialitePage() {
             <p>Le site utilise uniquement des cookies techniques essentiels au fonctionnement :</p>
             <div className="mt-3 space-y-2 text-sm">
               {[
-                ["admin_session", "Session administrateur", "Durée de la session", "Strictement nécessaire"],
-                ["locale", "Préférence de langue", "1 an", "Strictement nécessaire"],
+                ["admin_session", "Session administrateur authentifié", "Durée de la session", "Strictement nécessaire"],
+                ["mfa_verified", "Validation MFA (authentification à deux facteurs)", "Durée de la session", "Strictement nécessaire"],
+                ["locale", "Préférence de langue (fr, en, fon, yo)", "1 an", "Strictement nécessaire"],
               ].map(([name, purpose, duration, type]) => (
                 <div key={name} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
                   <code className="text-xs font-mono bg-white border border-border px-2 py-0.5 rounded shrink-0">{name}</code>
@@ -213,10 +215,17 @@ export default function PolitiqueConfidentialitePage() {
             <ul className="mt-3 space-y-1.5">
               {[
                 "Connexions chiffrées HTTPS (TLS 1.3)",
+                "9 en-têtes HTTP de sécurité actifs (HSTS, CSP, X-Frame-Options, COOP, CORP, Referrer-Policy…)",
+                "Chiffrement AES-256-GCM des adresses email stockées en base de données",
+                "Authentification à deux facteurs (MFA TOTP) obligatoire pour l'accès administrateur",
+                "Codes de secours MFA hachés en base (bcrypt) — non stockés en clair",
+                "Mots de passe administrateurs hachés (bcrypt, coût 12)",
                 "Détection automatique des attaques et blocage des IPs malveillantes",
+                "Pièges honeypot pour les scanners automatisés (14 routes leurres)",
+                "Mises à jour de sécurité automatiques des dépendances (Dependabot)",
                 "Accès aux données restreint aux administrateurs authentifiés",
                 "Fichiers joints stockés hors de l'accès public direct",
-                "Mots de passe administrateurs hachés (bcrypt)",
+                "Logs de sécurité purgés automatiquement après 90 jours",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2 text-sm">
                   <svg className="w-4 h-4 text-green-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
