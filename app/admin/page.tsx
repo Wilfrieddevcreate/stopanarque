@@ -10,8 +10,16 @@ import { FadeIn } from "@/components/MotionDiv";
 interface VisitStats {
   totalVisits: number;
   visitsToday: number;
-  popularPages: { page: string; count: number }[];
+  popularPages: { page: string; count: number; avgDuration: number | null; durationSamples: number }[];
   dailyVisits: { day: string; count: number }[];
+  topDurationPages: { page: string; avgDuration: number; samples: number }[];
+}
+
+function formatDuration(seconds: number): string {
+  if (seconds < 60) return `${seconds}s`;
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return s > 0 ? `${m}m${s}s` : `${m}m`;
 }
 
 const PAGE_NAMES: Record<string, string> = {
@@ -875,21 +883,47 @@ export default function AdminDashboard() {
                   <p className="text-[11px] text-muted mb-2">
                     Pages populaires
                   </p>
-                  <div className="space-y-1.5">
+                  <div className="space-y-2">
                     {visits.popularPages.slice(0, 5).map((p) => (
-                      <div
-                        key={p.page}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-sm text-foreground truncate">
+                      <div key={p.page} className="flex items-center justify-between gap-2">
+                        <span className="text-sm text-foreground truncate flex-1">
                           {PAGE_NAMES[p.page] || p.page}
                         </span>
-                        <span className="text-xs font-bold text-success ml-2">
-                          {p.count}
-                        </span>
+                        <span className="text-xs font-bold text-success shrink-0">{p.count}</span>
+                        {p.avgDuration !== null && (
+                          <span className="text-[10px] text-muted bg-gray-50 border border-border rounded px-1.5 py-0.5 shrink-0" title={`${p.durationSamples} mesures`}>
+                            ⏱ {formatDuration(p.avgDuration)}
+                          </span>
+                        )}
                       </div>
                     ))}
                   </div>
+
+                  {/* Temps moyen par page */}
+                  {visits.topDurationPages?.length > 0 && (
+                    <>
+                      <p className="text-[11px] text-muted mt-5 mb-2">
+                        Temps moyen par page
+                      </p>
+                      <div className="space-y-2">
+                        {visits.topDurationPages.slice(0, 5).map((p) => {
+                          const maxDur = Math.max(...visits.topDurationPages.map(x => x.avgDuration));
+                          const pct = Math.round((p.avgDuration / maxDur) * 100);
+                          return (
+                            <div key={p.page} className="space-y-0.5">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs text-foreground truncate">{PAGE_NAMES[p.page] || p.page}</span>
+                                <span className="text-xs font-semibold text-primary ml-2">{formatDuration(p.avgDuration)}</span>
+                              </div>
+                              <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+                                <div className="h-full bg-primary/50 rounded-full" style={{ width: `${pct}%` }} />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>

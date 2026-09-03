@@ -112,6 +112,7 @@ model PageVisit {
   id        String   @id @default(cuid())
   page      String
   referrer  String?
+  duration  Int?     // secondes passées sur la page (null = non mesuré)
   createdAt DateTime @default(now())
 
   @@index([createdAt])

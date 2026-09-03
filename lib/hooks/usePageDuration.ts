@@ -1,38 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
 
-export function VisitTracker() {
-  const pathname = usePathname();
+export function usePageDuration(page: string) {
   const startRef = useRef<number>(0);
   const hiddenTimeRef = useRef<number>(0);
   const hiddenAtRef = useRef<number | null>(null);
-  const prevPathRef = useRef<string>("");
 
-  // Enregistrer la visite de page
-  useEffect(() => {
-    const body = JSON.stringify({ page: pathname });
-    try {
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon("/api/visits", new Blob([body], { type: "application/json" }));
-      } else {
-        fetch("/api/visits", {
-          method: "POST",
-          body,
-          keepalive: true,
-          headers: { "Content-Type": "application/json" },
-        }).catch(() => {});
-      }
-    } catch {}
-  }, [pathname]);
-
-  // Mesurer le temps actif passé sur chaque page
   useEffect(() => {
     startRef.current = Date.now();
     hiddenTimeRef.current = 0;
     hiddenAtRef.current = null;
-    prevPathRef.current = pathname;
 
     function handleVisibility() {
       if (document.hidden) {
@@ -45,27 +23,28 @@ export function VisitTracker() {
 
     document.addEventListener("visibilitychange", handleVisibility);
 
-    function sendDuration() {
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+
       const totalMs = Date.now() - startRef.current;
       const activeMs = totalMs - hiddenTimeRef.current;
       const seconds = Math.round(activeMs / 1000);
+
+      // Ignorer les bounces < 3s et les sessions irréalistes > 30min
       if (seconds < 3 || seconds > 1800) return;
+
+      // sendBeacon est fiable même pendant le déchargement de la page
       try {
         navigator.sendBeacon(
           "/api/visits/duration",
           new Blob(
-            [JSON.stringify({ page: prevPathRef.current, duration: seconds })],
+            [JSON.stringify({ page, duration: seconds })],
             { type: "application/json" }
           )
         );
-      } catch {}
-    }
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibility);
-      sendDuration();
+      } catch {
+        // silencieux — le tracking est best-effort
+      }
     };
-  }, [pathname]);
-
-  return null;
+  }, [page]);
 }
