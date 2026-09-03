@@ -27,6 +27,7 @@ const translations: Record<string, T4> = {
   "nav.advice": { fr: "Conseils", en: "Advice", fon: "Wěmá", yo: "Ìmọ̀ràn" },
   "nav.stats": { fr: "Statistiques", en: "Statistics", fon: "Xóxó", yo: "Ìṣirò" },
   "nav.news": { fr: "Actualités", en: "News", fon: "Xó yɔyɔ", yo: "Ìròyìn" },
+  "nav.learn": { fr: "S'informer", en: "Learn", fon: "Mɔ nǔ", yo: "Kọ́ ẹ̀kọ́" },
 
   // ── News / Actualités ──
   "news.label": { fr: "Restez informé", en: "Stay informed", fon: "Ðó ayi towe wu", yo: "Máa jẹ́ ìmọ̀" },

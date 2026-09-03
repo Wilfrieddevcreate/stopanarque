@@ -1,8 +1,30 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
+import { getArticleBySlug } from "@/lib/articles";
 import { stripHtml } from "@/lib/content";
+import {
+  SITE_NAME,
+  SITE_LANG,
+  SITE_LOCALE,
+  SITE_URL,
+  absoluteUrl,
+  breadcrumb,
+  truncate,
+} from "@/lib/seo";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://stopanarque.bj";
+/**
+ * Métadonnées et données structurées d'un article.
+ * `getArticleBySlug` est mémoïsé : le layout, la page et `generateMetadata`
+ * partagent une seule requête. Le filtre `published` évite qu'un brouillon
+ * expose son titre dans les métadonnées ou le JSON-LD.
+ */
+
+function describe(article: { excerpt: string; content: string }) {
+  return truncate(stripHtml(article.excerpt) || stripHtml(article.content));
+}
+
+function coverOf(coverImage: string) {
+  return coverImage ? absoluteUrl(coverImage) : absoluteUrl("/og-image.png");
+}
 
 export async function generateMetadata({
   params,
@@ -10,20 +32,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-
-  const article = await prisma.article.findUnique({
-    where: { slug },
-    select: {
-      title: true,
-      excerpt: true,
-      content: true,
-      coverImage: true,
-      category: true,
-      createdAt: true,
-      updatedAt: true,
-      author: { select: { name: true } },
-    },
-  });
+  const article = await getArticleBySlug(slug);
 
   if (!article) {
     return {
@@ -32,33 +41,33 @@ export async function generateMetadata({
     };
   }
 
-  const description = article.excerpt
-    ? stripHtml(article.excerpt).slice(0, 160)
-    : stripHtml(article.content).slice(0, 160);
-
-  const image = article.coverImage
-    ? article.coverImage.startsWith("http")
-      ? article.coverImage
-      : `${SITE_URL}${article.coverImage}`
-    : `${SITE_URL}/og-image.png`;
+  const title = stripHtml(article.title);
+  const description = describe(article);
+  const image = coverOf(article.coverImage);
+  const url = absoluteUrl(`/actualites/${slug}`);
+  const authorName = article.author?.name ?? SITE_NAME;
 
   return {
-    title: article.title,
+    title,
     description,
-    authors: article.author ? [{ name: article.author.name }] : undefined,
+    authors: [{ name: authorName }],
+    category: article.category,
     openGraph: {
       type: "article",
-      title: article.title,
+      title,
       description,
-      url: `${SITE_URL}/actualites/${slug}`,
+      url,
+      siteName: SITE_NAME,
+      locale: SITE_LOCALE,
       publishedTime: article.createdAt.toISOString(),
       modifiedTime: article.updatedAt.toISOString(),
       section: article.category,
-      images: [{ url: image, width: 1200, height: 630, alt: article.title }],
+      authors: [authorName],
+      images: [{ url: image, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: article.title,
+      title,
       description,
       images: [image],
     },
@@ -76,60 +85,51 @@ export default async function ArticleLayout({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
-  const article = await prisma.article.findUnique({
-    where: { slug },
-    select: {
-      title: true,
-      excerpt: true,
-      content: true,
-      coverImage: true,
-      createdAt: true,
-      updatedAt: true,
-      author: { select: { name: true } },
-    },
-  });
+  const article = await getArticleBySlug(slug);
 
   if (!article) return <>{children}</>;
 
-  const description = article.excerpt
-    ? stripHtml(article.excerpt).slice(0, 160)
-    : stripHtml(article.content).slice(0, 160);
-
-  const image = article.coverImage
-    ? article.coverImage.startsWith("http")
-      ? article.coverImage
-      : `${SITE_URL}${article.coverImage}`
-    : `${SITE_URL}/og-image.png`;
+  const title = stripHtml(article.title);
+  const description = describe(article);
+  const url = absoluteUrl(`/actualites/${slug}`);
+  const body = stripHtml(article.content);
 
   const jsonLdArticle = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
-    headline: article.title,
+    headline: truncate(title, 110),
     description,
-    image,
+    image: [coverOf(article.coverImage)],
     datePublished: article.createdAt.toISOString(),
     dateModified: article.updatedAt.toISOString(),
-    author: { "@type": "Person", name: article.author?.name ?? "StopArnaque Bénin" },
+    articleSection: article.category,
+    wordCount: body ? body.split(/\s+/).length : undefined,
+    author: {
+      "@type": "Person",
+      name: article.author?.name ?? SITE_NAME,
+    },
     publisher: {
       "@type": "Organization",
-      name: "StopArnaque Bénin",
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/icons/icon-512x512.png` },
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl("/icons/icon-512.png"),
+        width: 512,
+        height: 512,
+      },
     },
-    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/actualites/${slug}` },
-    url: `${SITE_URL}/actualites/${slug}`,
-    inLanguage: "fr-BJ",
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    url,
+    inLanguage: SITE_LANG,
+    isAccessibleForFree: true,
   };
 
-  const jsonLdBreadcrumb = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Actualités", item: `${SITE_URL}/actualites` },
-      { "@type": "ListItem", position: 3, name: article.title, item: `${SITE_URL}/actualites/${slug}` },
-    ],
-  };
+  const jsonLdBreadcrumb = breadcrumb([
+    { name: "Accueil", path: "/" },
+    { name: "Actualités", path: "/actualites" },
+    { name: title, path: `/actualites/${slug}` },
+  ]);
 
   return (
     <>

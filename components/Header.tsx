@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogoFull } from "@/components/Logo";
 import { LangSwitcher } from "@/components/LangSwitcher";
@@ -11,6 +11,12 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useI18n();
 
+  const learnItems = [
+    { href: "/arnaques",  label: t("nav.scams")  },
+    { href: "/conseils",  label: t("nav.advice")  },
+    { href: "/actualites", label: t("nav.news")   },
+  ];
+
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-border">
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,17 +25,17 @@ export function Header() {
             <LogoFull />
           </Link>
 
+          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
             <NavLink href="/">{t("nav.home")}</NavLink>
             <NavLink href="/signaler">{t("nav.report")}</NavLink>
             <NavLink href="/rechercher">{t("nav.search")}</NavLink>
             <NavLink href="/suivi">{t("nav.tracking")}</NavLink>
-            <NavLink href="/arnaques">{t("nav.scams")}</NavLink>
-            <NavLink href="/conseils">{t("nav.advice")}</NavLink>
-            <NavLink href="/actualites">{t("nav.news")}</NavLink>
+            <NavDropdown label={t("nav.learn")} items={learnItems} />
             <LangSwitcher />
           </div>
 
+          {/* Mobile burger */}
           <div className="flex items-center gap-2 md:hidden">
             <LangSwitcher />
             <button
@@ -48,6 +54,7 @@ export function Header() {
           </div>
         </div>
 
+        {/* Mobile menu — tous les liens à plat */}
         <AnimatePresence>
           {menuOpen && (
             <motion.div
@@ -58,12 +65,13 @@ export function Header() {
               className="md:hidden overflow-hidden"
             >
               <div className="pb-4 space-y-1">
-                <MobileNavLink href="/" onClick={() => setMenuOpen(false)}>{t("nav.home")}</MobileNavLink>
-                <MobileNavLink href="/signaler" onClick={() => setMenuOpen(false)}>{t("nav.report")}</MobileNavLink>
+                <MobileNavLink href="/"          onClick={() => setMenuOpen(false)}>{t("nav.home")}</MobileNavLink>
+                <MobileNavLink href="/signaler"  onClick={() => setMenuOpen(false)}>{t("nav.report")}</MobileNavLink>
                 <MobileNavLink href="/rechercher" onClick={() => setMenuOpen(false)}>{t("nav.search")}</MobileNavLink>
-                <MobileNavLink href="/suivi" onClick={() => setMenuOpen(false)}>{t("nav.tracking")}</MobileNavLink>
-                <MobileNavLink href="/arnaques" onClick={() => setMenuOpen(false)}>{t("nav.scams")}</MobileNavLink>
-                <MobileNavLink href="/conseils" onClick={() => setMenuOpen(false)}>{t("nav.advice")}</MobileNavLink>
+                <MobileNavLink href="/suivi"     onClick={() => setMenuOpen(false)}>{t("nav.tracking")}</MobileNavLink>
+                <div className="px-4 pt-2 pb-1 text-xs font-semibold uppercase tracking-widest text-gray-400">{t("nav.learn")}</div>
+                <MobileNavLink href="/arnaques"  onClick={() => setMenuOpen(false)}>{t("nav.scams")}</MobileNavLink>
+                <MobileNavLink href="/conseils"  onClick={() => setMenuOpen(false)}>{t("nav.advice")}</MobileNavLink>
                 <MobileNavLink href="/actualites" onClick={() => setMenuOpen(false)}>{t("nav.news")}</MobileNavLink>
               </div>
             </motion.div>
@@ -82,6 +90,63 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
     >
       {children}
     </Link>
+  );
+}
+
+function NavDropdown({ label, items }: { label: string; items: { href: string; label: string }[] }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-foreground hover:bg-gray-50 transition-colors"
+      >
+        {label}
+        <svg
+          className={`w-3.5 h-3.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -6, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.97 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full right-0 mt-1.5 min-w-[170px] bg-white rounded-xl shadow-lg border border-border py-1.5 z-50"
+          >
+            {items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="block px-4 py-2.5 text-sm text-gray-600 hover:text-foreground hover:bg-gray-50 transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

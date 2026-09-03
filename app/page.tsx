@@ -39,9 +39,9 @@ export default function Home() {
 function HeroSection() {
   const { t } = useI18n();
   return (
-    <section className="relative min-h-[90vh] flex items-center bg-linear-to-b from-primary/5 via-white to-white">
+    <section className="relative flex items-center bg-linear-to-b from-primary/5 via-white to-white">
       <HeroBackground />
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="text-center max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -174,12 +174,15 @@ function StatsBar() {
     confirmedReports: number;
     totalSearches: number;
   } | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    const fallback = setTimeout(() => setLoaded(true), 3500);
     fetch("/api/statistics")
       .then((r) => r.json())
-      .then((d) => setStats(d))
-      .catch(() => {});
+      .then((d) => { setStats(d); setLoaded(true); clearTimeout(fallback); })
+      .catch(() => setLoaded(true));
+    return () => clearTimeout(fallback);
   }, []);
 
   const items = [
@@ -212,7 +215,7 @@ function StatsBar() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {items.map((stat, i) => (
               <div key={i} className="text-center">
-                {stats || stat.value === 98 ? (
+                {stats !== null || loaded || stat.value === 98 ? (
                   <AnimatedCounter
                     target={stat.value}
                     suffix={stat.suffix}
