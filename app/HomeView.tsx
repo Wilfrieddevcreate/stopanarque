@@ -18,16 +18,27 @@ import { AlertBanner } from "@/components/AlertBanner";
 import { useI18n } from "@/lib/i18n/context";
 import { HomeJsonLd } from "@/components/JsonLd";
 import { stripHtml } from "@/lib/content";
+import type { BannerItem } from "@/lib/statistics";
 import { HeroIllustration, StepIllustration1, StepIllustration2, StepIllustration3, CommunityIllustration } from "@/components/Illustrations";
 
-export function HomeView({ articles }: { articles: Article[] }) {
+export type HomeStats = { totalReports: number; confirmedReports: number; totalSearches: number };
+
+export function HomeView({
+  articles,
+  alerts,
+  stats,
+}: {
+  articles: Article[];
+  alerts: BannerItem[];
+  stats: HomeStats | null;
+}) {
   return (
     <div className="overflow-hidden">
       <HomeJsonLd />
-      <AlertBanner />
+      <AlertBanner initialItems={alerts} />
       <LiveActivityToast />
       <HeroSection />
-      <StatsBar />
+      <StatsBar stats={stats} />
       <ActivityTicker />
       <HowItWorks />
       <WhyReport />
@@ -41,6 +52,8 @@ export function HomeView({ articles }: { articles: Article[] }) {
 }
 
 /* ─── Hero ─── */
+/* Entrées en CSS et en transformations seules : le titre est peint dès le
+   premier rendu (LCP) au lieu d'attendre le JavaScript en opacity:0. */
 function HeroSection() {
   const { t } = useI18n();
   return (
@@ -58,132 +71,92 @@ function HeroSection() {
           <div className="max-w-xl">
 
             {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="inline-flex items-center gap-2 bg-white text-primary px-3.5 py-1.5 rounded-full text-xs font-semibold mb-7 border border-primary/20 shadow-sm"
-            >
-              <motion.span
-                animate={{ scale: [1, 1.4, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-1.5 h-1.5 bg-primary rounded-full"
-              />
+            <div className="slide-up inline-flex items-center gap-2 bg-white text-primary px-3.5 py-1.5 rounded-full text-xs font-semibold mb-7 border border-primary/20 shadow-sm">
+              <span className="dot-pulse w-1.5 h-1.5 bg-primary rounded-full" />
               {t("hero.badge")}
-            </motion.div>
+            </div>
 
             {/* Benin flag bar */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.5, delay: 0.08 }}
-              className="flex h-[3px] w-14 mb-5 rounded-full overflow-hidden"
-              style={{ transformOrigin: "left" }}
-            >
+            <div className="grow-x flex h-[3px] w-14 mb-5 rounded-full overflow-hidden" style={{ animationDelay: ".08s" }}>
               <div className="flex-1 bg-success" />
               <div className="flex-1 bg-accent" />
               <div className="flex-1 bg-primary" />
-            </motion.div>
+            </div>
 
             {/* Title */}
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.12 }}
-              className="text-[2.75rem] sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight text-slate-900 leading-[1.1]"
+            <h1
+              className="slide-up text-[2.75rem] sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight text-slate-900 leading-[1.1]"
+              style={{ animationDelay: ".12s" }}
             >
               <span className="block">{t("hero.title1")}</span>
               <span className="block">
                 {t("hero.title2")}{" "}
-                <motion.span
-                  className="relative inline-block text-primary"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.45 }}
-                >
+                <span className="relative inline-block text-primary">
                   {t("hero.title3")}
-                  <motion.svg
+                  <svg
                     className="absolute -bottom-1.5 left-0 w-full"
                     viewBox="0 0 200 10"
                     preserveAspectRatio="none"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: 1 }}
-                    transition={{ delay: 0.75, duration: 0.9, ease: "easeOut" }}
+                    aria-hidden="true"
                   >
-                    <motion.path
+                    <path
+                      className="draw-in"
+                      pathLength={1}
                       d="M2 7 Q50 2 100 6 Q150 10 198 3"
                       stroke="#E8112D"
                       strokeWidth="3"
                       strokeLinecap="round"
                       fill="none"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ delay: 0.75, duration: 0.9, ease: "easeOut" }}
+                      style={{ animationDelay: ".75s" }}
                     />
-                  </motion.svg>
-                </motion.span>
+                  </svg>
+                </span>
               </span>
-            </motion.h1>
+            </h1>
 
             {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.28 }}
-              className="mt-5 text-[0.95rem] text-slate-500 leading-relaxed max-w-sm"
+            <p
+              className="slide-up mt-5 text-[0.95rem] text-slate-500 leading-relaxed max-w-sm"
+              style={{ animationDelay: ".28s" }}
             >
               {t("hero.subtitle")}
-            </motion.p>
+            </p>
 
             {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.4 }}
-              className="mt-8 flex flex-row items-center gap-3"
-            >
+            <div className="slide-up mt-8 flex flex-row items-center gap-3" style={{ animationDelay: ".4s" }}>
               {/* Primary */}
-              <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  href="/signaler"
-                  className="group inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white pl-4 pr-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-150 shadow-lg shadow-primary/30 hover:shadow-primary/40"
-                >
-                  <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                  {t("hero.cta.report")}
-                  <svg className="w-3.5 h-3.5 shrink-0 translate-x-0 group-hover:translate-x-1 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-              </motion.div>
+              <Link
+                href="/signaler"
+                className="group inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white pl-4 pr-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-150 shadow-lg shadow-primary/30 hover:shadow-primary/40 hover:-translate-y-px active:scale-[0.97]"
+              >
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                {t("hero.cta.report")}
+                <svg className="w-3.5 h-3.5 shrink-0 translate-x-0 group-hover:translate-x-1 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
 
               {/* Secondary */}
-              <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  href="/rechercher"
-                  className="group inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 pl-4 pr-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-150 border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow-md"
-                >
-                  <svg className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-primary transition-colors duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                  {t("hero.cta.search")}
-                </Link>
-              </motion.div>
-            </motion.div>
+              <Link
+                href="/rechercher"
+                className="group inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 pl-4 pr-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-150 border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow-md hover:-translate-y-px active:scale-[0.97]"
+              >
+                <svg className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-primary transition-colors duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                {t("hero.cta.search")}
+              </Link>
+            </div>
 
             {/* Trust micro-line */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="mt-4 text-xs text-slate-400 flex items-center gap-1.5"
-            >
+            <p className="mt-4 text-xs text-slate-400 flex items-center gap-1.5">
               <svg className="w-3.5 h-3.5 text-success" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               100% gratuit · données sécurisées · Bénin
-            </motion.p>
+            </p>
           </div>
 
           {/* ── Right: illustration ── */}
@@ -197,23 +170,8 @@ function HeroSection() {
 }
 
 /* ─── Stats bar ─── */
-function StatsBar() {
+function StatsBar({ stats }: { stats: HomeStats | null }) {
   const { t } = useI18n();
-  const [stats, setStats] = useState<{
-    totalReports: number;
-    confirmedReports: number;
-    totalSearches: number;
-  } | null>(null);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const fallback = setTimeout(() => setLoaded(true), 3500);
-    fetch("/api/statistics")
-      .then((r) => r.json())
-      .then((d) => { setStats(d); setLoaded(true); clearTimeout(fallback); })
-      .catch(() => setLoaded(true));
-    return () => clearTimeout(fallback);
-  }, []);
 
   const items = [
     {
@@ -227,7 +185,7 @@ function StatsBar() {
       label: t("home.stat.confirmed"),
     },
     {
-      value: stats ? Math.floor(stats.totalSearches / 1000) : 0,
+      value: stats && stats.totalSearches >= 1000 ? Math.floor(stats.totalSearches / 1000) : (stats?.totalSearches ?? 0),
       suffix: stats && stats.totalSearches >= 1000 ? "k+" : "+",
       label: t("home.stat.searches"),
     },
@@ -247,21 +205,17 @@ function StatsBar() {
               <span className="w-2 h-2 bg-success rounded-full animate-pulse" />
               <span className="text-xs font-semibold text-success uppercase tracking-widest">En direct</span>
             </div>
-            <span className="text-[11px] text-muted">Données mises à jour en temps réel</span>
+            <span className="text-[11px] text-muted">Données mises à jour toutes les 5 minutes</span>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {items.map((stat, i) => (
               <div key={i} className="text-center">
-                {stats !== null || loaded || stat.value === 98 ? (
-                  <AnimatedCounter
-                    target={stat.value}
-                    suffix={stat.suffix}
-                    duration={2.5}
-                    className="text-3xl sm:text-4xl font-bold text-primary font-heading"
-                  />
-                ) : (
-                  <div className="h-10 w-20 mx-auto bg-gray-100 rounded-lg animate-pulse" />
-                )}
+                <AnimatedCounter
+                  target={stat.value}
+                  suffix={stat.suffix}
+                  duration={2.5}
+                  className="text-3xl sm:text-4xl font-bold text-primary font-heading"
+                />
                 <p className="text-sm text-muted mt-1">{stat.label}</p>
               </div>
             ))}
@@ -538,15 +492,11 @@ function ScamTypes() {
         <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {types.map((type) => (
             <StaggerItem key={type.name}>
-              <motion.div
-                whileHover={{ scale: 1.03, y: -4 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="bg-white rounded-2xl p-6 border border-border hover:border-primary/30 hover:shadow-lg transition-shadow cursor-default"
-              >
+              <div className="bg-white rounded-2xl p-6 border border-border hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-default">
                 <span className="text-3xl mb-3 block">{type.icon}</span>
                 <h3 className="font-semibold text-foreground text-lg">{type.name}</h3>
                 <p className="text-sm text-muted mt-1">{type.desc}</p>
-              </motion.div>
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -700,16 +650,14 @@ function LatestNews({ articles }: { articles: Article[] }) {
               );
               return (
                 <StaggerItem key={article.id}>
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    className="group bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-xl transition-all flex flex-col h-full overflow-hidden"
-                  >
+                  <div className="group bg-white rounded-2xl border border-border hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col h-full overflow-hidden">
                     {article.coverImage && (
                       <div className="relative h-44 w-full overflow-hidden shrink-0">
                         <Image
                           src={article.coverImage}
                           alt={title}
                           fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>
@@ -722,7 +670,7 @@ function LatestNews({ articles }: { articles: Article[] }) {
                         <span className="text-xs text-muted">{date}</span>
                       </div>
                       <h3 className="font-bold text-foreground text-lg leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                        {title}
+                        <Link href={`/actualites/${article.slug}`}>{title}</Link>
                       </h3>
                       <p className="text-muted text-sm leading-relaxed line-clamp-3 flex-1">
                         {excerpt}
@@ -737,7 +685,7 @@ function LatestNews({ articles }: { articles: Article[] }) {
                         </svg>
                       </Link>
                     </div>
-                  </motion.div>
+                  </div>
                 </StaggerItem>
               );
             })}
@@ -821,17 +769,13 @@ const TICKER_ITEMS = [
 function ActivityTicker() {
   return (
     <div className="bg-primary/5 border-y border-primary/10 py-2.5 overflow-hidden">
-      <motion.div
-        className="flex gap-14 whitespace-nowrap"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-      >
+      <div className="flex gap-14 whitespace-nowrap animate-marquee">
         {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
           <span key={i} className="text-xs text-primary/60 font-medium shrink-0 tracking-wide">
             {item}
           </span>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }

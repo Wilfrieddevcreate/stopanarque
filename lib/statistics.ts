@@ -17,6 +17,15 @@ function timeAgo(date: Date): string {
   return `Il y a ${days}j`;
 }
 
+export async function getHomeStats() {
+  const [totalReports, confirmedReports, totalSearches] = await Promise.all([
+    prisma.report.count(),
+    prisma.report.count({ where: { status: "CONFIRME" } }),
+    prisma.pageVisit.count({ where: { page: { startsWith: "/rechercher" } } }),
+  ]);
+  return { totalReports, confirmedReports, totalSearches };
+}
+
 export async function getStatistics() {
   const [
     totalReports,

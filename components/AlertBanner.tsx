@@ -1,13 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import type { BannerItem } from "@/lib/statistics";
 import { stripHtml } from "@/lib/content";
 
-export function AlertBanner() {
-  const [items, setItems] = useState<BannerItem[]>([]);
+/**
+ * La bannière reçoit ses alertes du serveur : rendue dans le HTML initial,
+ * elle ne s'insère plus au-dessus du hero après hydratation (42 px de décalage
+ * de mise en page à chaque chargement). Le rafraîchissement périodique reste
+ * côté client.
+ */
+export function AlertBanner({ initialItems = [] }: { initialItems?: BannerItem[] }) {
+  const [items, setItems] = useState<BannerItem[]>(initialItems);
   const [index, setIndex] = useState(0);
   const [dismissed, setDismissed] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -21,7 +26,7 @@ export function AlertBanner() {
         if (!cancelled && Array.isArray(data.alerts)) setItems(data.alerts);
       } catch {}
     }
-    load();
+    // Les données initiales viennent du serveur — on ne re-fetch qu'après 30s
     const poll = setInterval(load, 30000);
     return () => { cancelled = true; clearInterval(poll); };
   }, []);
@@ -52,10 +57,9 @@ export function AlertBanner() {
   return (
     <div className="relative bg-foreground text-white overflow-hidden">
       {/* Progress bar */}
-      <motion.div
+      <div
         className="absolute bottom-0 left-0 h-0.5 bg-primary/60"
         style={{ width: `${progress}%` }}
-        transition={{ ease: "linear" }}
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-center gap-3 min-h-10.5">
@@ -63,18 +67,10 @@ export function AlertBanner() {
         <ItemIndicator item={item} />
 
         {/* Content */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.25 }}
-            className="flex items-center gap-2 text-sm"
-          >
-            <ItemContent item={item} />
-          </motion.div>
-        </AnimatePresence>
+        {/* La clé change à chaque rotation : le remontage rejoue l'animation CSS */}
+        <div key={item.id} className="reveal reveal-soft [animation-duration:.25s] flex items-center gap-2 text-sm">
+          <ItemContent item={item} />
+        </div>
 
         {/* Dots */}
         {items.length > 1 && (

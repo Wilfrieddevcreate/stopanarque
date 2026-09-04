@@ -1,17 +1,22 @@
 import { getPublishedArticles } from "@/lib/articles";
-import { HomeView, type Article } from "./HomeView";
+import { getRecentAlerts, getHomeStats, type BannerItem } from "@/lib/statistics";
+import { HomeView, type Article, type HomeStats } from "./HomeView";
 
 /**
- * Page d'accueil : les derniers articles sont chargés côté serveur.
+ * Page d'accueil : articles, alertes et statistiques sont chargés côté serveur.
  *
- * Ils étaient récupérés en `useEffect` : le HTML servi ne contenait donc aucun
- * lien vers un article, la section « actualités » n'avait rien d'indexable et
- * /actualites/* ne recevait aucun lien depuis la page la plus forte du site.
+ * Auparavant la bannière et les compteurs se remplissaient en `useEffect` : le
+ * HTML servi annonçait « 0 signalements », et la bannière s'insérait au-dessus
+ * du hero après hydratation en décalant toute la page de 42 px.
  */
 export const revalidate = 300;
 
 export default async function Home() {
-  const latest = await getPublishedArticles(3);
+  const [latest, alerts, stats] = await Promise.all([
+    getPublishedArticles(3),
+    getRecentAlerts().catch((): BannerItem[] => []),
+    getHomeStats().catch((): HomeStats | null => null),
+  ]);
 
   const articles: Article[] = latest.slice(0, 3).map((a) => ({
     id: a.id,
@@ -29,5 +34,5 @@ export default async function Home() {
     createdAt: a.createdAt.toISOString(),
   }));
 
-  return <HomeView articles={articles} />;
+  return <HomeView articles={articles} alerts={alerts} stats={stats} />;
 }
