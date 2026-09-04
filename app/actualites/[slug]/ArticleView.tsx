@@ -3,10 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { FadeInUp } from "@/components/MotionDiv";
 import { useI18n } from "@/lib/i18n/context";
 import { contentToHtml, stripHtml } from "@/lib/content";
+import { getScamData } from "@/lib/i18n/arnaques-data";
+import { VISUAL_CONFIG } from "@/lib/scam-visuals";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Alerte: "bg-primary/10 text-primary",
@@ -36,8 +37,17 @@ export interface ArticleViewData {
   authorName: string;
 }
 
-export function ArticleView({ article, url }: { article: ArticleViewData; url: string }) {
+export function ArticleView({
+  article,
+  url,
+  relatedScamId = null,
+}: {
+  article: ArticleViewData;
+  url: string;
+  relatedScamId?: string | null;
+}) {
   const { t, locale } = useI18n();
+  const relatedScam = relatedScamId ? getScamData(locale).find((s) => s.id === relatedScamId) ?? null : null;
   const [copied, setCopied] = useState(false);
 
   const pick = (fr: string, en: string, fon: string, yo: string) => {
@@ -153,6 +163,7 @@ export function ArticleView({ article, url }: { article: ArticleViewData; url: s
                 src={article.coverImage}
                 alt={title}
                 fill
+                sizes="(max-width: 768px) 100vw, 768px"
                 className="object-cover"
                 priority
               />
@@ -171,13 +182,30 @@ export function ArticleView({ article, url }: { article: ArticleViewData; url: s
             </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: contentHtml }}
-          />
+          {/* Aucune animation d'opacité ici : le corps de l'article doit être
+              lisible dans le HTML servi, JavaScript ou non. */}
+          <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+
+          {relatedScam && (
+            <Link
+              href={`/arnaques/${relatedScam.id}`}
+              className={`group mt-10 flex items-center gap-4 rounded-2xl border-2 p-5 transition-all hover:-translate-y-0.5 hover:shadow-md ${VISUAL_CONFIG[relatedScam.id].color}`}
+            >
+              <div className="w-11 h-11 rounded-xl bg-white/70 flex items-center justify-center shrink-0">
+                <svg className={`w-5 h-5 ${VISUAL_CONFIG[relatedScam.id].iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d={VISUAL_CONFIG[relatedScam.id].icon} />
+                </svg>
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted">Type d&apos;arnaque concerné</p>
+                <p className="font-bold text-foreground leading-snug">{relatedScam.label}</p>
+                <p className="text-xs text-muted">{relatedScam.tagline}</p>
+              </div>
+              <svg className="w-5 h-5 shrink-0 text-muted group-hover:text-foreground group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          )}
 
           {/* Share section */}
           <div className="mt-12 border border-border rounded-2xl p-6">
@@ -208,35 +236,21 @@ export function ArticleView({ article, url }: { article: ArticleViewData; url: s
                 onClick={handleCopy}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-gray-50 transition-all active:scale-95"
               >
-                <AnimatePresence mode="wait">
-                  {copied ? (
-                    <motion.span
-                      key="check"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
-                      className="flex items-center gap-2 text-success"
-                    >
+                {copied ? (
+                    <span key="check" className="reveal reveal-scale [animation-duration:.2s] flex items-center gap-2 text-success">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       Copié !
-                    </motion.span>
+                    </span>
                   ) : (
-                    <motion.span
-                      key="copy"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      exit={{ scale: 0 }}
-                      className="flex items-center gap-2"
-                    >
+                    <span key="copy" className="reveal reveal-scale [animation-duration:.2s] flex items-center gap-2">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                       </svg>
                       Copier le lien
-                    </motion.span>
+                    </span>
                   )}
-                </AnimatePresence>
               </button>
             </div>
           </div>

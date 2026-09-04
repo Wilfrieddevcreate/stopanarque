@@ -13,32 +13,34 @@ const SCANNER_UA_RE = /nikto|sqlmap|masscan|nmap|dirbuster|gobuster|wfuzz|hydra|
 type EdgeThreat = "sql_injection" | "xss" | "path_traversal" | "scanner";
 
 /**
- * Portion de l'URL soumise à la détection d'attaque.
+ * Query string soumise à la détection d'attaque, sans le paramètre `q`.
  *
- * Le paramètre `q` porte du texte saisi par l'internaute : un nom, un numéro,
- * l'URL d'un site frauduleux. Le passer aux heuristiques SQL/XSS produisait des
- * blocages 403 sur des recherches parfaitement légitimes — « Marie--Claire »
- * (double tiret), « delete my account » (le site a une locale anglaise),
- * « arnaque sur document.pdf » (motif `document\.`).
- *
- * L'exclure ne dégrade pas la protection : `q` n'est jamais interpolé dans une
- * requête (Prisma paramètre tout, voir app/api/search/route.ts) et React échappe
- * son rendu. Le chemin et tous les autres paramètres restent analysés.
+ * `q` porte du texte saisi par l'internaute (un nom, un numéro, l'URL d'un
+ * site frauduleux) : le passer aux heuristiques produisait des 403 sur des
+ * recherches légitimes — « Marie--Claire », « delete my account », « arnaque
+ * sur document.pdf ». L'exclure ne dégrade rien : `q` n'est jamais interpolé
+ * dans une requête (Prisma paramètre tout) et React échappe son rendu.
  */
-function scannableUrl(pathname: string, search: string): string {
+function scannableQuery(search: string): string {
   const params = new URLSearchParams(search);
   params.delete("q");
-  const rest = params.toString();
-  return pathname + (rest ? `?${rest}` : "");
+  return params.toString();
 }
 
-function detectUrlThreat(url: string, ua: string): EdgeThreat | null {
+function safeDecode(s: string): string {
+  try { return decodeURIComponent(s); } catch { return s; }
+}
+
+function detectUrlThreat(pathname: string, search: string, ua: string): EdgeThreat | null {
   if (SCANNER_UA_RE.test(ua)) return "scanner";
-  let decoded = url;
-  try { decoded = decodeURIComponent(url); } catch { /* keep raw */ }
-  if (PATH_RE.test(decoded)) return "path_traversal";
-  if (SQL_RE.test(decoded))  return "sql_injection";
-  if (XSS_RE.test(decoded))  return "xss";
+  const path = safeDecode(pathname);
+  const query = safeDecode(scannableQuery(search));
+  if (PATH_RE.test(path) || PATH_RE.test(query)) return "path_traversal";
+  // SQL : query string uniquement. Le chemin ne véhicule que des slugs validés
+  // en amont ; l'y appliquer bloquerait (403, Googlebot compris) tout futur
+  // slug contenant « update », « delete », « cast », « alter » ou « -- ».
+  if (SQL_RE.test(query)) return "sql_injection";
+  if (XSS_RE.test(path) || XSS_RE.test(query)) return "xss";
   return null;
 }
 
@@ -76,10 +78,7 @@ export function proxy(request: NextRequest) {
   // ── Edge threat detection ──────────────────────────────────────────────────
   const ua = request.headers.get("user-agent") ?? "";
   const fullUrl = request.nextUrl.pathname + request.nextUrl.search;
-  const threat = detectUrlThreat(
-    scannableUrl(request.nextUrl.pathname, request.nextUrl.search),
-    ua,
-  );
+  const threat = detectUrlThreat(request.nextUrl.pathname, request.nextUrl.search, ua);
 
   if (threat) {
     const ip = clientIpEdge(request);

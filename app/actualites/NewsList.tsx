@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/MotionDiv";
 import { useI18n } from "@/lib/i18n/context";
 import { stripHtml } from "@/lib/content";
@@ -81,30 +80,28 @@ export function NewsList({ articles }: { articles: NewsListItem[] }) {
 
         {/* Category filter */}
         <div className="flex flex-wrap justify-center gap-2 mb-10">
-          <motion.button
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={() => setActiveCategory("Toutes")}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all active:scale-95 ${
               activeCategory === "Toutes"
                 ? "bg-primary text-white shadow-sm"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
             {t("news.all")}
-          </motion.button>
+          </button>
           {DB_CATEGORIES.map((cat) => (
-            <motion.button
+            <button
               key={cat}
-              whileTap={{ scale: 0.95 }}
               onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all active:scale-95 ${
                 activeCategory === cat
                   ? "bg-primary text-white shadow-sm"
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
               {t(CAT_KEYS[cat])}
-            </motion.button>
+            </button>
           ))}
         </div>
 
@@ -159,10 +156,8 @@ function ArticleCard({
   });
 
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 300 }}
-      className={`bg-white rounded-2xl border border-border hover:shadow-lg transition-shadow overflow-hidden group ${
+    <div
+      className={`bg-white rounded-2xl border border-border hover:shadow-lg hover:-translate-y-1 transition-all duration-200 overflow-hidden group ${
         featured ? "md:col-span-2" : ""
       }`}
     >
@@ -174,6 +169,7 @@ function ArticleCard({
               src={article.coverImage}
               alt={title}
               fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent" />
@@ -214,6 +210,6 @@ function ArticleCard({
           </div>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }

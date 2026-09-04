@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 export function HeroIllustration() {
   return (
     <motion.div
-      initial={{ opacity: 0, x: 28 }}
-      animate={{ opacity: 1, x: 0 }}
+      initial={{ x: 28 }}
+      animate={{ x: 0 }}
       transition={{ duration: 0.65, delay: 0.22, ease: "easeOut" }}
       className="relative w-full max-w-[460px] mx-auto select-none"
     >

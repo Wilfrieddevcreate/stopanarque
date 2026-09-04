@@ -71,28 +71,35 @@ export default function ReportsPage() {
   const fetchStats = useCallback(async () => {
     const res = await fetch("/api/admin/reports?all=stats");
     if (res.status === 401) { router.push("/admin/login"); return; }
+    if (!res.ok) return;
     const data = await res.json();
-    setStatsData(data.stats);
+    setStatsData(data.stats ?? []);
   }, [router]);
 
   const fetchReports = useCallback(async (cursor?: string | null) => {
     const url = cursor ? `/api/admin/reports?cursor=${cursor}` : "/api/admin/reports";
     const res = await fetch(url);
     if (res.status === 401) { router.push("/admin/login"); return; }
+    if (!res.ok) return;
     const data = await res.json();
     if (cursor) {
-      setReports((prev) => [...prev, ...data.reports]);
+      setReports((prev) => [...prev, ...(data.reports ?? [])]);
     } else {
-      setReports(data.reports);
+      setReports(data.reports ?? []);
     }
-    setNextCursor(data.nextCursor);
+    setNextCursor(data.nextCursor ?? null);
   }, [router]);
 
   useEffect(() => {
     let cancelled = false;
     async function init() {
-      await Promise.all([fetchStats(), fetchReports()]);
-      if (!cancelled) setLoading(false);
+      try {
+        await Promise.all([fetchStats(), fetchReports()]);
+      } catch {
+        // erreur réseau ou serveur — on sort du spinner quand même
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     }
     init();
     return () => { cancelled = true; };

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getScamData } from "@/lib/i18n/arnaques-data";
 import { ScamDetail } from "@/components/ScamDetail";
+import { getPublishedArticles } from "@/lib/articles";
+import { articlesForScam } from "@/lib/scam-links";
+import { stripHtml } from "@/lib/content";
 import { SITE_LANG, SITE_NAME, absoluteUrl, breadcrumb, pageMetadata, truncate } from "@/lib/seo";
 
 /**
@@ -13,6 +16,9 @@ import { SITE_LANG, SITE_NAME, absoluteUrl, breadcrumb, pageMetadata, truncate }
  */
 
 const SCAMS = getScamData("fr");
+
+/** Les articles liés viennent de la base : la fiche se régénère périodiquement. */
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return SCAMS.map((scam) => ({ slug: scam.id }));
@@ -47,6 +53,13 @@ export default async function ScamPage({ params }: { params: Promise<{ slug: str
 
   const url = absoluteUrl(`/arnaques/${scam.id}`);
 
+  const related = articlesForScam(scam.id, await getPublishedArticles(50)).slice(0, 4).map((a) => ({
+    slug: a.slug,
+    title: stripHtml(a.title),
+    category: a.category,
+    createdAt: a.createdAt.toISOString(),
+  }));
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -76,7 +89,7 @@ export default async function ScamPage({ params }: { params: Promise<{ slug: str
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }} />
-      <ScamDetail id={scam.id} />
+      <ScamDetail id={scam.id} relatedArticles={related} />
     </>
   );
 }

@@ -1,162 +1,80 @@
-"use client";
+import { Children, cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
 
-import { motion } from "framer-motion";
+/**
+ * Animations d'apparition, en CSS pur (voir les @keyframes reveal-* dans
+ * app/globals.css).
+ *
+ * L'ancienne implémentation framer-motion servait chaque bloc avec
+ * `style="opacity:0"` et ne le révélait qu'après téléchargement du JS et
+ * passage d'un IntersectionObserver : 83 % des mots de l'accueil, jusqu'au h1,
+ * dépendaient de ~200 Ko de JavaScript pour être peints. Ici le HTML servi ne
+ * porte aucune opacité inline ; l'animation CSS tourne sans JavaScript, et
+ * `prefers-reduced-motion` la neutralise (règle globale). Les noms et les props
+ * sont inchangés : aucun appelant n'a été modifié.
+ */
 
-const gpuStyle = { willChange: "transform" } as const;
+type RevealProps = { children: ReactNode; className?: string; delay?: number };
 
-export function FadeIn({
+function Reveal({
+  kind,
   children,
   className,
   delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
+}: RevealProps & { kind: "up" | "scale" | "left" | "right" }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay, ease: "easeOut" }}
-      style={gpuStyle}
-      className={className}
+    <div
+      className={`reveal reveal-${kind}${className ? ` ${className}` : ""}`}
+      style={delay ? { animationDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-export function FadeInUp({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
+export function FadeIn(props: RevealProps) {
+  return <Reveal kind="up" {...props} />;
+}
+
+export function FadeInUp(props: RevealProps) {
+  return <Reveal kind="up" {...props} />;
+}
+
+export function ScaleIn(props: RevealProps) {
+  return <Reveal kind="scale" {...props} />;
+}
+
+export function SlideInLeft(props: RevealProps) {
+  return <Reveal kind="left" {...props} />;
+}
+
+export function SlideInRight(props: RevealProps) {
+  return <Reveal kind="right" {...props} />;
+}
+
+type StaggerItemProps = { children: ReactNode; className?: string; index?: number };
+
+/** Décale l'apparition de chaque StaggerItem enfant de 80 ms, plafonné à 640 ms
+ *  pour qu'une grille longue (17 fiches) n'ait pas de cartes invisibles > 1 s. */
+export function StaggerContainer({ children, className }: { children: ReactNode; className?: string }) {
+  let i = 0;
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      style={gpuStyle}
-      className={className}
-    >
-      {children}
-    </motion.div>
+    <div className={className}>
+      {Children.map(children, (child) =>
+        isValidElement(child) && child.type === StaggerItem
+          ? cloneElement(child as ReactElement<StaggerItemProps>, { index: i++ })
+          : child,
+      )}
+    </div>
   );
 }
 
-export function ScaleIn({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
+export function StaggerItem({ children, className, index = 0 }: StaggerItemProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.92 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.45, delay, ease: "easeOut" }}
-      style={gpuStyle}
-      className={className}
+    <div
+      className={`reveal reveal-up${className ? ` ${className}` : ""}`}
+      style={{ animationDelay: `${Math.min(index, 8) * 0.08}s` }}
     >
       {children}
-    </motion.div>
-  );
-}
-
-export function SlideInLeft({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -32 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      style={gpuStyle}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export function SlideInRight({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 32 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      style={gpuStyle}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export function StaggerContainer({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
-      variants={{
-        visible: { transition: { staggerChildren: 0.1 } },
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export function StaggerItem({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
-      }}
-      style={gpuStyle}
-      className={className}
-    >
-      {children}
-    </motion.div>
+    </div>
   );
 }

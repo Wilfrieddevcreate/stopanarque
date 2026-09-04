@@ -22,8 +22,10 @@ function describe(article: { excerpt: string; content: string }) {
   return truncate(stripHtml(article.excerpt) || stripHtml(article.content));
 }
 
-function coverOf(coverImage: string) {
-  return coverImage ? absoluteUrl(coverImage) : absoluteUrl("/og-image.png");
+function coverOf(slug: string, coverImage: string) {
+  return coverImage
+    ? absoluteUrl(coverImage)
+    : absoluteUrl(`/actualites/${slug}/opengraph-image`);
 }
 
 export async function generateMetadata({
@@ -43,7 +45,7 @@ export async function generateMetadata({
 
   const title = stripHtml(article.title);
   const description = describe(article);
-  const image = coverOf(article.coverImage);
+  const image = coverOf(slug, article.coverImage);
   const url = absoluteUrl(`/actualites/${slug}`);
   const authorName = article.author?.name ?? SITE_NAME;
 
@@ -101,7 +103,7 @@ export default async function ArticleLayout({
     "@type": "NewsArticle",
     headline: truncate(title, 110),
     description,
-    image: [coverOf(article.coverImage)],
+    image: [coverOf(slug, article.coverImage)],
     datePublished: article.createdAt.toISOString(),
     dateModified: article.updatedAt.toISOString(),
     articleSection: article.category,

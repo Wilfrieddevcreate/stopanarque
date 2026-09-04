@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { breadcrumb } from "@/lib/seo";
+import { breadcrumb, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Politique de confidentialité",
   description: "Politique de confidentialité de StopArnaque Bénin — données collectées, finalités, droits des utilisateurs et sécurité.",
-  alternates: { canonical: "/politique-confidentialite" },
-};
+  path: "/politique-confidentialite",
+});
 
 const jsonLdBreadcrumb = breadcrumb([
   { name: "Accueil", path: "/" },

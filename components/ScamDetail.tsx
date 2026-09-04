@@ -11,7 +11,15 @@ import { FadeInUp } from "@/components/MotionDiv";
  * Le contenu suit la langue choisie ; le rendu serveur reste le français,
  * qui est la version indexée.
  */
-export function ScamDetail({ id }: { id: string }) {
+export type RelatedArticle = { slug: string; title: string; category: string; createdAt: string };
+
+export function ScamDetail({
+  id,
+  relatedArticles = [],
+}: {
+  id: string;
+  relatedArticles?: RelatedArticle[];
+}) {
   const { t, locale } = useI18n();
   const scam = getScamData(locale).find((s) => s.id === id) ?? getScamData("fr").find((s) => s.id === id);
   if (!scam) return null;
@@ -93,6 +101,33 @@ export function ScamDetail({ id }: { id: string }) {
               </Link>
             </div>
           </div>
+
+          {/* Articles d'actualité portant sur ce type d'arnaque */}
+          {relatedArticles.length > 0 && (
+            <div className="mt-10">
+              <h2 className="text-lg font-bold text-foreground mb-4">Dans l&apos;actualité</h2>
+              <ul className="space-y-2">
+                {relatedArticles.map((a) => (
+                  <li key={a.slug}>
+                    <Link
+                      href={`/actualites/${a.slug}`}
+                      className="group flex items-center gap-3 rounded-xl border border-border bg-white p-4 transition-all hover:border-primary/30 hover:shadow-md"
+                    >
+                      <span className="shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                        {a.category}
+                      </span>
+                      <span className="flex-1 text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                        {a.title}
+                      </span>
+                      <svg className="w-4 h-4 shrink-0 text-muted group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Maillage : chaque fiche renvoie vers les autres */}
           <div className="mt-10">

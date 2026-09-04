@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { breadcrumb } from "@/lib/seo";
+import { breadcrumb, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Mentions légales",
   description: "Mentions légales de StopArnaque Bénin — éditeur, hébergeur, propriété intellectuelle et responsabilités.",
-  alternates: { canonical: "/mentions-legales" },
-};
+  path: "/mentions-legales",
+});
 
 const jsonLdBreadcrumb = breadcrumb([
   { name: "Accueil", path: "/" },

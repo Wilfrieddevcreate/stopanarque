@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getArticleBySlug, getArticleSitemapEntries } from "@/lib/articles";
 import { absoluteUrl } from "@/lib/seo";
 import { ArticleView } from "./ArticleView";
+import { scamIdForArticle } from "@/lib/scam-links";
 
 /**
  * Page serveur : l'article est chargé côté serveur puis passé au composant
@@ -33,6 +34,7 @@ export default async function ArticlePage({
 
   return (
     <ArticleView
+      relatedScamId={scamIdForArticle({ slug: article.slug })}
       url={absoluteUrl(`/actualites/${article.slug}`)}
       article={{
         id: article.id,
