@@ -3,11 +3,32 @@
  * Ne fonctionne que si aucun utilisateur n'existe en base.
  */
 import { NextRequest, NextResponse } from "next/server";
+import { execSync } from "child_process";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
+async function ensureTablesExist(): Promise<void> {
+  try {
+    await prisma.user.count();
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (msg.includes("no such table")) {
+      // Tables absentes → on les crée
+      execSync("npx prisma db push --skip-generate --accept-data-loss", {
+        stdio: "inherit",
+        env: { ...process.env },
+      });
+    } else {
+      throw e;
+    }
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
+    // Crée les tables si elles n'existent pas encore
+    await ensureTablesExist();
+
     // Vérifie qu'aucun admin n'existe déjà — sécurité absolue
     const existing = await prisma.user.count();
     if (existing > 0) {
