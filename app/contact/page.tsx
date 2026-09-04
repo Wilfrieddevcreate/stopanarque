@@ -39,16 +39,29 @@ export default function ContactPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const reasonEntry = REASONS.find((r) => r.value === subject);
-    const subjectLine = subject
-      ? `[${reasonEntry ? t(reasonEntry.key) : subject}] ${name ? `- ${name}` : ""}`
-      : `Contact StopArnaque${name ? ` - ${name}` : ""}`;
-    const body = `${message}\n\n---\n${t("contact.email.name_label")} : ${name}\n${t("contact.email.reply_label")} : ${email}`;
-    window.location.href = `mailto:contact@stopanarque.bj?subject=${encodeURIComponent(subjectLine)}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    setError(null);
+    setSending(true);
+    try {
+      const reasonEntry = REASONS.find((r) => r.value === subject);
+      const subjectLabel = reasonEntry ? t(reasonEntry.key) : subject;
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, subject: subjectLabel, message }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Erreur lors de l'envoi.");
+      setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur lors de l'envoi.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -222,16 +235,26 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <p className="text-xs text-muted">
-                  {t("contact.hint.mailto")}
-                </p>
+                {error && (
+                  <p className="text-sm text-danger bg-danger/5 border border-danger/20 rounded-lg px-4 py-3">
+                    {error}
+                  </p>
+                )}
 
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-lg transition-colors text-sm"
+                  disabled={sending}
+                  className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors text-sm"
                 >
-                  <IconSend size={15} />
-                  {t("contact.submit")}
+                  {sending ? (
+                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                    </svg>
+                  ) : (
+                    <IconSend size={15} />
+                  )}
+                  {sending ? "Envoi en cours…" : t("contact.submit")}
                 </button>
               </form>
             )}

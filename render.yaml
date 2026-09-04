@@ -14,6 +14,12 @@ services:
         generateValue: true
       - key: DATABASE_URL
         value: file:/var/data/stopanarque.db
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: CONTACT_EMAIL
+        sync: false
     disk:
       name: stopanarque-data
       mountPath: /var/data
