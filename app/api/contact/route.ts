@@ -31,8 +31,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Champs manquants." }, { status: 400 });
   }
 
+  const smtpHost = process.env.SMTP_HOST ?? "smtp.gmail.com";
+  const smtpPort = parseInt(process.env.SMTP_PORT ?? "587", 10);
+  const smtpSecure = process.env.SMTP_SECURE === "true";
   const smtpUser = process.env.SMTP_USER;
   const smtpPass = process.env.SMTP_PASS;
+  const smtpFrom = process.env.SMTP_FROM ?? smtpUser;
   const contactTo = process.env.CONTACT_EMAIL ?? smtpUser;
 
   if (!smtpUser || !smtpPass) {
@@ -41,9 +45,9 @@ export async function POST(req: NextRequest) {
   }
 
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpSecure,
     auth: { user: smtpUser, pass: smtpPass },
   });
 
@@ -71,7 +75,7 @@ export async function POST(req: NextRequest) {
   `;
 
   await transporter.sendMail({
-    from: `"StopArnaque Contact" <${smtpUser}>`,
+    from: smtpFrom,
     to: contactTo,
     replyTo: email,
     subject: subjectLine,
