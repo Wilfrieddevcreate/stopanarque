@@ -74,6 +74,7 @@ export async function POST(req: NextRequest) {
     </div>
   `;
 
+  // Mail vers l'admin
   await transporter.sendMail({
     from: smtpFrom,
     to: contactTo,
@@ -81,6 +82,43 @@ export async function POST(req: NextRequest) {
     subject: subjectLine,
     html,
     text: `${name} <${email}>\n\nSujet : ${subject}\n\n${message}`,
+  });
+
+  // Accusé de réception vers l'utilisateur
+  const confirmHtml = `
+    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
+      <div style="border-left:4px solid #008751;padding-left:16px;margin-bottom:24px">
+        <h2 style="margin:0;color:#1a1a2e">Message bien reçu ✓</h2>
+        <p style="margin:4px 0 0;color:#64748b;font-size:14px">StopArnaque Bénin</p>
+      </div>
+      <p style="color:#374151;line-height:1.7">Bonjour <strong>${name}</strong>,</p>
+      <p style="color:#374151;line-height:1.7">
+        Nous avons bien reçu votre message concernant <strong>${subject}</strong>.
+        Notre équipe vous répondra dans un délai de <strong>48 heures ouvrées</strong>.
+      </p>
+      <div style="background:#f8fafc;border-radius:8px;padding:16px;margin:20px 0;border-left:3px solid #e2e8f0">
+        <p style="margin:0 0 6px;font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em">Votre message</p>
+        <p style="margin:0;color:#64748b;font-size:14px;line-height:1.6;white-space:pre-wrap">${message.replace(/</g, "&lt;")}</p>
+      </div>
+      <p style="color:#374151;line-height:1.7">
+        Si votre demande concerne un signalement d'arnaque, vous pouvez suivre son statut sur
+        <a href="${process.env.NEXT_PUBLIC_SITE_URL}/suivi" style="color:#E8112D">stopanarque.bj/suivi</a>.
+      </p>
+      <p style="color:#374151;line-height:1.7">Merci de contribuer à la lutte contre les arnaques au Bénin.</p>
+      <p style="color:#374151">L'équipe StopArnaque Bénin</p>
+      <hr style="border:none;border-top:1px solid #e2e8f0;margin:24px 0"/>
+      <p style="font-size:11px;color:#94a3b8">
+        Cet email est un accusé de réception automatique. Ne répondez pas directement à ce message.
+      </p>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from: smtpFrom,
+    to: email,
+    subject: `Votre message a bien été reçu — StopArnaque Bénin`,
+    html: confirmHtml,
+    text: `Bonjour ${name},\n\nNous avons bien reçu votre message concernant "${subject}".\nNotre équipe vous répondra dans un délai de 48 heures ouvrées.\n\nL'équipe StopArnaque Bénin`,
   });
 
   return NextResponse.json({ ok: true });
