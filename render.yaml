@@ -28,6 +28,10 @@ services:
         sync: false
       - key: CONTACT_EMAIL
         sync: false
+      - key: NEXT_PUBLIC_TURNSTILE_SITE_KEY
+        sync: false
+      - key: TURNSTILE_SECRET_KEY
+        sync: false
     disk:
       name: stopanarque-data
       mountPath: /var/data

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n/context";
@@ -41,6 +41,30 @@ export default function ContactPage() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const cfTokenRef = useRef<string>("");
+
+  // Charge le widget Turnstile de façon silencieuse
+  useEffect(() => {
+    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+    if (!siteKey || !turnstileRef.current) return;
+
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    script.async = true;
+    script.onload = () => {
+      // @ts-expect-error — Turnstile global injecté par le script Cloudflare
+      window.turnstile?.render(turnstileRef.current, {
+        sitekey: siteKey,
+        size: "invisible",
+        callback: (token: string) => { cfTokenRef.current = token; },
+        "expired-callback": () => { cfTokenRef.current = ""; },
+      });
+    };
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -52,7 +76,11 @@ export default function ContactPage() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject: subjectLabel, message }),
+        body: JSON.stringify({
+          name, email, subject: subjectLabel, message,
+          _hp: honeypot,
+          cfToken: cfTokenRef.current,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Erreur lors de l'envoi.");
@@ -173,6 +201,20 @@ export default function ContactPage() {
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 sm:p-8 space-y-5">
+                {/* Honeypot — invisible pour les humains, rempli par les bots */}
+                <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", opacity: 0, pointerEvents: "none" }}>
+                  <input
+                    type="text"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+                {/* Conteneur Turnstile (invisible) */}
+                <div ref={turnstileRef} />
+
                 <h2 className="font-semibold text-foreground mb-1">{t("contact.form.title")}</h2>
 
                 <div>

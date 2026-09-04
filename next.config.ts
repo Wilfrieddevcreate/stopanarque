@@ -6,11 +6,12 @@ import type { NextConfig } from "next";
 // by some Next internals). frame-ancestors + object-src cover the critical vectors.
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' blob: data:",
   "font-src 'self' https://fonts.gstatic.com",
-  "connect-src 'self'",
+  "frame-src https://challenges.cloudflare.com",
+  "connect-src 'self' https://challenges.cloudflare.com",
   "media-src 'none'",
   "object-src 'none'",
   "base-uri 'self'",
