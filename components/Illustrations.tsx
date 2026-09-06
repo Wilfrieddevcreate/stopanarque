@@ -33,10 +33,10 @@ export function HeroIllustration() {
             <stop offset="0%" stopColor="#22C55E" />
             <stop offset="100%" stopColor="#16A34A" />
           </linearGradient>
-          {/* Dark stats card */}
+          {/* Stats card accent */}
           <linearGradient id="gDk" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#0f172a" />
-            <stop offset="100%" stopColor="#1e293b" />
+            <stop offset="0%" stopColor="#E8112D" />
+            <stop offset="100%" stopColor="#f03e50" />
           </linearGradient>
           {/* Card shadows — stdDeviation réduit pour perf GPU */}
           <filter id="fSh" x="-30%" y="-30%" width="160%" height="160%">
@@ -144,41 +144,43 @@ export function HeroIllustration() {
             fontFamily="'Space Grotesk', sans-serif">Vérifié par l'équipe admin</text>
         </g>
 
-        {/* ── Dark stats strip (bottom) ── */}
-        <g filter="url(#fDk)">
-          <rect x="40" y="364" width="400" height="74" rx="22" fill="url(#gDk)" />
+        {/* ── Stats strip (bottom) ── */}
+        <g filter="url(#fCd)">
+          <rect x="40" y="364" width="400" height="74" rx="22" fill="white" />
+          {/* Accent bar top */}
+          <rect x="40" y="364" width="400" height="5" rx="2.5" fill="url(#gDk)" />
 
           {/* Live dot */}
-          <circle cx="66" cy="382" r="7" fill="#22C55E" fillOpacity="0.22" />
-          <circle cx="66" cy="382" r="4" fill="#22C55E" />
-          <text x="79" y="386" fill="#64748b" fontSize="9" fontWeight="700" letterSpacing="0.08em"
+          <circle cx="66" cy="384" r="5.5" fill="#22C55E" fillOpacity="0.20" />
+          <circle cx="66" cy="384" r="3.5" fill="#22C55E" />
+          <text x="78" y="388" fill="#008751" fontSize="9" fontWeight="700" letterSpacing="0.08em"
             fontFamily="'Space Grotesk', sans-serif">EN DIRECT</text>
 
           {/* Rule */}
-          <line x1="40" y1="398" x2="440" y2="398" stroke="white" strokeOpacity="0.06" strokeWidth="1" />
+          <line x1="52" y1="400" x2="428" y2="400" stroke="#e2e8f0" strokeWidth="1" />
 
           {/* Stat 1 */}
-          <text x="66" y="422" fill="white" fontSize="18" fontWeight="800"
+          <text x="66" y="424" fill="#E8112D" fontSize="18" fontWeight="800"
             fontFamily="'Space Grotesk', sans-serif">47</text>
-          <text x="90" y="422" fill="#64748b" fontSize="10"
+          <text x="90" y="424" fill="#94a3b8" fontSize="10"
             fontFamily="'Space Grotesk', sans-serif">arnaques signalées</text>
 
           {/* Separator */}
-          <line x1="198" y1="408" x2="198" y2="428" stroke="white" strokeOpacity="0.08" strokeWidth="1" />
+          <line x1="198" y1="408" x2="198" y2="428" stroke="#e2e8f0" strokeWidth="1" />
 
           {/* Stat 2 */}
-          <text x="210" y="422" fill="#22C55E" fontSize="18" fontWeight="800"
+          <text x="210" y="424" fill="#008751" fontSize="18" fontWeight="800"
             fontFamily="'Space Grotesk', sans-serif">12</text>
-          <text x="234" y="422" fill="#64748b" fontSize="10"
+          <text x="234" y="424" fill="#94a3b8" fontSize="10"
             fontFamily="'Space Grotesk', sans-serif">bloquées</text>
 
           {/* Separator */}
-          <line x1="312" y1="408" x2="312" y2="428" stroke="white" strokeOpacity="0.08" strokeWidth="1" />
+          <line x1="312" y1="408" x2="312" y2="428" stroke="#e2e8f0" strokeWidth="1" />
 
           {/* Stat 3 */}
-          <text x="324" y="422" fill="#FCD20F" fontSize="18" fontWeight="800"
+          <text x="324" y="424" fill="#E8112D" fontSize="18" fontWeight="800"
             fontFamily="'Space Grotesk', sans-serif">3k+</text>
-          <text x="368" y="422" fill="#64748b" fontSize="10"
+          <text x="368" y="424" fill="#94a3b8" fontSize="10"
             fontFamily="'Space Grotesk', sans-serif">recherches</text>
         </g>
 
