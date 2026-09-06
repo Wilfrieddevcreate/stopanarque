@@ -95,7 +95,7 @@ function HowItWorks() {
 const ALL_NOTIFS = [
   { type: "danger",  icon: "!", title: "Appel suspect détecté",    sub: "+229 97 ●● ●● ●● · Signalé 4 fois", time: "à l'instant" },
   { type: "warning", icon: "?", title: "SMS frauduleux signalé",   sub: "Faux Mobile Money — Vérification",   time: "il y a 1 min" },
-  { type: "success", icon: "✓", title: "Arnaque confirmée",        sub: "Numéro ajouté à la base",            time: "il y a 3 min" },
+  { type: "success", icon: "+", title: "Arnaque confirmée",        sub: "Numéro ajouté à la base",            time: "il y a 3 min" },
   { type: "danger",  icon: "!", title: "Usurpation d'identité",    sub: "+229 61 ●● ●● ●● · Nouveau",        time: "à l'instant" },
   { type: "warning", icon: "?", title: "Faux conseiller bancaire", sub: "UBA Bénin — Signalé 7 fois",        time: "il y a 2 min" },
 ];
@@ -233,12 +233,30 @@ function WhyReport() {
 function ScamTypes() {
   const { t } = useI18n();
   const types = [
-    { icon: "📞", name: t("home.scam.1.name"), desc: t("home.scam.1.desc") },
-    { icon: "📱", name: t("home.scam.2.name"), desc: t("home.scam.2.desc") },
-    { icon: "🎣", name: t("home.scam.3.name"), desc: t("home.scam.3.desc") },
-    { icon: "🏦", name: t("home.scam.4.name"), desc: t("home.scam.4.desc") },
-    { icon: "💻", name: t("home.scam.5.name"), desc: t("home.scam.5.desc") },
-    { icon: "👤", name: t("home.scam.6.name"), desc: t("home.scam.6.desc") },
+    {
+      icon: <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z" /></svg>,
+      name: t("home.scam.1.name"), desc: t("home.scam.1.desc"),
+    },
+    {
+      icon: <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2" ry="2" strokeWidth={1.5} /><line x1="12" y1="18" x2="12.01" y2="18" strokeWidth={2} strokeLinecap="round" /></svg>,
+      name: t("home.scam.2.name"), desc: t("home.scam.2.desc"),
+    },
+    {
+      icon: <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>,
+      name: t("home.scam.3.name"), desc: t("home.scam.3.desc"),
+    },
+    {
+      icon: <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M3 14h18M12 6v12M7 6h10a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2V8a2 2 0 012-2z" /></svg>,
+      name: t("home.scam.4.name"), desc: t("home.scam.4.desc"),
+    },
+    {
+      icon: <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2" strokeWidth={1.5} /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 21h8M12 17v4" /></svg>,
+      name: t("home.scam.5.name"), desc: t("home.scam.5.desc"),
+    },
+    {
+      icon: <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>,
+      name: t("home.scam.6.name"), desc: t("home.scam.6.desc"),
+    },
   ];
 
   return (
@@ -256,7 +274,7 @@ function ScamTypes() {
           {types.map((type) => (
             <StaggerItem key={type.name}>
               <div className="bg-white rounded-2xl p-6 border border-border hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-default">
-                <span className="text-3xl mb-3 block">{type.icon}</span>
+                <span className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center mb-4">{type.icon}</span>
                 <h3 className="font-semibold text-foreground text-lg">{type.name}</h3>
                 <p className="text-sm text-muted mt-1">{type.desc}</p>
               </div>

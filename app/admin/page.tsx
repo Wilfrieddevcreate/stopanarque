@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 const swal = () => import("sweetalert2").then((m) => m.default);
@@ -716,7 +716,7 @@ export default function AdminDashboard() {
                 </h3>
                 <div className="space-y-2">
                   <QuickAction
-                    emoji="⏳"
+                    icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth={1.5}/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6l4 2"/></svg>}
                     title="Urgents"
                     desc="En attente, les + signalés"
                     onClick={() => {
@@ -727,7 +727,7 @@ export default function AdminDashboard() {
                     bg="bg-yellow-50 hover:bg-yellow-100"
                   />
                   <QuickAction
-                    emoji="🔥"
+                    icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>}
                     title="Les + signalés"
                     desc="Tous statuts confondus"
                     onClick={() => {
@@ -737,7 +737,7 @@ export default function AdminDashboard() {
                     bg="bg-primary/5 hover:bg-primary/10"
                   />
                   <QuickAction
-                    emoji="🔍"
+                    icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>}
                     title="En cours d'analyse"
                     desc="Investigations en cours"
                     onClick={() => {
@@ -1261,7 +1261,7 @@ export default function AdminDashboard() {
                                 className="flex items-center gap-2 text-xs text-white/80 hover:text-white transition-colors group"
                               >
                                 <span className="w-5 h-5 rounded bg-white/10 flex items-center justify-center text-[10px] shrink-0 group-hover:bg-white/20">
-                                  {link.type === "whatsapp" ? "WA" : link.type === "facebook" ? "FB" : link.type === "instagram" ? "IG" : link.type === "email" ? "@" : "🔎"}
+                                  {link.type === "whatsapp" ? "WA" : link.type === "facebook" ? "FB" : link.type === "instagram" ? "IG" : link.type === "email" ? "@" : "→"}
                                 </span>
                                 <span className="truncate">{link.label}</span>
                                 <svg className="w-3 h-3 shrink-0 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
@@ -1392,13 +1392,13 @@ function Chip({
 }
 
 function QuickAction({
-  emoji,
+  icon,
   title,
   desc,
   onClick,
   bg,
 }: {
-  emoji: string;
+  icon: React.ReactNode;
   title: string;
   desc: string;
   onClick: () => void;
@@ -1409,8 +1409,8 @@ function QuickAction({
       onClick={onClick}
       className={`w-full flex items-center gap-3 p-3 rounded-xl transition-colors text-left ${bg}`}
     >
-      <span className="w-8 h-8 bg-white/60 rounded-lg flex items-center justify-center text-sm">
-        {emoji}
+      <span className="w-8 h-8 bg-white/60 rounded-lg flex items-center justify-center text-primary">
+        {icon}
       </span>
       <div>
         <p className="text-sm font-semibold text-foreground">{title}</p>

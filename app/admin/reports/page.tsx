@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 const swal = () => import("sweetalert2").then((m) => m.default);
@@ -429,13 +429,13 @@ export default function ReportsPage() {
           <div className="bg-white rounded-2xl border border-border p-5">
             <h3 className="font-bold text-foreground text-sm mb-3">Accès rapide</h3>
             <div className="space-y-2">
-              <QuickAction emoji="⏳" title="Urgents" desc="En attente, les + signalés"
+              <QuickAction icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" strokeWidth={1.5}/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6l4 2"/></svg>} title="Urgents" desc="En attente, les + signalés"
                 onClick={() => { clearFilters(); setStatusFilter("EN_ATTENTE"); setSort("frequent"); }}
                 bg="bg-yellow-50 hover:bg-yellow-100" />
-              <QuickAction emoji="🔥" title="Les + signalés" desc="Tous statuts confondus"
+              <QuickAction icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>} title="Les + signalés" desc="Tous statuts confondus"
                 onClick={() => { clearFilters(); setSort("frequent"); }}
                 bg="bg-primary/5 hover:bg-primary/10" />
-              <QuickAction emoji="🔍" title="En cours d'analyse" desc="Investigations en cours"
+              <QuickAction icon={<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>} title="En cours d'analyse" desc="Investigations en cours"
                 onClick={() => { clearFilters(); setStatusFilter("EN_ANALYSE"); }}
                 bg="bg-success/5 hover:bg-success/10" />
             </div>
@@ -626,10 +626,10 @@ function Chip({ children, active, onClick }: { children: React.ReactNode; active
   );
 }
 
-function QuickAction({ emoji, title, desc, onClick, bg }: { emoji: string; title: string; desc: string; onClick: () => void; bg: string }) {
+function QuickAction({ icon, title, desc, onClick, bg }: { icon: React.ReactNode; title: string; desc: string; onClick: () => void; bg: string }) {
   return (
     <button onClick={onClick} className={`w-full flex items-center gap-3 p-3 rounded-xl transition-colors text-left ${bg}`}>
-      <span className="w-8 h-8 bg-white/60 rounded-lg flex items-center justify-center text-sm">{emoji}</span>
+      <span className="w-8 h-8 bg-white/60 rounded-lg flex items-center justify-center text-primary">{icon}</span>
       <div>
         <p className="text-sm font-semibold text-foreground">{title}</p>
         <p className="text-[11px] text-muted">{desc}</p>

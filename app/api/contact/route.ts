@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
   const confirmHtml = `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
       <div style="border-left:4px solid #008751;padding-left:16px;margin-bottom:24px">
-        <h2 style="margin:0;color:#1a1a2e">Message bien reçu ✓</h2>
+        <h2 style="margin:0;color:#1a1a2e">Message bien reçu</h2>
         <p style="margin:4px 0 0;color:#64748b;font-size:14px">StopArnaque Bénin</p>
       </div>
       <p style="color:#374151;line-height:1.7">Bonjour <strong>${name}</strong>,</p>

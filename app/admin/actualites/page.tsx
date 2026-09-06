@@ -13,8 +13,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   Communiqué: "bg-purple-50 text-purple-700",
 };
 
-const LANG_FLAGS: Record<string, string> = {
-  titleEn: "🇬🇧", titleFon: "🇧🇯 Fon", titleYo: "🇧🇯 Yo",
+const LANG_LABELS: Record<string, string> = {
+  titleEn: "EN", titleFon: "FON", titleYo: "YO",
 };
 
 interface Article {
@@ -139,7 +139,7 @@ export default function AdminActualitesPage() {
                     </span>
                     {langs.map((k) => (
                       <span key={k} className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-blue-600">
-                        {LANG_FLAGS[k]} ✓
+                        {LANG_LABELS[k]}
                       </span>
                     ))}
                     <span className="text-[11px] text-muted ml-1">

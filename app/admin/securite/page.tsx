@@ -488,7 +488,10 @@ export function MfaSetup() {
       {step === "backup" && backupCodes.length > 0 && (
         <div className="space-y-4">
           <div className="bg-amber-50 border border-amber-300 rounded-xl p-4">
-            <p className="text-sm font-bold text-amber-900 mb-1">⚠ Sauvegardez ces codes maintenant</p>
+            <p className="text-sm font-bold text-amber-900 mb-1 flex items-center gap-1.5">
+              <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /></svg>
+              Sauvegardez ces codes maintenant
+            </p>
             <p className="text-xs text-amber-800 mb-3">Ces 8 codes de secours s'affichent une seule fois. Si vous perdez votre téléphone, utilisez-en un pour vous connecter. Chaque code ne peut être utilisé qu'une fois.</p>
             <div className="grid grid-cols-2 gap-2">
               {backupCodes.map((c, i) => (
@@ -507,7 +510,10 @@ export function MfaSetup() {
 
       {(step === "done" || (step === "idle" && mfaEnabled)) && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-success font-medium">✓ MFA active sur votre compte</p>
+          <p className="text-sm text-success font-medium flex items-center gap-1.5">
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+            MFA active sur votre compte
+          </p>
           <button
             onClick={disable}
             disabled={disabling}

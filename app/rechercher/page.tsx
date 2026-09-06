@@ -106,9 +106,9 @@ export default function SearchView() {
   };
 
   const chips = [
-    { label: `📞 ${t("search.chip.phone")}`, value: "+22961234567" },
-    { label: `🌐 ${t("search.chip.url")}`, value: "mtn-benin-recharge-gratuite.net" },
-    { label: `👤 ${t("search.chip.name")}`, value: "Sophie Martin" },
+    { label: t("search.chip.phone"), value: "+22961234567" },
+    { label: t("search.chip.url"), value: "mtn-benin-recharge-gratuite.net" },
+    { label: t("search.chip.name"), value: "Sophie Martin" },
   ];
 
   const inputIcon = inputType === "url" ? (
@@ -247,7 +247,10 @@ export default function SearchView() {
                           <div className="bg-white/60 rounded-xl p-4">
                             <div className="flex items-center justify-between mb-2">
                               <p className="text-sm text-gray-500">{t("search.urls_label")}</p>
-                              <span className="text-xs text-danger font-medium bg-danger/10 px-2 py-0.5 rounded-full">⚠ {t("search.no_visit")}</span>
+                              <span className="text-xs text-danger font-medium bg-danger/10 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <svg className="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /></svg>
+                                {t("search.no_visit")}
+                              </span>
                             </div>
                             <div className="flex flex-wrap gap-2">
                               {result.urls.map((u) => (

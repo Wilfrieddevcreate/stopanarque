@@ -131,7 +131,7 @@ export function HeroIllustration() {
           {/* Badge */}
           <rect x="320" y="206" width="72" height="20" rx="10" fill="#DCFCE7" />
           <text x="356" y="220" textAnchor="middle" fill="#16A34A" fontSize="9.5" fontWeight="700"
-            fontFamily="'Space Grotesk', sans-serif">Confirmé ✓</text>
+            fontFamily="'Space Grotesk', sans-serif">Confirmé</text>
 
           {/* Divider */}
           <line x1="260" y1="240" x2="450" y2="240" stroke="#f1f5f9" strokeWidth="1.2" />
