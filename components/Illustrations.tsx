@@ -11,7 +11,7 @@ export function HeroIllustration() {
       transition={{ duration: 0.65, delay: 0.22, ease: "easeOut" }}
       className="relative w-full max-w-[460px] mx-auto select-none"
     >
-      <svg viewBox="0 0 480 460" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+      <svg viewBox="0 0 480 370" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
         <defs>
           {/* Atmosphere */}
           <radialGradient id="gAtm" cx="50%" cy="46%" r="52%">
@@ -33,20 +33,12 @@ export function HeroIllustration() {
             <stop offset="0%" stopColor="#22C55E" />
             <stop offset="100%" stopColor="#16A34A" />
           </linearGradient>
-          {/* Stats card accent */}
-          <linearGradient id="gDk" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#E8112D" />
-            <stop offset="100%" stopColor="#f03e50" />
-          </linearGradient>
           {/* Card shadows — stdDeviation réduit pour perf GPU */}
           <filter id="fSh" x="-30%" y="-30%" width="160%" height="160%">
             <feDropShadow dx="0" dy="5" stdDeviation="10" floodColor="#E8112D" floodOpacity="0.28" />
           </filter>
           <filter id="fCd" x="-18%" y="-18%" width="136%" height="136%">
             <feDropShadow dx="0" dy="6" stdDeviation="10" floodColor="#1e293b" floodOpacity="0.10" />
-          </filter>
-          <filter id="fDk" x="-12%" y="-22%" width="124%" height="150%">
-            <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#E8112D" floodOpacity="0.12" />
           </filter>
         </defs>
 
@@ -144,59 +136,17 @@ export function HeroIllustration() {
             fontFamily="'Space Grotesk', sans-serif">Vérifié par l'équipe admin</text>
         </g>
 
-        {/* ── Stats strip (bottom) ── */}
-        <g filter="url(#fCd)">
-          <rect x="40" y="364" width="400" height="74" rx="22" fill="white" />
-          {/* Accent bar top */}
-          <rect x="40" y="364" width="400" height="5" rx="2.5" fill="url(#gDk)" />
-
-          {/* Live dot */}
-          <circle cx="66" cy="384" r="5.5" fill="#22C55E" fillOpacity="0.20" />
-          <circle cx="66" cy="384" r="3.5" fill="#22C55E" />
-          <text x="78" y="388" fill="#008751" fontSize="9" fontWeight="700" letterSpacing="0.08em"
-            fontFamily="'Space Grotesk', sans-serif">EN DIRECT</text>
-
-          {/* Rule */}
-          <line x1="52" y1="400" x2="428" y2="400" stroke="#e2e8f0" strokeWidth="1" />
-
-          {/* Stat 1 */}
-          <text x="66" y="424" fill="#E8112D" fontSize="18" fontWeight="800"
-            fontFamily="'Space Grotesk', sans-serif">47</text>
-          <text x="90" y="424" fill="#94a3b8" fontSize="10"
-            fontFamily="'Space Grotesk', sans-serif">arnaques signalées</text>
-
-          {/* Separator */}
-          <line x1="198" y1="408" x2="198" y2="428" stroke="#e2e8f0" strokeWidth="1" />
-
-          {/* Stat 2 */}
-          <text x="210" y="424" fill="#008751" fontSize="18" fontWeight="800"
-            fontFamily="'Space Grotesk', sans-serif">12</text>
-          <text x="234" y="424" fill="#94a3b8" fontSize="10"
-            fontFamily="'Space Grotesk', sans-serif">bloquées</text>
-
-          {/* Separator */}
-          <line x1="312" y1="408" x2="312" y2="428" stroke="#e2e8f0" strokeWidth="1" />
-
-          {/* Stat 3 */}
-          <text x="324" y="424" fill="#E8112D" fontSize="18" fontWeight="800"
-            fontFamily="'Space Grotesk', sans-serif">3k+</text>
-          <text x="368" y="424" fill="#94a3b8" fontSize="10"
-            fontFamily="'Space Grotesk', sans-serif">recherches</text>
-        </g>
-
         {/* Benin flag accent */}
-        <rect x="196" y="450" width="28" height="4" rx="2" fill="#008751" />
-        <rect x="228" y="450" width="28" height="4" rx="2" fill="#FCD20F" />
-        <rect x="260" y="450" width="28" height="4" rx="2" fill="#E8112D" />
+        <rect x="196" y="356" width="28" height="4" rx="2" fill="#008751" />
+        <rect x="228" y="356" width="28" height="4" rx="2" fill="#FCD20F" />
+        <rect x="260" y="356" width="28" height="4" rx="2" fill="#E8112D" />
 
         {/* Decorative dots */}
         <circle cx="36" cy="82" r="9" fill="#E8112D" fillOpacity="0.09" />
         <circle cx="36" cy="82" r="4.5" fill="#E8112D" fillOpacity="0.17" />
         <circle cx="448" cy="116" r="8" fill="#22C55E" fillOpacity="0.20" />
         <circle cx="14" cy="318" r="7" fill="#F59E0B" fillOpacity="0.25" />
-        <circle cx="462" cy="360" r="10" fill="#E8112D" fillOpacity="0.06" />
         <circle cx="406" cy="50" r="5" fill="#F59E0B" fillOpacity="0.18" />
-        <circle cx="52" cy="448" r="5" fill="#22C55E" fillOpacity="0.15" />
       </svg>
 
       {/* Floating ambient dots */}
